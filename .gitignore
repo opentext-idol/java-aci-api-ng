@@ -1,0 +1,13 @@
+# Java
+*.class
+*.log
+*.jar
+
+# IntelliJ
+.idea/
+*.ipr
+*.iml
+*.iws
+
+# Maven
+target/

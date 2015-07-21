@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<autnresponse xmlns:autn='http://schemas.autonomy.com/aci/'>
+  <action>GETVERSION</action>
+  <response>SUCCESS</response>
+  <responsedata>
+    <autn:aciversion>3.1.0.345</autn:aciversion>
+    <autn:version>5.0.5</autn:version>
+    <autn:build>68161</autn:build>
+    <autn:directory>C:\Autonomy\IDOLserver\IDOL</autn:directory>
+    <autn:servertime>
+      <autn:epoch>1138897830</autn:epoch>
+      <autn:string>02 Feb 06 16:30:30</autn:string>
+    </autn:servertime>
+    <autn:performance>
+      <autn:qps>
+        <autn:qps>0.00</autn:qps>
+        <autn:queries>2</autn:queries>
+        <autn:period>1 hours, 53 mins, 16 secs</autn:period>
+      </autn:qps>
+    </autn:performance>
+    <autn:uptime>
+      <autn:uptime>1 hours, 53 mins, 16 secs</autn:uptime>
+      <autn:seconds>6796</autn:seconds>
+      <autn:starttime>02 Feb 06 14:37:14</autn:starttime>
+    </autn:uptime>
+  </responsedata>
+</autnresponse>

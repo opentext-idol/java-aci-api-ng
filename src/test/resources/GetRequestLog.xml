@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<autnresponse xmlns:autn='http://schemas.autonomy.com/aci/'>
+  <action>GETREQUESTLOG</action>
+  <response>SUCCESS</response>
+  <responsedata>
+    <logentry>
+      <autn:action>QUERY</autn:action>
+      <autn:request>action=Query&amp;&amp;print=all&amp;maxresults=15&amp;totalresults=true&amp;predict=false&amp;combine=simple&amp;fieldtext=STRING%7B352437880228818374%7D%3ACATEGORY_ID&amp;&amp;</autn:request>
+      <autn:client>127.0.0.1</autn:client>
+      <autn:time>02 Feb 06 18:02:18</autn:time>
+      <autn:duration>157.97 ms</autn:duration>
+      <autn:status>success</autn:status>
+      <autn:thread>3</autn:thread>
+    </logentry>
+    <logentry>
+      <autn:action>CATEGORYGETTNW</autn:action>
+      <autn:request>action=CategoryGetTNW&amp;&amp;category=352437880228818374&amp;&amp;</autn:request>
+      <autn:client>127.0.0.1</autn:client>
+      <autn:time>02 Feb 06 18:02:18</autn:time>
+      <autn:duration>4.13 ms</autn:duration>
+      <autn:status>success</autn:status>
+      <autn:thread>4</autn:thread>
+    </logentry>
+    <logentry>
+      <autn:action>CATEGORYGETTRAINING</autn:action>
+      <autn:request>action=CategoryGetTraining&amp;&amp;category=352437880228818374&amp;includecontents=true&amp;&amp;</autn:request>
+      <autn:client>127.0.0.1</autn:client>
+      <autn:time>02 Feb 06 18:02:18</autn:time>
+      <autn:duration>4.31 ms</autn:duration>
+      <autn:status>success</autn:status>
+      <autn:thread>1</autn:thread>
+    </logentry>
+  </responsedata>
+</autnresponse>

@@ -1,0 +1,22 @@
+<!--
+  ~ Copyright 2015 Hewlett-Packard Development Company, L.P.
+  ~ Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License.
+  -->
+
+<document xmlns="http://maven.apache.org/changes/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
+    <body>
+        <release version="5.0.0" date="2015-07-21" description="Initial FOSS release">
+            <action dev="Matthew Gordon" type="add">
+                Extracted from internal HP Autonomy VCS.
+            </action>
+            <action dev="Matthew Gordon" type="remove">
+                Removed deprecated connectionManagerTimeout field from the HttpClientFactory class.
+            </action>
+            <action dev="Matthew Gordon" type="remove">
+                Removed BTEA encryption support.
+            </action>
+        </release>
+    </body>
+</document>

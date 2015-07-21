@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<autnresponse xmlns:autn="http://schemas.autonomy.com/aci/"><action>GETQUERYTAGVALUES</action><response>ERROR</response><responsedata>
+<error>
+<errorid>DAHGETQUERYTAGVALUES525</errorid>
+<rawerrorid>0x20D</rawerrorid>
+<errorstring>No valid parametric fields</errorstring>
+<errordescription>The fieldname parameter contained no valid parametric fields</errordescription>
+<errorcode>ERRORPARAMINVALID</errorcode>
+<errortime>09 Jul 08 15:48:22</errortime>
+</error>
+</responsedata></autnresponse>

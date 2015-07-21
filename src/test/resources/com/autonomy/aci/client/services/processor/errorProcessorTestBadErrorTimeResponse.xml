@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<autnresponse xmlns:autn='http://schemas.autonomy.com/aci/'>
+  <action>WOBBLE</action>
+  <response>ERROR</response>
+  <responsedata>
+    <error>
+      <errorid>AutonomyIDOLServerWOBBLE1</errorid>
+      <errorstring>ERROR</errorstring>
+      <errordescription>The requested action was not recognised</errordescription>
+      <errorcode>ERRORNOTIMPLEMENTED</errorcode>
+      <errortime>This is not a date</errortime>
+    </error>
+  </responsedata>
+</autnresponse>

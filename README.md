@@ -2,9 +2,9 @@
 
 A Java API for communicating with HP Autonomy ACI servers.
 
-Information can be found on the project homepage [here](http://hpautonomy.github.io/java-aci-client)
+Information can be found on the project homepage [here](http://hpautonomy.github.io/java-aci-api)
 
-[![Build Status](https://travis-ci.org/hpautonomy/java-aci-client.svg?branch=master)](https://travis-ci.org/hpautonomy/java-aci-client)
+[![Build Status](https://travis-ci.org/hpautonomy/java-aci-api.svg?branch=master)](https://travis-ci.org/hpautonomy/java-aci-api)
 
 ## Usage
 java-aci-api is available from the central Maven repository.

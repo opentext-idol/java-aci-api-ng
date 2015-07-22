@@ -1,4 +1,4 @@
-# java-aci-api
+# java-aci-api-ng
 
 This is a Java API is for communicating with HP Autonomy ACI servers.
 
@@ -8,7 +8,7 @@ This Java API provides an interface for constructing and executing ACI requests 
 versions were available as jar files from HP Autonomy customer support.
 
 ## Usage
-java-aci-api is available from the central Maven repository.
+java-aci-api-ng is available from the central Maven repository.
 
     <dependency>
         <groupId>com.hp.autonomy.aci.client</groupId>
@@ -40,6 +40,10 @@ document which can then be inspected either directly or using XPath.
 
 Preferably, the [ACI Annotations Processor Factory](http://hpautonomy.github.io/java-aci-annotations-processor) can be used to
 easily convert the response to an instance of a Java class defined by you.
+
+## Migration to FOSS Version
+Previous versions of this library included a taglib for use in JSPs and support for legacy OEM encryption. Builds with
+these features are available from HP Autonomy customer support.
 
 ## Contributing
 We welcome pull requests. These must be licensed under the MIT license. Please submit pull requests to the develop

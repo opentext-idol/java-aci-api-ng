@@ -1,10 +1,14 @@
 # java-aci-api
 
-A Java API for communicating with HP Autonomy ACI servers.
+A Java API for communicating with Hewlett Packard Enterprise ACI servers.
 
-Information can be found on the project homepage [here](http://hpautonomy.github.io/java-aci-api)
+[![Build Status](https://travis-ci.org/hpe-idol/java-aci-api-ng.svg?branch=master)](https://travis-ci.org/hpe-idol/java-aci-api-ng)
 
-[![Build Status](https://travis-ci.org/hpautonomy/java-aci-api.svg?branch=master)](https://travis-ci.org/hpautonomy/java-aci-api)
+## About
+The HPE Content Infrastructure (ACI) is a protocol for communicating with HPE servers using XML over HTTP.
+This Java API provides an interface for constructing and executing ACI requests and for consuming ACI responses. Previous
+versions were available as jar files from HPE customer support.
+
 
 ## Usage
 java-aci-api is available from the central Maven repository.
@@ -15,7 +19,19 @@ java-aci-api is available from the central Maven repository.
         <version>5.0.0</version>
     </dependency>
 
+## Migration to FOSS Version
+Previous versions of this library included a taglib for use in JSPs and support for legacy OEM encryption. Builds with
+these features are available from HPE customer support.
+
+## Contributing
+We welcome pull requests. These must be licensed under the MIT license. Please submit pull requests to the develop
+branch - the master branch is for stable code only.
+
+## Is it any good?
+Yes.
+
 ## License
-Copyright 2015 Hewlett-Packard Development Company, L.P.
+Copyright 2006-2015 Hewlett-Packard Development Company, L.P.
+Copyright 2015-2016 Hewlett Packard Enterprise Development LP
 
 Licensed under the MIT License (the "License"); you may not use this project except in compliance with the License.

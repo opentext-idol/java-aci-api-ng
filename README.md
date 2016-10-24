@@ -1,4 +1,4 @@
-# java-aci-api
+# java-aci-api-ng
 
 A Java API for communicating with Hewlett Packard Enterprise ACI servers.
 
@@ -11,13 +11,15 @@ versions were available as jar files from HPE customer support.
 
 
 ## Usage
-java-aci-api is available from the central Maven repository.
+java-aci-api-ng is available from the central Maven repository.
 
     <dependency>
         <groupId>com.hp.autonomy.aci.client</groupId>
         <artifactId>aci-api</artifactId>
-        <version>5.0.0</version>
+        <version>5.0.1</version>
     </dependency>
+
+For more documentation, see the project homepage [here](http://hpe-idol.github.io/java-aci-api-ng).
 
 ## Migration to FOSS Version
 Previous versions of this library included a taglib for use in JSPs and support for legacy OEM encryption. Builds with

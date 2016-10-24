@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2015 Hewlett-Packard Development Company, L.P.
+  ~ Copyright 2006-2015 Hewlett-Packard Development Company, L.P.
   ~ Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License.
   -->
 
@@ -7,6 +7,11 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
     <body>
+        <release version="5.0.1" date="2016-10-24" description="Patch release">
+            <action date="2016-10-24" dev="Alex Scown" issue="FLIB-39" type="fix">
+                Fix connection starvation bug on HTTP error status codes
+            </action>
+        </release>
         <release version="5.0.0" date="2015-07-21" description="Initial FOSS release">
             <action dev="Matthew Gordon" type="add">
                 Extracted from internal HP Autonomy VCS.

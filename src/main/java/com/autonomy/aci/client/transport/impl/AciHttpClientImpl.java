@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Hewlett-Packard Development Company, L.P.
+ * Copyright 2006-2015 Hewlett-Packard Development Company, L.P.
  * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License.
  */
 
@@ -28,6 +28,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -259,6 +260,9 @@ public class AciHttpClientImpl implements AciHttpClient {
 
             // Treat anything other than a 2xx status code as an error...
             if ((statusCode < 200) || (statusCode >= 300)) {
+                // close the connection so it can be reused
+                EntityUtils.consume(response.getEntity());
+
                 throw new AciHttpException("The server returned a status code, " + statusCode + ", that wasn't in the 2xx Success range.");
             }
 

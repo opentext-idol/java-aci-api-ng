@@ -15,7 +15,7 @@ java-aci-api-ng is available from the central Maven repository.
     <dependency>
         <groupId>com.hp.autonomy.aci.client</groupId>
         <artifactId>aci-api</artifactId>
-        <version>5.0.0</version>
+        <version>5.0.1</version>
     </dependency>
 
 For more documentation, see the project homepage [here](http://hpe-idol.github.io/java-aci-api-ng).

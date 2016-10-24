@@ -13,12 +13,12 @@ import java.util.BitSet;
 
 /**
  * Implements the 'www-form-urlencoded' encoding scheme, also misleadingly known as URL encoding.
- * <p/>
+ * <p>
  * For more detailed information please refer to
  * <a href="http://www.w3.org/TR/html4/interact/forms.html#h-17.13.4.1">
  * Chapter 17.13.4 'Form content types'</a> of the
- * <a href="http://www.w3.org/TR/html4/">HTML 4.01 Specification<a>
- * <p/>
+ * <a href="http://www.w3.org/TR/html4/">HTML 4.01 Specification</a>
+ *
  * This codec differs from the spec as it encodes spaces as <tt>%20</tt> and not as <tt>+</tt>. This is required by
  * various IDOL Server components to stop references with spaces in them being treated as multiple references, as the
  * space character is a valid ACI parameter value separator.

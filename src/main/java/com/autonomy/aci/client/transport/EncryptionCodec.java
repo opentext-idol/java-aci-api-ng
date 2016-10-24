@@ -10,27 +10,27 @@ import java.io.Serializable;
 /**
  * IDOL Server supports a number of different methods for encrypting ACI actions between itself and the client. This
  * interface defines the methods that the {@code AciHttpClient} will call to encrypt and decrypt an ACI action.
- * <p/>
+ * <p>
  * Classes that implement this interface should be aware of just how IDOL expects the incoming ACI action to be
  * formatted. If the user is sending a query, for example, the action parameters sent may look something like:
  * <pre>
- *   action=query&text=tour%20de%20france&maxresults=10&combine=simple&print=all
+ *   action=query&amp;text=tour%20de%20france&amp;maxresults=10&amp;combine=simple&amp;print=all
  * </pre>
  * When the {@code AciHttpClient} detects that an {@code EncryptionCodec} should be used, it creates a new set of ACI
  * parameters and uses the output of the codec as the value to one of those parameters.
- * <p/>
+ * <p>
  * When using a {@code Cipher} to encrypt text, the result is a {@code byte[]} not a string. HTTP is a text based
  * protocol, so the {@code EncryptionCodec} needs to convert the {@code byte[]} to a {@code String} by Base64 encoding
  * it. Furthermore, as query strings can be quite long, even before encrypting. Thus the query string that is sent to
  * IDOL will look it:
  * <pre>
- *   action=encrypted&data=&lt;base64(encrypt(deflate(original query string)))&gt;
+ *   action=encrypted&amp;data=&lt;base64(encrypt(deflate(original query string)))&gt;
  * </pre>
  * When IDOL sends the response back, the {@code AciHttpClient} takes the contents of the
  * <tt>/autnresponse/responsedata/autn:encrypted</tt> element and applies the steps to encrypt in reverse, i.e. base64
  * decode, decrypt and inflate. This will then result in a {@code byte[]} that contains the actual ACI response to be
  * sent back via the {@code AciService}.
- * <p/>
+ * <p>
  * The reason the codec works with byte arrays and not Strings, is due to IDOL Server having a number of actions that
  * return binary data, i.e. <tt>action=ClusterServe2DMap</tt>. There is a utility class {@link
  * com.autonomy.aci.client.util.EncryptionCodecUtils} that has methods to make it easier to encrypt/decrypt <tt>String</tt>

@@ -46,7 +46,7 @@ import java.util.Set;
  * communication mechanism. This implementation uses the HttpClient provided by the <a href="http://hc.apache.org/">
  * Apache HttpComponents</a> project. It defaults to using the HTTP <tt>GET</tt> method, if you wish to send ACI actions
  * with the HTTP <tt>POST</tt> method, then call the {@link #setUsePostMethod(boolean)} method with {@code true}.
- * <p/>
+ * <p>
  * This implementation of the {@link com.autonomy.aci.client.transport.AciHttpClient} interface does no configuration of
  * the {@code HttpClient} that it uses. It expects all the configuration to have been done by the user before passing it
  * to this object. This configuration can be done in normal code, via the

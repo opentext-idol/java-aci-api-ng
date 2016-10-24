@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of the <tt>AciService</tt> interface.
- * <p/>
+ * <p>
  * This implementation of the <tt>AciService</tt> interface does no configuration of the <tt>AciHttpClient</tt> or
  * <tt>AciServerDetails</tt> objects that it uses. It expects all the configuration to have been done by the user before
  * passing them to this object. This configuration can be done in normal code, or via an IoC container like Spring.

@@ -17,6 +17,7 @@ public interface AciService {
 
     /**
      * Executes an ACI action and processes the response with the supplied <tt>Processor</tt>.
+     * @param <T> Return type.
      * @param parameters The parameters to use with the ACI command. This <strong>should</strong> include an {@code
      *                   Action=<command>} parameter
      * @param processor  The <tt>Processor</tt> to use for converting the response stream into an object
@@ -28,6 +29,7 @@ public interface AciService {
 
     /**
      * Executes an ACI action and processes the response with the supplied <tt>Processor</tt>.
+     * @param <T> Return type.
      * @param serverDetails The connection details of the ACI Server to execute the action on
      * @param parameters    The parameters to use with the ACI command. This <strong>should</strong> include an {@code
      *                      Action=<command>} parameter

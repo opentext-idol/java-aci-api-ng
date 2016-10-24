@@ -19,7 +19,7 @@ import java.io.IOException;
  * when the stream has been read, even if the stream is being read by code that doesn't know where it's come from. It
  * accomplishes this by using a {@code FilterInputStream} to pass all method calls to the ACI response {@code
  * InputStream} and overrides the {@code close()} method, so that it can release the HTTP connection at the same time.
- * <p/>
+ * <p>
  * This class is required to decorate the returned {@code InputStream} if the {@code HttpClient} has been setup to use
  * the {@code MultiThreadedHttpConnectionManager}.
  */

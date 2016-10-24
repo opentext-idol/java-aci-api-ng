@@ -19,7 +19,7 @@
 
     <groupId>com.hp.autonomy.aci.client</groupId>
     <artifactId>aci-api</artifactId>
-    <version>5.1.0-SNAPSHOT</version>
+    <version>5.0.1</version>
 
     <name>HP Autonomy ACI API NG</name>
     <description>Java client for communicating with HP ACI servers.</description>
@@ -40,15 +40,15 @@
     <developers>
         <developer>
             <name>Matthew Gordon</name>
-            <email>matthew.gordon2@hp.com</email>
-            <organization>HP</organization>
+            <email>matthew.gordon2@hpe.com</email>
+            <organization>Hewlett Packard Enterprise</organization>
             <organizationUrl>http://www.hp.com</organizationUrl>
         </developer>
         <developer>
             <name>Alex Scown</name>
-            <email>alex.scown@hp.com</email>
-            <organization>HP</organization>
-            <organizationUrl>http://www.hp.com</organizationUrl>
+            <email>alex.scown@hpe.com</email>
+            <organization>Hewlett Packard Enterprise</organization>
+            <organizationUrl>http://www.hpe.com</organizationUrl>
         </developer>
         <developer>
             <name>Bob Arnott</name>

@@ -209,7 +209,7 @@ public class AciHttpClientImpl implements AciHttpClient {
         // Just incase, remove the allowed null entry...
         parameters.remove(null);
 
-        final List<NameValuePair> pairs = new ArrayList<NameValuePair>(parameters.size());
+        final List<NameValuePair> pairs = new ArrayList<>(parameters.size());
 
         LOGGER.debug("Converting {} parameters...", parameters.size());
 

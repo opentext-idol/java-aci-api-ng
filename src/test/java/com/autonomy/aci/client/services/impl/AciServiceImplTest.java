@@ -89,7 +89,7 @@ public class AciServiceImplTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testExecuteActionEmptyParameterSetNullProcessor() throws AciServiceException {
-        new AciServiceImpl(mock(AciHttpClient.class), details).executeAction(new LinkedHashSet<AciParameter>(), null);
+        new AciServiceImpl(mock(AciHttpClient.class), details).executeAction(new LinkedHashSet<>(), null);
         fail("Should have thrown an IllegalArgumentException.");
     }
 
@@ -113,7 +113,7 @@ public class AciServiceImplTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testExecuteActionWithDetailsEmptyParameterSetNullProcessor() throws AciServiceException {
-        new AciServiceImpl(mock(AciHttpClient.class)).executeAction(details, new LinkedHashSet<AciParameter>(), null);
+        new AciServiceImpl(mock(AciHttpClient.class)).executeAction(details, new LinkedHashSet<>(), null);
         fail("Should have thrown an IllegalArgumentException.");
     }
 
@@ -188,7 +188,7 @@ public class AciServiceImplTest {
         final AciResponseInputStream mockAciResponseInputStream = mock(AciResponseInputStream.class);
         when(mockAciHttpClient.executeAction(any(AciServerDetails.class), anySetOf(AciParameter.class))).thenReturn(mockAciResponseInputStream);
 
-        final Processor<?> mockProcessor = mock(Processor.class);
+        final Processor<String> mockProcessor = mock(Processor.class);
         when(mockProcessor.process(mockAciResponseInputStream)).thenReturn("Success!");
 
         final String result = new AciServiceImpl(mockAciHttpClient)

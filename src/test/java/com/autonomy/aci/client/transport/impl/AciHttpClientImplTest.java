@@ -133,7 +133,7 @@ public class AciHttpClientImplTest {
         final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "convertParameters", Set.class, String.class);
 
         // Here's the parameter set...
-        final Set<AciParameter> parameters = new LinkedHashSet<AciParameter>();
+        final Set<AciParameter> parameters = new LinkedHashSet<>();
         parameters.add(new AciParameter(AciConstants.PARAM_ACTION, "query"));
         parameters.add(new AciParameter("Text", "This is some text..."));
 
@@ -155,7 +155,7 @@ public class AciHttpClientImplTest {
         final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "convertParameters", Set.class, String.class);
 
         // Here's the parameter set...
-        final Set<AciParameter> parameters = new LinkedHashSet<AciParameter>();
+        final Set<AciParameter> parameters = new LinkedHashSet<>();
         parameters.add(new AciParameter("Text", "This is some text..."));
         parameters.add(new AciParameter("Combine", "Simple"));
         parameters.add(new AciParameter("Predict", false));
@@ -192,7 +192,7 @@ public class AciHttpClientImplTest {
         final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "convertParameters", Set.class, String.class);
 
         // Here's the parameter set...
-        final Set<AciParameter> parameters = new LinkedHashSet<AciParameter>();
+        final Set<AciParameter> parameters = new LinkedHashSet<>();
         parameters.add(new AciParameter("Text", "This is some text..."));
         parameters.add(new AciParameter("Combine", "Simple"));
         parameters.add(new AciParameter("Predict", false));
@@ -245,7 +245,7 @@ public class AciHttpClientImplTest {
         final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "createGetMethod", AciServerDetails.class, Set.class);
 
         // Here's the parameter set...
-        final Set<AciParameter> parameters = new LinkedHashSet<AciParameter>();
+        final Set<AciParameter> parameters = new LinkedHashSet<>();
         parameters.add(new AciParameter(AciConstants.PARAM_ACTION, "query"));
         parameters.add(new AciParameter("Text", "This is some text..."));
 
@@ -266,7 +266,7 @@ public class AciHttpClientImplTest {
         final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "createPostMethod", AciServerDetails.class, Set.class);
 
         // Here's the parameter set...
-        final Set<AciParameter> parameters = new LinkedHashSet<AciParameter>();
+        final Set<AciParameter> parameters = new LinkedHashSet<>();
         parameters.add(new AciParameter(AciConstants.PARAM_ACTION, "query"));
         parameters.add(new AciParameter("Text", "This is some text..."));
 
@@ -298,7 +298,7 @@ public class AciHttpClientImplTest {
         serverDetails.setEncryptionCodec(new TestEncryptionCodec());
 
         // Here's the parameter set...
-        final Set<AciParameter> parameters = new LinkedHashSet<AciParameter>();
+        final Set<AciParameter> parameters = new LinkedHashSet<>();
         parameters.add(new AciParameter(AciConstants.PARAM_ACTION, "query"));
         parameters.add(new AciParameter("Text", "This is some text..."));
 
@@ -326,7 +326,7 @@ public class AciHttpClientImplTest {
         final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "constructHttpRequest", AciServerDetails.class, Set.class);
 
         // Here's the parameter set...
-        final Set<AciParameter> parameters = new LinkedHashSet<AciParameter>();
+        final Set<AciParameter> parameters = new LinkedHashSet<>();
         parameters.add(new AciParameter(AciConstants.PARAM_ACTION, "query"));
         parameters.add(new AciParameter("Text", "This is some text..."));
 

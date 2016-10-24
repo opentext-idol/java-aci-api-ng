@@ -116,11 +116,9 @@ public final class AciURLCodec {
             if (string != null) {
                 returnValue = new String(URLCodec.decodeUrl(string.getBytes(US_ASCII)), UTF8);
             }
-        } catch (final UnsupportedEncodingException uee) {
+        } catch (final UnsupportedEncodingException | DecoderException uee) {
             // This should never ever happen as both charsets are required by the Java Spec.
             throw new AciURLCodecException(uee);
-        } catch (final DecoderException de) {
-            throw new AciURLCodecException(de);
         }
 
         // Return the result...

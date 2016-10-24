@@ -58,12 +58,8 @@ public class DocumentProcessor implements Processor<Document> {
 
             // Get a document builder and convert the document...
             return factory.newDocumentBuilder().parse(new InputSource(response));
-        } catch (final ParserConfigurationException pce) {
+        } catch (final ParserConfigurationException | IOException | SAXException pce) {
             throw new ProcessorException("Unable to parse the ACI response into a DOM document.", pce);
-        } catch (final SAXException saxe) {
-            throw new ProcessorException("Unable to parse the ACI response into a DOM document.", saxe);
-        } catch (final IOException ioe) {
-            throw new ProcessorException("Unable to parse the ACI response into a DOM document.", ioe);
         }
     }
 

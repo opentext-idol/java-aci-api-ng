@@ -55,7 +55,7 @@ public class AciParameters implements Set<AciParameter>, Serializable {
 
     private static final long serialVersionUID = 660774414514212736L;
 
-    private final Set<AciParameter> parameters = new LinkedHashSet<AciParameter>();
+    private final Set<AciParameter> parameters = new LinkedHashSet<>();
 
     /**
      * Default empty constructor...
@@ -248,9 +248,7 @@ public class AciParameters implements Set<AciParameter>, Serializable {
      */
     public void putAll(final Collection<? extends AciParameter> parameters) {
         if (parameters != null) {
-            for (final AciParameter parameter : parameters) {
-                put(parameter);
-            }
+            parameters.forEach(this::put);
         }
     }
 

@@ -100,7 +100,7 @@ public class HttpClientFactoryTest {
     }
 
     private Set<String> getRequestInterceptors(final AbstractHttpClient abstractHttpClient) {
-        final LinkedHashSet<String> requestInterceptors = new LinkedHashSet<String>();
+        final LinkedHashSet<String> requestInterceptors = new LinkedHashSet<>();
         for (int ii = 0; ii < abstractHttpClient.getRequestInterceptorCount(); ii++) {
             requestInterceptors.add(abstractHttpClient.getRequestInterceptor(ii).getClass().getName());
         }
@@ -108,7 +108,7 @@ public class HttpClientFactoryTest {
     }
 
     private Set<String> getResponseInterceptors(final AbstractHttpClient abstractHttpClient) {
-        final LinkedHashSet<String> responseInterceptors = new LinkedHashSet<String>();
+        final LinkedHashSet<String> responseInterceptors = new LinkedHashSet<>();
         for (int ii = 0; ii < abstractHttpClient.getResponseInterceptorCount(); ii++) {
             responseInterceptors.add(abstractHttpClient.getResponseInterceptor(ii).getClass().getName());
         }

@@ -51,6 +51,12 @@
             <organizationUrl>http://www.hpe.com</organizationUrl>
         </developer>
         <developer>
+            <name>Will Byrne</name>
+            <email>will.byrne@hpe.com</email>
+            <organization>Hewlett Packard Enterprise</organization>
+            <organizationUrl>http://www.hpe.com</organizationUrl>
+        </developer>
+        <developer>
             <name>Bob Arnott</name>
             <url>https://github.com/fatboab</url>
         </developer>

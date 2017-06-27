@@ -16,10 +16,10 @@ import org.slf4j.LoggerFactory;
  * <strong>don't return XML</strong> by default, for example, cluster actions that return an image. This processor will
  * correctly handle an XML error response by checking to see what the content type of the returned response is before
  * processing it.
- * <p/>
+ * <p>
  * By default this processor uses {@link ErrorProcessor} and {@link ByteArrayProcessor} to do it's work. The
  * implementations to be used can be changed by using the appropriate accessor methods.
- * <p/>
+ * <p>
  * <strong>Note:</strong> If the content type is <tt>text/xml</tt> then an
  * {@link com.autonomy.aci.client.services.AciErrorException} will be thrown regardless of the contents of the actual
  * response. If the response didn't contain an error, then the resulting exception's error properties will all be

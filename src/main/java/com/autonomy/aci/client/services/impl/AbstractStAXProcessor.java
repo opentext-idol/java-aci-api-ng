@@ -82,16 +82,16 @@ public abstract class AbstractStAXProcessor<T> implements StAXProcessor<T> {
      * This constructor gets a new {@link XMLInputFactory} instance that is reused every time
      * {@link #process(com.autonomy.aci.client.transport.AciResponseInputStream)} is called, this
      * should be faster than creating a new instance every time this method is called.
-     * <p/>
+     * <p>
      * The properties are set to the following defaults if they are not specified as system properties:
-     * <table>
+     * <table summary="">
      * <tr><th>Property</th><th>Default</th></tr>
      * <tr><td>XMLInputFactory.IS_NAMESPACE_AWARE</td><td><tt>false</tt></td></tr>
-     * <tr><td>XMLInputFactory.IS_VALIDATING</th><th><tt>false</tt></td></tr>
-     * <tr><td>XMLInputFactory.IS_COALESCING</th><th><tt>false</tt></td></tr>
-     * <tr><td>XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES</th><th><tt>true</tt></td></tr>
-     * <tr><td>XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES</th><th><tt>false</tt></td></tr>
-     * <tr><td>XMLInputFactory.SUPPORT_DTD</th><th><tt>true</tt></td></tr>
+     * <tr><td>XMLInputFactory.IS_VALIDATING<tt>false</tt></td></tr>
+     * <tr><td>XMLInputFactory.IS_COALESCING<tt>false</tt></td></tr>
+     * <tr><td>XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES<tt>true</tt></td></tr>
+     * <tr><td>XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES<tt>false</tt></td></tr>
+     * <tr><td>XMLInputFactory.SUPPORT_DTD<tt>true</tt></td></tr>
      * </table>
      */
     protected AbstractStAXProcessor() {

@@ -60,7 +60,7 @@ public class EncryptionCodecUtils {
      * Constructs a new <tt>String</tt> by decoding the specified array of bytes using the specified charset. The length
      * of the new <tt>String</tt> is a function of the charset, and hence may not be equal to the length of the byte
      * array.
-     * <p/>
+     * <p>
      * The behavior of this method when the given bytes are not valid in the given charset is unspecified. The {@link
      * java.nio.charset.CharsetDecoder} class should be used when more control over the decoding process is required.
      * @param bytes       the bytes to be decoded into characters
@@ -80,7 +80,7 @@ public class EncryptionCodecUtils {
     /**
      * Encodes the <tt>string</tt> into a sequence of bytes using the named charset, storing the result into a new byte
      * array.
-     * <p/>
+     * <p>
      * The behavior of this method when this string cannot be encoded in the given charset is unspecified. The {@link
      * java.nio.charset.CharsetEncoder} class should be used when more control over the encoding process is required.
      * @param string      The <tt>String</tt> to convert to a byte array.

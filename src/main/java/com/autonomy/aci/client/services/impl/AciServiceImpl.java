@@ -15,6 +15,7 @@ import com.autonomy.aci.client.transport.AciHttpException;
 import com.autonomy.aci.client.transport.AciParameter;
 import com.autonomy.aci.client.transport.AciResponseInputStream;
 import com.autonomy.aci.client.transport.AciServerDetails;
+import com.autonomy.aci.client.transport.ActionParameter;
 import com.autonomy.aci.client.util.IOUtils;
 
 import java.io.IOException;
@@ -26,7 +27,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of the <tt>AciService</tt> interface.
- * <p/>
+ * <p>
  * This implementation of the <tt>AciService</tt> interface does no configuration of the <tt>AciHttpClient</tt> or
  * <tt>AciServerDetails</tt> objects that it uses. It expects all the configuration to have been done by the user before
  * passing them to this object. This configuration can be done in normal code, or via an IoC container like Spring.
@@ -91,7 +92,8 @@ public class AciServiceImpl implements AciService {
      *                                  empty or missing an action parameter. Will also be thrown in the <tt>processor</tt>
      *                                  is null.
      */
-    public <T> T executeAction(final Set<? extends AciParameter> parameters, final Processor<T> processor) {
+    @Override
+    public <T> T executeAction(final Set<? extends ActionParameter<?>> parameters, final Processor<T> processor) {
         LOGGER.trace("executeAction() called...");
 
         // Execute and return the result...
@@ -111,7 +113,8 @@ public class AciServiceImpl implements AciService {
      *                                  <tt>null</tt>, empty or missing an action parameter. Will also be thrown in the
      *                                  <tt>processor</tt> is null.
      */
-    public <T> T executeAction(final AciServerDetails serverDetails, final Set<? extends AciParameter> parameters, final Processor<T> processor) {
+    @Override
+    public <T> T executeAction(final AciServerDetails serverDetails, final Set<? extends ActionParameter<?>> parameters, final Processor<T> processor) {
         LOGGER.trace("executeAction() called...");
 
         // Sanity check the HttpClient...

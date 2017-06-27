@@ -11,9 +11,10 @@ import com.autonomy.aci.client.transport.AciHttpException;
 import com.autonomy.aci.client.transport.AciParameter;
 import com.autonomy.aci.client.transport.AciResponseInputStream;
 import com.autonomy.aci.client.transport.AciServerDetails;
+import com.autonomy.aci.client.transport.ActionParameter;
 import com.autonomy.aci.client.transport.EncryptionCodec;
 import com.autonomy.aci.client.transport.EncryptionCodecException;
-import com.autonomy.aci.client.util.AciParameters;
+import com.autonomy.aci.client.util.ActionParameters;
 import com.autonomy.aci.client.util.EncryptionCodecUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.http.Header;
@@ -27,6 +28,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
@@ -36,6 +38,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -46,7 +49,7 @@ import java.util.Set;
  * communication mechanism. This implementation uses the HttpClient provided by the <a href="http://hc.apache.org/">
  * Apache HttpComponents</a> project. It defaults to using the HTTP <tt>GET</tt> method, if you wish to send ACI actions
  * with the HTTP <tt>POST</tt> method, then call the {@link #setUsePostMethod(boolean)} method with {@code true}.
- * <p/>
+ * <p>
  * This implementation of the {@link com.autonomy.aci.client.transport.AciHttpClient} interface does no configuration of
  * the {@code HttpClient} that it uses. It expects all the configuration to have been done by the user before passing it
  * to this object. This configuration can be done in normal code, via the
@@ -100,16 +103,23 @@ public class AciHttpClientImpl implements AciHttpClient {
      * @throws UnsupportedEncodingException If there was a problem working with the parameters in the specified
      *                                      character encoding
      */
-    private HttpUriRequest constructHttpRequest(final AciServerDetails serverDetails, final Set<? extends AciParameter> parameters) throws EncryptionCodecException, URISyntaxException, UnsupportedEncodingException {
+    private HttpUriRequest constructHttpRequest(final AciServerDetails serverDetails, final Set<? extends ActionParameter<?>> parameters) throws EncryptionCodecException, URISyntaxException, UnsupportedEncodingException {
         LOGGER.trace("constructHttpMethod() called...");
 
         // Copy the parameters...
-        final Set<? extends AciParameter> params = (serverDetails.getEncryptionCodec() == null)
+        final Set<? extends ActionParameter<?>> params = (serverDetails.getEncryptionCodec() == null)
                 ? parameters
                 : createEncryptedParameters(serverDetails, parameters);
 
-        // Only create a POST method if required...
-        return usePostMethod ? createPostMethod(serverDetails, params) : createGetMethod(serverDetails, params);
+        final boolean hasPostParameter = parameters.stream()
+                .anyMatch(ActionParameter::requiresPostRequest);
+
+        // If an InputStream parameter has been provided, use a post request regardless
+        if (usePostMethod || hasPostParameter) {
+            return createPostMethod(serverDetails, params);
+        } else {
+            return createGetMethod(serverDetails, params);
+        }
     }
 
     /**
@@ -119,7 +129,7 @@ public class AciHttpClientImpl implements AciHttpClient {
      * @return A set of encrypted parameters
      * @throws EncryptionCodecException if something went wrong encrypting the parameters
      */
-    private Set<? extends AciParameter> createEncryptedParameters(final AciServerDetails serverDetails, final Set<? extends AciParameter> parameters) throws EncryptionCodecException {
+    private Set<? extends ActionParameter<?>> createEncryptedParameters(final AciServerDetails serverDetails, final Set<? extends ActionParameter<?>> parameters) throws EncryptionCodecException {
         LOGGER.trace("createEncryptedParameters() called...");
 
         // Generate the query String and put it through the codec...
@@ -130,7 +140,7 @@ public class AciHttpClientImpl implements AciHttpClient {
         );
 
         // Create the parameters for an encrypted action...
-        return new AciParameters(
+        return new ActionParameters(
                 new AciParameter(AciConstants.PARAM_ACTION, AciConstants.ACTION_ENCRYPTED),
                 new AciParameter(AciConstants.PARAM_DATA, data)
         );
@@ -144,7 +154,7 @@ public class AciHttpClientImpl implements AciHttpClient {
      * @throws URISyntaxException If there was a problem construction the request URI from the <tt>serverDetails</tt>
      *                            and <tt>parameters</tt>
      */
-    private HttpUriRequest createGetMethod(final AciServerDetails serverDetails, final Set<? extends AciParameter> parameters) throws URISyntaxException {
+    private HttpUriRequest createGetMethod(final AciServerDetails serverDetails, final Set<? extends ActionParameter<?>> parameters) throws URISyntaxException {
         LOGGER.trace("createGetMethod() called...");
 
         // Create the URI to use...
@@ -170,7 +180,7 @@ public class AciHttpClientImpl implements AciHttpClient {
      * @throws URISyntaxException           If there was a problem construction the request URI from the
      *                                      <tt>serverDetails</tt> and <tt>parameters</tt>
      */
-    private HttpUriRequest createPostMethod(final AciServerDetails serverDetails, final Set<? extends AciParameter> parameters) throws URISyntaxException, UnsupportedEncodingException {
+    private HttpUriRequest createPostMethod(final AciServerDetails serverDetails, final Set<? extends ActionParameter<?>> parameters) throws URISyntaxException, UnsupportedEncodingException {
         LOGGER.trace("createPostMethod() called...");
 
         // Create the URI to use...
@@ -184,13 +194,28 @@ public class AciHttpClientImpl implements AciHttpClient {
         // Create the method...
         final HttpPost method = new HttpPost(uri);
 
-        // Convert the parameters into an entity...
-        method.setEntity(
-                new StringEntity(
-                        convertParameters(parameters, serverDetails.getCharsetName()),
-                        serverDetails.getCharsetName()
-                )
-        );
+        final Charset charset = Charset.forName(serverDetails.getCharsetName());
+
+        final boolean requiresMultipart = parameters.stream()
+                .anyMatch(ActionParameter::requiresPostRequest);
+
+        if (requiresMultipart) {
+            final MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
+            multipartEntityBuilder.setCharset(charset);
+
+            parameters.forEach(parameter -> parameter.addToEntity(multipartEntityBuilder, charset));
+
+            // Convert the parameters into an entity...
+            method.setEntity(multipartEntityBuilder.build());
+        }
+        else {
+            method.setEntity(
+                    new StringEntity(
+                            convertParameters(parameters, serverDetails.getCharsetName()),
+                            serverDetails.getCharsetName()
+                    )
+            );
+        }
 
         // Return the method...
         return method;
@@ -203,23 +228,29 @@ public class AciHttpClientImpl implements AciHttpClient {
      * @param charsetName The name of the charset to use when encoding the parameters
      * @return an <tt>String</tt> representing the query string portion of a URI
      */
-    private String convertParameters(final Set<? extends AciParameter> parameters, final String charsetName) {
+    private String convertParameters(final Set<? extends ActionParameter<?>> parameters, final String charsetName) {
         LOGGER.trace("convertParameters() called...");
 
         // Just incase, remove the allowed null entry...
         parameters.remove(null);
 
-        final List<NameValuePair> pairs = new ArrayList<NameValuePair>(parameters.size());
+        final List<NameValuePair> pairs = new ArrayList<>(parameters.size());
 
         LOGGER.debug("Converting {} parameters...", parameters.size());
 
         NameValuePair actionPair = null;
 
-        for (final AciParameter parameter : parameters) {
-            if (AciConstants.PARAM_ACTION.equalsIgnoreCase(parameter.getName())) {
-                actionPair = new BasicNameValuePair(parameter.getName(), parameter.getValue());
-            } else {
-                pairs.add(new BasicNameValuePair(parameter.getName(), parameter.getValue()));
+        for (final ActionParameter<?> parameter : parameters) {
+            final Object value = parameter.getValue();
+
+            if (value instanceof String) {
+                final String stringValue = (String) value;
+
+                if (AciConstants.PARAM_ACTION.equalsIgnoreCase(parameter.getName())) {
+                    actionPair = new BasicNameValuePair(parameter.getName(), stringValue);
+                } else {
+                    pairs.add(new BasicNameValuePair(parameter.getName(), stringValue));
+                }
             }
         }
 
@@ -240,7 +271,8 @@ public class AciHttpClientImpl implements AciHttpClient {
      * @throws AciHttpException         If a protocol exception occurs. Usually protocol exceptions cannot be recovered from
      * @throws IllegalArgumentException if the <tt>httpClient</tt> property is <tt>null</tt> or <tt>parameters</tt> is <tt>null</tt>
      */
-    public AciResponseInputStream executeAction(final AciServerDetails serverDetails, final Set<? extends AciParameter> parameters) throws IOException, AciHttpException {
+    @Override
+    public AciResponseInputStream executeAction(final AciServerDetails serverDetails, final Set<? extends ActionParameter<?>> parameters) throws IOException, AciHttpException {
         LOGGER.trace("executeAction() called...");
 
         Validate.notNull(httpClient, "You must set the HttpClient instance to use before using this class.");

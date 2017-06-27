@@ -1,15 +1,12 @@
-/*
- * Copyright 2006-2015 Hewlett-Packard Development Company, L.P.
- * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License.
- */
-
 package com.autonomy.aci.client.util;
 
 import com.autonomy.aci.client.services.AciConstants;
 import com.autonomy.aci.client.transport.AciParameter;
+import com.autonomy.aci.client.transport.ActionParameter;
+import com.autonomy.aci.client.transport.InputStreamActionParameter;
 import org.apache.commons.lang.Validate;
 
-import java.io.Serializable;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -17,18 +14,11 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * Utility class to make it easier to specify sets of <tt>AciParameter</tt> objects for sending with ACI actions. In the
- * past you had to do something like:
+ * Utility class to make it easier to specify sets of {@link ActionParameter} objects for sending with ACI actions.
+ *
+ * For example:
  * <pre>
- *    Set&lt;AciParameter&gt; parameters = new LinkedHashSet&lt;AciParameter&gt;();
- *    parameters.add(new AciParameter(&quot;action&quot;, &quot;query&quot;));
- *    parameters.add(new AciParameter(&quot;text&quot;, &quot;XPath&quot;));
- *    parameters.add(new AciParameter(&quot;combine&quot;, &quot;simple&quot;));
- *    ...
- * </pre>
- * now you can do:
- * <pre>
- *    AciParameters parameters = new AciParameters();
+ *    ActionParameters parameters = new ActionParameters();
  *    parameters.add(&quot;action&quot;, &quot;query&quot;);
  *    parameters.add(&quot;text&quot;, &quot;XPath&quot;);
  *    parameters.add(&quot;combine&quot;, &quot;simple&quot;);
@@ -36,7 +26,7 @@ import java.util.Set;
  * </pre>
  * or:
  * <pre>
- *    AciParameters parameters = new AciParameters(
+ *    ActionParameters parameters = new ActionParameters(
  *            new AciParameter(&quot;action&quot;, &quot;query&quot;),
  *            new AciParameter(&quot;text&quot;, &quot;XPath&quot;),
  *            new AciParameter(&quot;combine&quot;, &quot;simple&quot;)
@@ -47,49 +37,43 @@ import java.util.Set;
  * the following:
  * <pre>
  *    ...
- *    aciService.executeAction(new AciParameters(&quot;GetStatus&quot;), myProcessor);
+ *    aciService.executeAction(new ActionParameters(&quot;GetStatus&quot;), myProcessor);
  *    ...
  * </pre>
- * @deprecated Prefer {@link ActionParameters} instead
  */
-@Deprecated
-public class AciParameters implements Set<AciParameter>, Serializable {
+public class ActionParameters implements Set<ActionParameter<?>> {
 
-    private static final long serialVersionUID = 660774414514212736L;
-
-    private final Set<AciParameter> parameters = new LinkedHashSet<>();
+    private final Set<ActionParameter<?>> parameters = new LinkedHashSet<>();
 
     /**
      * Default empty constructor...
      */
-    public AciParameters() {
-        super();
-    }
+    public ActionParameters() {}
 
     /**
      * Convenience constructor for those actions that don't normally take any parameters like <tt>GetStatus</tt> or
-     * <tt>GetVersion</tt>. Essentially calls {@link #AciParameters(com.autonomy.aci.client.transport.AciParameter...)}
-     * after creating a new <tt>AciParameter</tt> - <tt>new AciParameter(AciConstants.PARAM_ACTION, action)</tt>
+     * <tt>GetVersion</tt>. Essentially calls {@link #ActionParameters(ActionParameter[])}
+     * after creating a new <tt>ActionParameters</tt> - <tt>new AciParameter(AciConstants.PARAM_ACTION, action)</tt>
      * @param action The value of the action parameter to create this instance with
      */
-    public AciParameters(final String action) {
-        this(new AciParameter(AciConstants.PARAM_ACTION, action));
+    public ActionParameters(final String action) {
+        parameters.add(new AciParameter(AciConstants.PARAM_ACTION, action));
     }
 
     /**
-     * Creates a new instance using the supplied collection of <tt>AciParameter</tt>s...
-     * @param parameters A <tt>Collection</tt> of <tt>AciParameter</tt>s to create this instance with
+     * Creates a new instance using the supplied collection of <tt>ActionParameter</tt>s...
+     * @param parameters A <tt>Collection</tt> of <tt>ActionParameter</tt>s to create this instance with
      */
-    public AciParameters(final Collection<? extends AciParameter> parameters) {
+    public ActionParameters(final Collection<? extends ActionParameter<?>> parameters) {
         // Add all the parameters....
         addAll(parameters);
     }
 
     /**
-     * Creates a new instance using the supplied <tt>AciParameter</tt>s. This constructor is a shorthand way and
+     * Creates a new instance using the supplied <tt>ActionParameter</tt>s. This constructor is a shorthand way and
      * equivalent of doing:
      * <pre>
-     *     new AciParameters(Arrays.asList(
+     *     new ActionParameters(Arrays.asList(
      *           new AciParameter("Action", "Query"),
      *           new AciParameter("Test", "this is some query text"),
      *           ...
@@ -97,79 +81,21 @@ public class AciParameters implements Set<AciParameter>, Serializable {
      * </pre>
      * @param parameters A <tt>Collection</tt> of <tt>AciParameter</tt>s to create this instance with
      */
-    public AciParameters(final AciParameter... parameters) {
+    public ActionParameters(final ActionParameter<?>... parameters) {
         // Add all the parameters....
         addAll(Arrays.asList(parameters));
     }
 
     /**
-     * This is a convenience method to convert a collection of parameters into an <tt>AciParameters</tt> object. The
+     * This is a convenience method to convert a collection of parameters into an <tt>ActionParameters</tt> object. The
      * returned object may or may not be backed by the collection provided.
      * @param parameters The collection of parameters to convert
-     * @return An <tt>AciParameters</tt> object containing all elements of <tt>parameters</tt>
+     * @return An <tt>ActionParameters</tt> object containing all elements of <tt>parameters</tt>
      */
-    public static AciParameters convert(final Collection<? extends AciParameter> parameters) {
-        return (parameters instanceof AciParameters)
-                ? (AciParameters) parameters
-                : new AciParameters(parameters);
-    }
-
-    /**
-     * Returns the hash code value for this set. The hash code of a set is defined to be the sum of the hash codes of
-     * the elements in the set, where the hashcode of a <tt>null</tt> element is defined to be zero. This ensures that
-     * {@code s1.equals(s2)} implies that <code>s1.hashCode()==s2.hashCode()</code> for any two sets <code>s1
-     * </code> and {@code s2}, as required by the general contract of the <tt>Object.hashCode</tt> method.
-     * @return the hash code value for this set.
-     * @see Object#hashCode()
-     * @see Object#equals(Object)
-     * @see Set#equals(Object)
-     */
-    @Override
-    public int hashCode() {
-        return parameters.hashCode();
-    }
-
-    /**
-     * Compares the specified object with this set for equality. Returns <tt>true</tt> if the specified object is also
-     * a set, the two sets have the same size, and every member of the specified set is contained in this set (or
-     * equivalently, every member of this set is contained in the specified set). This definition ensures that the
-     * equals method works properly across different implementations of the set interface.
-     * @param obj Object to be compared for equality with this set.
-     * @return <tt>true</tt> if the specified Object is equal to this set.
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        return parameters.equals(obj);
-    }
-
-    /**
-     * Adds a new parameter to the current set if one of the same names doesn't already exist.
-     * @param name  The name of the parameter
-     * @param value The value of the parameter
-     * @return <tt>true</tt> if the set did not already contain the specified element.
-     * @throws java.lang.IllegalArgumentException if <tt>name</tt> is <tt>null</tt> or blank.
-     */
-    public final boolean add(final String name, final Object value) {
-        // Parameter checking is done by the AciParameter constructor...
-        return add(new AciParameter(name, value));
-    }
-
-    /**
-     * Removes a parameter from the set.
-     * @param name The name of the parameter to remove
-     * @return <tt>true</tt> if the set contained the specified element.
-     */
-    public boolean remove(final String name) {
-        return remove(new AciParameter(name, ""));
-    }
-
-    /**
-     * Returns <tt>true</tt> if this set contains the specified element.
-     * @param object whose presence in this set is to be tested
-     * @return <tt>true</tt> if this set contains the specified element
-     */
-    public boolean contains(final Object object) {
-        return parameters.contains(object);
+    public static ActionParameters convert(final Collection<? extends ActionParameter<?>> parameters) {
+        return (parameters instanceof ActionParameters)
+                ? (ActionParameters) parameters
+                : new ActionParameters(parameters);
     }
 
     /**
@@ -181,10 +107,10 @@ public class AciParameters implements Set<AciParameter>, Serializable {
      * @return The value of the parameter. If the returned value is <tt>null</tt> it is not necessarily an indication
      * that the parameter doesn't exist as <tt>null</tt> is an allowed parameter value.
      */
-    public String get(final String name) {
-        String value = null;
+    public Object get(final String name) {
+        Object value = null;
 
-        for (final AciParameter parameter : this) {
+        for (final ActionParameter<?> parameter : this) {
             if (parameter.getName().equalsIgnoreCase(name)) {
                 value = parameter.getValue();
                 break;
@@ -204,8 +130,8 @@ public class AciParameters implements Set<AciParameter>, Serializable {
      * value.
      * @throws IllegalArgumentException if <tt>name</tt> is <tt>null</tt> or blank.
      */
-    public String put(final String name, final Object value) {
-        final String oldValue = get(name);
+    public Object put(final String name, final Object value) {
+        final Object oldValue = get(name);
         remove(name);
         add(name, value);
         return oldValue;
@@ -218,12 +144,12 @@ public class AciParameters implements Set<AciParameter>, Serializable {
      * @return Previous parameter or <tt>null</tt> if the parameter didn't exist
      * @throws IllegalArgumentException If <tt>parameter</tt> is <tt>null</tt>
      */
-    public AciParameter put(final AciParameter parameter) {
+    public ActionParameter<?> put(final ActionParameter<?> parameter) {
         Validate.notNull(parameter, "The parameter must not be null.");
 
         // Find the existing parameter...
-        AciParameter oldParameter = null;
-        for (final AciParameter param : parameters) {
+        ActionParameter<?> oldParameter = null;
+        for (final ActionParameter<?> param : parameters) {
             if (param.equals(parameter)) {
                 oldParameter = param;
                 break;
@@ -248,7 +174,7 @@ public class AciParameters implements Set<AciParameter>, Serializable {
      * @param parameters The parameters to put into this collection
      * @throws IllegalArgumentException if any of the <tt>parameters</tt> are <tt>null</tt>
      */
-    public void putAll(final Collection<? extends AciParameter> parameters) {
+    public void putAll(final Collection<? extends ActionParameter<?>> parameters) {
         if (parameters != null) {
             parameters.forEach(this::put);
         }
@@ -259,14 +185,141 @@ public class AciParameters implements Set<AciParameter>, Serializable {
      * this collection, they are replaced. Does nothing if <tt>parameters</tt> is <tt>null</tt>.
      * @param parameters The parameters to put into this collection
      * @throws IllegalArgumentException If any of the <tt>parameters</tt> are <tt>null</tt>.
-     * @since 4.1.2
      */
-    public void putAll(final AciParameter... parameters) {
+    public void putAll(final ActionParameter<?>... parameters) {
         if (parameters != null) {
-            for (final AciParameter parameter : parameters) {
+            for (final ActionParameter<?> parameter : parameters) {
                 put(parameter);
             }
         }
+    }
+
+    /**
+     * Adds a new parameter to the current set if one of the same names doesn't already exist.
+     * @param name  The name of the parameter
+     * @param value The value of the parameter
+     * @return <tt>true</tt> if the set did not already contain the specified element.
+     * @throws java.lang.IllegalArgumentException if <tt>name</tt> is <tt>null</tt> or blank.
+     */
+    public final boolean add(final String name, final Object value) {
+        return value instanceof InputStream ? add(new InputStreamActionParameter(name, (InputStream) value)) : add(new AciParameter(name, value));
+    }
+
+    /**
+     * <p>Adds the specified element to this set if it is not already present.  More formally, adds the specified
+     * element <tt>e</tt> to this set if the set contains no element <tt>e2</tt> such that
+     * <tt>(e==null&nbsp;?&nbsp;e2==null&nbsp;:&nbsp;e.equals(e2))</tt>. If this set already contains the element, the
+     * call leaves the set unchanged and returns <tt>false</tt>.  In combination with the restriction on constructors,
+     * this ensures that sets never contain duplicate elements.
+     * @param parameter Element to be added to this set
+     * @return <tt>true</tt> if this set did not already contain the specified element
+     * @throws UnsupportedOperationException If the <tt>add</tt> operation is not supported by this set
+     * @throws NullPointerException          If the specified element is null and this set does not permit null elements
+     * @throws IllegalArgumentException      If some property of the specified element prevents it from being added to
+     *                                       this set
+     */
+    @Override
+    public boolean add(final ActionParameter<?> parameter) {
+        return parameters.add(parameter);
+    }
+
+    /**
+     * Removes the specified element from this set if it is present.  More formally, removes an element <tt>e</tt> such
+     * that <tt>(o==null&nbsp;?&nbsp;e==null&nbsp;:&nbsp;o.equals(e))</tt>, if this set contains such an element.
+     * Returns <tt>true</tt> if this set contained the element (or equivalently, if this set changed as a result of the
+     * call). (This set will not contain the element once the call returns.)
+     * @param o Object to be removed from this set, if present
+     * @return <tt>true</tt> if this set contained the specified element
+     * @throws NullPointerException If the specified element is null and this set does not permit null elements
+     */
+    @Override
+    public boolean remove(final Object o) {
+        return parameters.remove(o);
+    }
+
+    /**
+     * Removes a parameter from the set.
+     * @param name The name of the parameter to remove
+     * @return <tt>true</tt> if the set contained the specified element.
+     */
+    public boolean remove(final String name) {
+        return remove(new AciParameter(name, ""));
+    }
+
+    /**
+     * Returns <tt>true</tt> if this set contains all of the elements of the specified collection.  If the specified
+     * collection is also a set, this method returns <tt>true</tt> if it is a <i>subset</i> of this set.
+     * @param collection collection to be checked for containment in this set
+     * @return <tt>true</tt> if this set contains all of the elements of the specified collection
+     * @throws NullPointerException if the specified collection contains one or more null elements and this set does not
+     *                              permit null elements (optional), or if the specified collection is null
+     * @see #contains(Object)
+     */
+    @Override
+    public boolean containsAll(final Collection<?> collection) {
+        return parameters.containsAll(collection);
+    }
+
+    /**
+     * Adds all of the elements in the specified collection to this set if they're not already present.  If the
+     * specified collection is also a set, the <tt>addAll</tt> operation effectively modifies this set so that its value
+     * is the <i>union</i> of the two sets.  The behavior of this operation is undefined if the specified collection is
+     * modified while the operation is in progress.
+     * @param collection collection containing elements to be added to this set
+     * @return <tt>true</tt> If this set changed as a result of the call
+     * @throws ClassCastException       If the class of an element of the specified collection prevents it from being added to
+     *                                  this set
+     * @throws NullPointerException     If the specified collection contains one or more null elements and this set does not
+     *                                  permit null elements, or if the specified collection is null
+     * @throws IllegalArgumentException If some property of an element of the specified collection prevents it from
+     *                                  being added to this set
+     * @see #add(Object)
+     */
+    @Override
+    public boolean addAll(final Collection<? extends ActionParameter<?>> collection) {
+        return parameters.addAll(collection);
+    }
+
+    /**
+     * Retains only the elements in this set that are contained in the specified collection.  In other words, removes
+     * from this set all of its elements that are not contained in the specified collection.  If the specified
+     * collection is also a set, this operation effectively modifies this set so that its value is the
+     * <i>intersection</i> of the two sets.
+     * @param collection collection containing elements to be retained in this set
+     * @return <tt>true</tt> If this set changed as a result of the call
+     * @throws ClassCastException   if the class of an element of this set is incompatible with the specified collection
+     * @throws NullPointerException if this set contains a null element and the specified collection does not permit
+     *                              null elements (optional), or if the specified collection is null
+     * @see #remove(Object)
+     */
+    @Override
+    public boolean retainAll(final Collection<?> collection) {
+        return parameters.retainAll(collection);
+    }
+
+    /**
+     * Removes from this set all of its elements that are contained in the specified collection.  If the specified
+     * collection is also a set, this operation effectively modifies this set so that its value is the
+     * <i>asymmetric set difference</i> of the two sets.
+     * @param collection collection containing elements to be removed from this set
+     * @return <tt>true</tt> If this set changed as a result of the call
+     * @throws ClassCastException   If the class of an element of this set is incompatible with the specified collection
+     * @throws NullPointerException If this set contains a null element and the specified collection does not permit
+     *                              null elements (optional), or if the specified collection is null
+     * @see #remove(Object)
+     * @see #contains(Object)
+     */
+    @Override
+    public boolean removeAll(final Collection<?> collection) {
+        return parameters.removeAll(collection);
+    }
+
+    /**
+     * Removes all of the elements from this set. The set will be empty after this call returns.
+     */
+    @Override
+    public void clear() {
+        parameters.clear();
     }
 
     /**
@@ -274,6 +327,7 @@ public class AciParameters implements Set<AciParameter>, Serializable {
      * <tt>Integer.MAX_VALUE</tt> elements, returns <tt>Integer.MAX_VALUE</tt>.
      * @return The number of elements in this set (its cardinality)
      */
+    @Override
     public int size() {
         return parameters.size();
     }
@@ -282,8 +336,19 @@ public class AciParameters implements Set<AciParameter>, Serializable {
      * Returns <tt>true</tt> if this set contains no elements.
      * @return <tt>true</tt> if this set contains no elements
      */
+    @Override
     public boolean isEmpty() {
         return parameters.isEmpty();
+    }
+
+    /**
+     * Returns <tt>true</tt> if this set contains the specified element.
+     * @param o whose presence in this set is to be tested
+     * @return <tt>true</tt> if this set contains the specified element
+     */
+    @Override
+    public boolean contains(final Object o) {
+        return parameters.contains(o);
     }
 
     /**
@@ -296,10 +361,11 @@ public class AciParameters implements Set<AciParameter>, Serializable {
     }
 
     /**
-     * Returns an iterator over the <tt>AciParameter</tt>s in this set.
+     * Returns an iterator over the <tt>ActionParameter</tt>s in this set.
      * @return an iterator over the elements in this set
      */
-    public Iterator<AciParameter> iterator() {
+    @Override
+    public Iterator<ActionParameter<?>> iterator() {
         return parameters.iterator();
     }
 
@@ -311,8 +377,9 @@ public class AciParameters implements Set<AciParameter>, Serializable {
      * <p>This method acts as bridge between array-based and collection-based APIs.
      * @return an array containing all the elements in this set
      */
-    public AciParameter[] toArray() {
-        return parameters.toArray(new AciParameter[parameters.size()]);
+    @Override
+    public ActionParameter<?>[] toArray() {
+        return parameters.toArray(new ActionParameter<?>[parameters.size()]);
     }
 
     /**
@@ -340,109 +407,36 @@ public class AciParameters implements Set<AciParameter>, Serializable {
      *                              every element in this set
      * @throws NullPointerException If the specified array is null
      */
+    @Override
     public <T> T[] toArray(final T[] array) {
         return parameters.toArray(array);
     }
 
     /**
-     * <p>Adds the specified element to this set if it is not already present.  More formally, adds the specified
-     * element <tt>e</tt> to this set if the set contains no element <tt>e2</tt> such that
-     * <tt>(e==null&nbsp;?&nbsp;e2==null&nbsp;:&nbsp;e.equals(e2))</tt>. If this set already contains the element, the
-     * call leaves the set unchanged and returns <tt>false</tt>.  In combination with the restriction on constructors,
-     * this ensures that sets never contain duplicate elements.
-     * @param aciParameter Element to be added to this set
-     * @return <tt>true</tt> if this set did not already contain the specified element
-     * @throws UnsupportedOperationException If the <tt>add</tt> operation is not supported by this set
-     * @throws NullPointerException          If the specified element is null and this set does not permit null elements
-     * @throws IllegalArgumentException      If some property of the specified element prevents it from being added to
-     *                                       this set
+     * Compares the specified object with this set for equality. Returns <tt>true</tt> if the specified object is also
+     * a set, the two sets have the same size, and every member of the specified set is contained in this set (or
+     * equivalently, every member of this set is contained in the specified set). This definition ensures that the
+     * equals method works properly across different implementations of the set interface.
+     * @param obj Object to be compared for equality with this set.
+     * @return <tt>true</tt> if the specified Object is equal to this set.
      */
-    public final boolean add(final AciParameter aciParameter) {
-        return parameters.add(aciParameter);
+    @Override
+    public boolean equals(final Object obj) {
+        return parameters.equals(obj);
     }
 
     /**
-     * Removes the specified element from this set if it is present.  More formally, removes an element <tt>e</tt> such
-     * that <tt>(o==null&nbsp;?&nbsp;e==null&nbsp;:&nbsp;o.equals(e))</tt>, if this set contains such an element.
-     * Returns <tt>true</tt> if this set contained the element (or equivalently, if this set changed as a result of the
-     * call). (This set will not contain the element once the call returns.)
-     * @param object Object to be removed from this set, if present
-     * @return <tt>true</tt> if this set contained the specified element
-     * @throws NullPointerException If the specified element is null and this set does not permit null elements
+     * Returns the hash code value for this set. The hash code of a set is defined to be the sum of the hash codes of
+     * the elements in the set, where the hashcode of a <tt>null</tt> element is defined to be zero. This ensures that
+     * {@code s1.equals(s2)} implies that <code>s1.hashCode()==s2.hashCode()</code> for any two sets <code>s1
+     * </code> and {@code s2}, as required by the general contract of the <tt>Object.hashCode</tt> method.
+     * @return the hash code value for this set.
+     * @see Object#hashCode()
+     * @see Object#equals(Object)
+     * @see Set#equals(Object)
      */
-    public boolean remove(final Object object) {
-        return parameters.remove(object);
+    @Override
+    public int hashCode() {
+        return parameters.hashCode();
     }
-
-    /**
-     * Returns <tt>true</tt> if this set contains all of the elements of the specified collection.  If the specified
-     * collection is also a set, this method returns <tt>true</tt> if it is a <i>subset</i> of this set.
-     * @param collection collection to be checked for containment in this set
-     * @return <tt>true</tt> if this set contains all of the elements of the specified collection
-     * @throws NullPointerException if the specified collection contains one or more null elements and this set does not
-     *                              permit null elements (optional), or if the specified collection is null
-     * @see #contains(Object)
-     */
-    public boolean containsAll(final Collection<?> collection) {
-        return parameters.containsAll(collection);
-    }
-
-    /**
-     * Adds all of the elements in the specified collection to this set if they're not already present.  If the
-     * specified collection is also a set, the <tt>addAll</tt> operation effectively modifies this set so that its value
-     * is the <i>union</i> of the two sets.  The behavior of this operation is undefined if the specified collection is
-     * modified while the operation is in progress.
-     * @param collection collection containing elements to be added to this set
-     * @return <tt>true</tt> If this set changed as a result of the call
-     * @throws ClassCastException       If the class of an element of the specified collection prevents it from being added to
-     *                                  this set
-     * @throws NullPointerException     If the specified collection contains one or more null elements and this set does not
-     *                                  permit null elements, or if the specified collection is null
-     * @throws IllegalArgumentException If some property of an element of the specified collection prevents it from
-     *                                  being added to this set
-     * @see #add(Object)
-     */
-    public final boolean addAll(final Collection<? extends AciParameter> collection) {
-        return parameters.addAll(collection);
-    }
-
-    /**
-     * Retains only the elements in this set that are contained in the specified collection.  In other words, removes
-     * from this set all of its elements that are not contained in the specified collection.  If the specified
-     * collection is also a set, this operation effectively modifies this set so that its value is the
-     * <i>intersection</i> of the two sets.
-     * @param collection collection containing elements to be retained in this set
-     * @return <tt>true</tt> If this set changed as a result of the call
-     * @throws ClassCastException   if the class of an element of this set is incompatible with the specified collection
-     * @throws NullPointerException if this set contains a null element and the specified collection does not permit
-     *                              null elements (optional), or if the specified collection is null
-     * @see #remove(Object)
-     */
-    public boolean retainAll(final Collection<?> collection) {
-        return parameters.retainAll(collection);
-    }
-
-    /**
-     * Removes from this set all of its elements that are contained in the specified collection.  If the specified
-     * collection is also a set, this operation effectively modifies this set so that its value is the
-     * <i>asymmetric set difference</i> of the two sets.
-     * @param collection collection containing elements to be removed from this set
-     * @return <tt>true</tt> If this set changed as a result of the call
-     * @throws ClassCastException   If the class of an element of this set is incompatible with the specified collection
-     * @throws NullPointerException If this set contains a null element and the specified collection does not permit
-     *                              null elements (optional), or if the specified collection is null
-     * @see #remove(Object)
-     * @see #contains(Object)
-     */
-    public boolean removeAll(final Collection<?> collection) {
-        return parameters.removeAll(collection);
-    }
-
-    /**
-     * Removes all of the elements from this set. The set will be empty after this call returns.
-     */
-    public void clear() {
-        parameters.clear();
-    }
-
 }

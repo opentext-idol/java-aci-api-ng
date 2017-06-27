@@ -22,22 +22,22 @@ import org.slf4j.LoggerFactory;
  * impossible to do so via an IoC container like Spring. This factory assumes that you'll be running in a multi-threaded
  * environment so creates a {@link DefaultHttpClient} with an instance of {@link PoolingClientConnectionManager} and
  * sets the necessary configuration parameters to the values that have been set via the setter methods.
- * <p/>
+ * <p>
  * Defaults for all the properties that can be configured are:
- * <table border="0" style="margin-left: 2em;">
+ * <table border="0" style="margin-left: 2em;" summary="">
  * <tr><td><tt>maxTotalConnections</tt></td><td>&#160;</td><td>20</td></tr>
- * <tr><td><tt>maxConnectionsPerRoute</tt></tt></td><td>&#160;</td><td>4</tr>
- * <tr><td><tt>connectionTimeout</tt></tt></td><td>&#160;</td><td>7000</tr>
- * <tr><td><tt>linger</tt></tt></td><td>&#160;</td><td>-1</tr>
- * <tr><td><tt>socketBufferSize</tt></tt></td><td>&#160;</td><td>8192</tr>
- * <tr><td><tt>soKeepAlive</tt></tt></td><td>&#160;</td><td>true</tr>
- * <tr><td><tt>soReuseAddr</tt></tt></td><td>&#160;</td><td>true</tr>
- * <tr><td><tt>soTimeout</tt></tt></td><td>&#160;</td><td>10000</tr>
- * <tr><td><tt>staleCheckingEnabled</tt></tt></td><td>&#160;</td><td>false</tr>
- * <tr><td><tt>tcpNoDelay</tt></tt></td><td>&#160;</td><td>true</tr>
- * <tr><td><tt>useCompression</tt></tt></td><td>&#160;</td><td>true</tr>
+ * <tr><td><tt>maxConnectionsPerRoute</tt></td><td>&#160;</td><td>4</tr>
+ * <tr><td><tt>connectionTimeout</tt></td><td>&#160;</td><td>7000</tr>
+ * <tr><td><tt>linger</tt></td><td>&#160;</td><td>-1</tr>
+ * <tr><td><tt>socketBufferSize</tt></td><td>&#160;</td><td>8192</tr>
+ * <tr><td><tt>soKeepAlive</tt></td><td>&#160;</td><td>true</tr>
+ * <tr><td><tt>soReuseAddr</tt></td><td>&#160;</td><td>true</tr>
+ * <tr><td><tt>soTimeout</tt></td><td>&#160;</td><td>10000</tr>
+ * <tr><td><tt>staleCheckingEnabled</tt></td><td>&#160;</td><td>false</tr>
+ * <tr><td><tt>tcpNoDelay</tt></td><td>&#160;</td><td>true</tr>
+ * <tr><td><tt>useCompression</tt></td><td>&#160;</td><td>true</tr>
  * </table>
- * <p/>
+ * <p>
  * If you are using something like Spring's IoC container, you can use this class to configure your
  * {@link com.autonomy.aci.client.services.impl.AciServiceImpl} like so:
  * <pre>

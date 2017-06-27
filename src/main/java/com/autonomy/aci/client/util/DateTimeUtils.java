@@ -39,7 +39,7 @@ public class DateTimeUtils {
     /**
      * Parses a string representing a date, using the pattern <tt>dd MMM yy HH:mm:ss</tt> and the <tt>ENGLISH</tt>
      * locale.
-     * <p/>
+     * <p>
      * A parse is only deemed successful if it parses the whole of the input string. If the parse pattern didn't match, a
      * ParseException is thrown.
      * @param string The date to parse, not null
@@ -53,7 +53,7 @@ public class DateTimeUtils {
 
     /**
      * Parses a string representing a date, using the supplied pattern and the <tt>ENGLISH</tt> locale.
-     * <p/>
+     * <p>
      * A parse is only deemed successful if it parses the whole of the input string. If the parse pattern didn't match, a
      * ParseException is thrown.
      * @param string The date to parse, not null
@@ -68,7 +68,7 @@ public class DateTimeUtils {
 
     /**
      * Parses a string representing a date, using the supplied pattern and locale.
-     * <p/>
+     * <p>
      * A parse is only deemed successful if it parses the whole of the input string. If the parse pattern didn't match, a
      * ParseException is thrown.
      * @param string The date to parse, not null

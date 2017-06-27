@@ -7,14 +7,16 @@ package com.autonomy.aci.client.transport.gss;
 
 import com.autonomy.aci.client.transport.AciHttpException;
 import com.autonomy.aci.client.transport.AciServerDetails;
-import com.autonomy.aci.client.util.AciParameters;
+import com.autonomy.aci.client.util.ActionParameters;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -39,13 +41,13 @@ public class GssAciHttpClientImplTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testExecuteWrongClass() throws IOException, AciHttpException {
-        new GssAciHttpClientImpl(new DefaultHttpClient()).executeAction(new AciServerDetails(), new AciParameters());
+        new GssAciHttpClientImpl(new DefaultHttpClient()).executeAction(new AciServerDetails(), new ActionParameters());
         fail("Should've thrown an IllegalArgumentException...");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testExecuteNoServiceName() throws IOException, AciHttpException {
-        new GssAciHttpClientImpl(new DefaultHttpClient()).executeAction(new GssAciServerDetails(), new AciParameters());
+        new GssAciHttpClientImpl(new DefaultHttpClient()).executeAction(new GssAciServerDetails(), new ActionParameters());
     }
 
 }

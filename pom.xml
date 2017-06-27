@@ -14,12 +14,12 @@
     <parent>
         <groupId>com.hp.autonomy</groupId>
         <artifactId>foss-master-pom</artifactId>
-        <version>1.0.1</version>
+        <version>2.0.0</version>
     </parent>
 
     <groupId>com.hp.autonomy.aci.client</groupId>
     <artifactId>aci-api</artifactId>
-    <version>5.0.1</version>
+    <version>6.0.0</version>
 
     <name>HP Autonomy ACI API NG</name>
     <description>Java client for communicating with HP ACI servers.</description>
@@ -51,15 +51,20 @@
             <organizationUrl>http://www.hpe.com</organizationUrl>
         </developer>
         <developer>
+            <name>Will Byrne</name>
+            <email>will.byrne@hpe.com</email>
+            <organization>Hewlett Packard Enterprise</organization>
+            <organizationUrl>http://www.hpe.com</organizationUrl>
+        </developer>
+        <developer>
             <name>Bob Arnott</name>
             <url>https://github.com/fatboab</url>
         </developer>
     </developers>
 
     <properties>
-        <java.version>1.5</java.version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <httpcomponents.version>4.2.6</httpcomponents.version>
+        <httpcomponents.version>4.4.1</httpcomponents.version>
         <slf4j.version>1.7.9</slf4j.version>
     </properties>
 
@@ -116,6 +121,17 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
+            <version>${httpcomponents.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
             <version>${httpcomponents.version}</version>
             <exclusions>
                 <exclusion>

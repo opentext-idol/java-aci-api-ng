@@ -33,7 +33,7 @@ public class IOUtils {
 
     /**
      * Copy bytes from an <tt>InputStream</tt> to an <tt>OutputStream</tt>.
-     * <p/>
+     * <p>
      * This method buffers the input internally, so there is no need to use a <tt>BufferedInputStream</tt>.
      * @param input  The <tt>InputStream</tt> to read from
      * @param output The <tt>OutputStream</tt> to write to

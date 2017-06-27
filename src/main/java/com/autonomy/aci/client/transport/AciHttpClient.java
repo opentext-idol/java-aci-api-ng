@@ -22,6 +22,6 @@ public interface AciHttpClient {
      * @throws IOException      If an I/O (transport) error occurs. Some transport exceptions can be recovered from.
      * @throws AciHttpException If a protocol exception occurs. Usually protocol exceptions cannot be recovered from.
      */
-    AciResponseInputStream executeAction(AciServerDetails serverDetails, Set<? extends AciParameter> parameters) throws IOException, AciHttpException;
+    AciResponseInputStream executeAction(AciServerDetails serverDetails, Set<? extends ActionParameter<?>> parameters) throws IOException, AciHttpException;
 
 }

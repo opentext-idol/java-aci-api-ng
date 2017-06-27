@@ -8,8 +8,12 @@ package com.autonomy.aci.client.transport;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.StringBody;
 
 import java.io.Serializable;
+import java.nio.charset.Charset;
 import java.util.Locale;
 
 /**
@@ -17,7 +21,7 @@ import java.util.Locale;
  * automatically be encoded by the implementation of {@code AciHttpClient}, so you only need to encode values where
  * double encoding is required, for example {@code MatchReference} parameters etc.
  */
-public class AciParameter implements Serializable {
+public class AciParameter implements Serializable, ActionParameter<String> {
 
     private static final long serialVersionUID = -5984519978673149176L;
 
@@ -129,6 +133,16 @@ public class AciParameter implements Serializable {
      */
     public String getValue() {
         return this.value;
+    }
+
+    @Override
+    public void addToEntity(final MultipartEntityBuilder builder, final Charset charset) {
+        builder.addPart(name, new StringBody(value, ContentType.create("text/plain", charset)));
+    }
+
+    @Override
+    public boolean requiresPostRequest() {
+        return false;
     }
 
     /**

@@ -11,20 +11,12 @@ import com.autonomy.aci.client.services.ProcessorException;
 import com.autonomy.aci.client.services.impl.AbstractStAXProcessor;
 import com.autonomy.aci.client.services.impl.ErrorProcessor;
 import com.autonomy.aci.client.transport.AciHttpException;
-import com.autonomy.aci.client.transport.AciParameter;
 import com.autonomy.aci.client.transport.AciResponseInputStream;
 import com.autonomy.aci.client.transport.AciServerDetails;
+import com.autonomy.aci.client.transport.ActionParameter;
 import com.autonomy.aci.client.transport.impl.AciHttpClientImpl;
-import com.autonomy.aci.client.util.AciParameters;
+import com.autonomy.aci.client.util.ActionParameters;
 import com.autonomy.aci.client.util.IOUtils;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Set;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.events.XMLEvent;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
@@ -36,6 +28,13 @@ import org.ietf.jgss.GSSName;
 import org.ietf.jgss.Oid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.events.XMLEvent;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Set;
 
 /**
  * Implementation of the <tt>AciHttpClient</tt> interface for use with ACI servers that are secured via GSS-API. It
@@ -88,7 +87,7 @@ public class GssAciHttpClientImpl extends AciHttpClientImpl {
                     LOGGER.debug("Sending GSS action to the ACI server for context token...");
 
                     // Build the parameter set...
-                    final AciParameters parameters = new AciParameters();
+                    final ActionParameters parameters = new ActionParameters();
                     parameters.add(AciConstants.PARAM_ACTION, "GSS");
                     parameters.add("gssServiceName", new String(Base64.encodeBase64(token), "UTF-8"));
 
@@ -137,7 +136,7 @@ public class GssAciHttpClientImpl extends AciHttpClientImpl {
      *                                                            <tt>GssAciServerDetails</tt> or there is no <tt>serviceName</tt> set in those details.
      */
     @Override
-    public AciResponseInputStream executeAction(final AciServerDetails serverDetails, final Set<? extends AciParameter> parameters) throws IOException, AciHttpException {
+    public AciResponseInputStream executeAction(final AciServerDetails serverDetails, final Set<? extends ActionParameter<?>> parameters) throws IOException, AciHttpException {
         LOGGER.trace("executeAction() called...");
 
         // Validate that the server details are of the right type...

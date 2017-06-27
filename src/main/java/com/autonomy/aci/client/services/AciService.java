@@ -5,8 +5,8 @@
 
 package com.autonomy.aci.client.services;
 
-import com.autonomy.aci.client.transport.AciParameter;
 import com.autonomy.aci.client.transport.AciServerDetails;
+import com.autonomy.aci.client.transport.ActionParameter;
 
 import java.util.Set;
 
@@ -25,7 +25,7 @@ public interface AciService {
      * @throws AciServiceException If an error occurred during the communication with the ACI Server, processing the
      *                             response or if the response contained an error
      */
-    <T> T executeAction(Set<? extends AciParameter> parameters, Processor<T> processor);
+    <T> T executeAction(Set<? extends ActionParameter<?>> parameters, Processor<T> processor);
 
     /**
      * Executes an ACI action and processes the response with the supplied <tt>Processor</tt>.
@@ -38,6 +38,6 @@ public interface AciService {
      * @throws AciServiceException If an error occurred during the communication with
      *                             the ACI Server, processing the response or if the response contained an error
      */
-    <T> T executeAction(AciServerDetails serverDetails, Set<? extends AciParameter> parameters, Processor<T> processor);
+    <T> T executeAction(AciServerDetails serverDetails, Set<? extends ActionParameter<?>> parameters, Processor<T> processor);
 
 }

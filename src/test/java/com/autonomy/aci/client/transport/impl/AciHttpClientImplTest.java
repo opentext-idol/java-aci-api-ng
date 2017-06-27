@@ -5,8 +5,8 @@
 
 package com.autonomy.aci.client.transport.impl;
 
-import com.autonomy.aci.client.TestEncryptionCodec;
 import com.autonomy.aci.client.ReflectionTestUtils;
+import com.autonomy.aci.client.TestEncryptionCodec;
 import com.autonomy.aci.client.services.AciConstants;
 import com.autonomy.aci.client.transport.AciHttpException;
 import com.autonomy.aci.client.transport.AciParameter;
@@ -14,9 +14,8 @@ import com.autonomy.aci.client.transport.AciResponseInputStream;
 import com.autonomy.aci.client.transport.AciServerDetails;
 import com.autonomy.aci.client.transport.EncryptionCodec;
 import com.autonomy.aci.client.transport.EncryptionCodecException;
-import com.autonomy.aci.client.util.AciParameters;
+import com.autonomy.aci.client.util.ActionParameters;
 import com.autonomy.aci.client.util.EncryptionCodecUtils;
-import com.autonomy.aci.client.util.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -41,12 +40,19 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.sameInstance;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * JUnit test class for the <tt>com.autonomy.aci.client.transport.impl.AciHttpClientImpl</tt> class.
@@ -220,7 +226,7 @@ public class AciHttpClientImplTest {
         final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "convertParameters", Set.class, String.class);
 
         // Here's the parameter set...
-        final AciParameters parameters = new AciParameters(
+        final ActionParameters parameters = new ActionParameters(
                 new AciParameter("Text", "This is some text..."),
                 new AciParameter("MaxResults", true),
                 new AciParameter("Print", "All")
@@ -279,7 +285,7 @@ public class AciHttpClientImplTest {
         // The response should be a HttpPost, so cast it and get the entity that conbtains the query string...
         final HttpEntity entity = ((HttpPost) request).getEntity();
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        IOUtils.getInstance().copy(entity.getContent(), baos);
+        entity.writeTo(baos);
 
         // Check the request body...
         assertThat("Incorrect query string", baos.toString("UTF-8"), is(equalTo("Action=query&Text=This+is+some+text...")));
@@ -341,7 +347,7 @@ public class AciHttpClientImplTest {
         assertThat("Incorrect HTTP method", request.getMethod(), is(equalTo("POST")));
         HttpEntity entity = ((HttpPost) request).getEntity();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        IOUtils.getInstance().copy(entity.getContent(), baos);
+        entity.writeTo(baos);
         assertThat("Incorrect query string", baos.toString("UTF-8"), is(equalTo("Action=query&Text=This+is+some+text...")));
 
         // Set an encryption codec...
@@ -350,7 +356,7 @@ public class AciHttpClientImplTest {
         assertThat("Incorrect HTTP method", request.getMethod(), is(equalTo("POST")));
         entity = ((HttpPost) request).getEntity();
         baos = new ByteArrayOutputStream();
-        IOUtils.getInstance().copy(entity.getContent(), baos);
+        entity.writeTo(baos);
         assertThat("Incorrect query string", baos.toString("UTF-8"), startsWith("Action=Encrypted&Data="));
 
         // Get rid of the POST, but keep the encryption codec...
@@ -395,7 +401,7 @@ public class AciHttpClientImplTest {
             // Execute...
             aciHttpClient.executeAction(
                     new AciServerDetails("localhost", 9000),
-                    new AciParameters(
+                    new ActionParameters(
                             new AciParameter(AciConstants.PARAM_ACTION, "query"),
                             new AciParameter("Text", "This is some text...")
                     )
@@ -411,7 +417,7 @@ public class AciHttpClientImplTest {
             // Execute...
             aciHttpClient.executeAction(
                     new AciServerDetails("localhost", 9000),
-                    new AciParameters(
+                    new ActionParameters(
                             new AciParameter(AciConstants.PARAM_ACTION, "query"),
                             new AciParameter("Text", "This is some text...")
                     )
@@ -433,7 +439,7 @@ public class AciHttpClientImplTest {
         // Execute...
         aciHttpClient.executeAction(
                 new AciServerDetails("localhost", 9000),
-                new AciParameters(
+                new ActionParameters(
                         new AciParameter(AciConstants.PARAM_ACTION, "query"),
                         new AciParameter("Text", "This is some text...")
                 )
@@ -453,7 +459,7 @@ public class AciHttpClientImplTest {
         // Execute...
         aciHttpClient.executeAction(
                 new AciServerDetails("localhost", 9000),
-                new AciParameters(
+                new ActionParameters(
                         new AciParameter(AciConstants.PARAM_ACTION, "query"),
                         new AciParameter("Text", "This is some text...")
                 )
@@ -477,7 +483,7 @@ public class AciHttpClientImplTest {
         // Execute...
         aciHttpClient.executeAction(
                 aciServerDetails,
-                new AciParameters(
+                new ActionParameters(
                         new AciParameter(AciConstants.PARAM_ACTION, "query"),
                         new AciParameter("Text", "This is some text...")
                 )
@@ -490,7 +496,7 @@ public class AciHttpClientImplTest {
         // Execute...
         new AciHttpClientImpl(mock(HttpClient.class)).executeAction(
                 new AciServerDetails("localh%weost", 9000),
-                new AciParameters(
+                new ActionParameters(
                         new AciParameter(AciConstants.PARAM_ACTION, "query"),
                         new AciParameter("Text", "This should cause an exception...")
                 )
@@ -518,7 +524,7 @@ public class AciHttpClientImplTest {
         // Execute...
         final AciResponseInputStream response = new AciHttpClientImpl(mockHttpClient).executeAction(
                 new AciServerDetails("localhost", 9000),
-                new AciParameters(
+                new ActionParameters(
                         new AciParameter(AciConstants.PARAM_ACTION, "query"),
                         new AciParameter("Text", "This is some text...")
                 )
@@ -553,7 +559,7 @@ public class AciHttpClientImplTest {
         // Execute...
         final AciResponseInputStream response = new AciHttpClientImpl(mockHttpClient).executeAction(
                 aciServerDetails,
-                new AciParameters(
+                new ActionParameters(
                         new AciParameter(AciConstants.PARAM_ACTION, "query"),
                         new AciParameter("Text", "This is some text...")
                 )

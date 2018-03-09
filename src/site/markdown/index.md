@@ -53,6 +53,6 @@ branch - the master branch is for stable code only.
 Yes.
 
 ## License
-Copyright 2006-2015 Hewlett-Packard Development Company, L.P.
+Copyright 2006-2018 Micro Focus International plc.
 
 Licensed under the MIT License (the "License"); you may not use this project except in compliance with the License.

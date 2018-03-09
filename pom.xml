@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  ~ Copyright 2006-2015 Hewlett-Packard Development Company, L.P.
+  ~ Copyright 2006-2018 Micro Focus International plc.
   ~ Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License.
   -->
 
@@ -19,17 +19,17 @@
 
     <groupId>com.hp.autonomy.aci.client</groupId>
     <artifactId>aci-api</artifactId>
-    <version>6.1.0-SNAPSHOT</version>
+    <version>12.0.0-SNAPSHOT</version>
 
-    <name>HP Autonomy ACI API NG</name>
+    <name>Micro Focus Autonomy ACI API NG</name>
     <description>Java client for communicating with HP ACI servers.</description>
-    <url>https://github.com/hpautonomy/java-aci-api-ng</url>
+    <url>https://github.com/hpe-idol/java-aci-api-ng</url>
     <inceptionYear>2006</inceptionYear>
 
     <scm>
-        <connection>scm:git:git@github.com:hpautonomy/java-aci-api-ng.git</connection>
-        <developerConnection>scm:git:git@github.com:hpautonomy/java-aci-api-ng.git</developerConnection>
-        <url>git@github.com:hpautonomy/java-aci-api-ng.git</url>
+        <connection>scm:git:git@github.com:hpe-idol/java-aci-api-ng.git</connection>
+        <developerConnection>scm:git:git@github.com:hpe-idol/java-aci-api-ng.git</developerConnection>
+        <url>git@github.com:hpe-idol/java-aci-api-ng.git</url>
     </scm>
 
     <issueManagement>
@@ -39,22 +39,22 @@
 
     <developers>
         <developer>
+            <name>Tung Jin Chew</name>
+            <email>tung-jin.chew@microfocus.com</email>
+            <organization>Micro Focus</organization>
+            <organizationUrl>https://www.microfocus.com</organizationUrl>
+        </developer>
+        <developer>
             <name>Matthew Gordon</name>
-            <email>matthew.gordon2@hpe.com</email>
-            <organization>Hewlett Packard Enterprise</organization>
-            <organizationUrl>http://www.hp.com</organizationUrl>
+            <url>https://github.com/matthew-gordon-hp</url>
         </developer>
         <developer>
             <name>Alex Scown</name>
-            <email>alex.scown@hpe.com</email>
-            <organization>Hewlett Packard Enterprise</organization>
-            <organizationUrl>http://www.hpe.com</organizationUrl>
+            <url>https://github.com/alex-scown-hpe</url>
         </developer>
         <developer>
             <name>Will Byrne</name>
-            <email>will.byrne@hpe.com</email>
-            <organization>Hewlett Packard Enterprise</organization>
-            <organizationUrl>http://www.hpe.com</organizationUrl>
+            <url>https://github.com/will-byrne</url>
         </developer>
         <developer>
             <name>Bob Arnott</name>

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2006-2015 Hewlett-Packard Development Company, L.P.
+  ~ Copyright 2006-2018 Micro Focus International plc.
   ~ Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License.
   -->
 
@@ -7,6 +7,8 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
     <body>
+        <release version="12.0.0" date="2017-04-27" description="Align release version with IDOL">
+        </release>
         <release version="6.0.0" date="2017-06-27" description="InputStream parameters">
             <action date="2017-06-27" dev="Alex Scown" type="add">
                 Add support for InputStream parameters

@@ -11,21 +11,25 @@ fi
 if [[ ${TRAVIS_BRANCH} == 'master' ]]
 then
   echo "Building Maven Site and deploying to GitHub pages"
-  git config credential.helper "store --file=.git/credentials"
-  echo "https://${GITHUB_TOKEN}:@github.com" > .git/credentials
   mvn site
   # mvn site used to do this, but now API rate limiting makes it a non starter
   cd target/site
   git config --global user.email "Travis CI"
-  git config --global user.name "matthew-gordon-hp@users.noreply.github.com"
+  git config --global user.name "tung-jin-chew-hp@users.noreply.github.com"
   echo "Creating repo"
   git init
   echo "Adding remote"
-  git remote add origin "https://${GITHUB_TOKEN}@github.com/${TRAVIS_REPO_SLUG}"
+  git remote add origin "git@github.com:${TRAVIS_REPO_SLUG}"
   echo "Adding all the files"
   git add .
   echo "Committing"
   git commit -m "Update GitHub Pages"
+  echo "Extracting Keys"
+  mkdir -p .ssh
+  echo ${GPG_KEY} > tmp.txt && gpg --batch --passphrase-fd 3 3<tmp.txt --output .ssh/deploy-key --decrypt ../../deploy-key.gpg
+  chmod go-rw -R .ssh
+  echo 'ssh -i '${PWD}'/.ssh/deploy-key "$@"' > git-ssh-wrapper
+  chmod +x git-ssh-wrapper
   echo "Pushing"
-  git push --force origin master:gh-pages > /dev/null 2>&1
+  GIT_SSH="${PWD}/git-ssh-wrapper" git push --force origin master:gh-pages
 fi

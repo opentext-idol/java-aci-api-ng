@@ -1,0 +1,8 @@
+com.autonomy.aci.client
+com.autonomy.aci.client.mock
+com.autonomy.aci.client.services
+com.autonomy.aci.client.services.impl
+com.autonomy.aci.client.transport
+com.autonomy.aci.client.transport.gss
+com.autonomy.aci.client.transport.impl
+com.autonomy.aci.client.util

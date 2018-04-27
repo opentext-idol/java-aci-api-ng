@@ -1,6 +1,6 @@
 # java-aci-api-ng
 
-A Java API for communicating with Hewlett Packard Enterprise ACI servers.
+A Java API for communicating with Micro Focus ACI servers.
 
 [![Build Status](https://travis-ci.org/hpe-idol/java-aci-api-ng.svg?branch=master)](https://travis-ci.org/hpe-idol/java-aci-api-ng)
 
@@ -15,7 +15,7 @@ java-aci-api-ng is available from the central Maven repository.
     <dependency>
         <groupId>com.hp.autonomy.aci.client</groupId>
         <artifactId>aci-api</artifactId>
-        <version>6.0.0</version>
+        <version>12.0.0</version>
     </dependency>
 
 For more documentation, see the project homepage [here](http://hpe-idol.github.io/java-aci-api-ng).

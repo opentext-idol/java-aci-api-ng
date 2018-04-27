@@ -5,9 +5,9 @@ A Java API for communicating with Hewlett Packard Enterprise ACI servers.
 [![Build Status](https://travis-ci.org/hpe-idol/java-aci-api-ng.svg?branch=master)](https://travis-ci.org/hpe-idol/java-aci-api-ng)
 
 ## About
-The HPE Content Infrastructure (ACI) is a protocol for communicating with HPE servers using XML over HTTP.
+The Micro Focus Content Infrastructure (ACI) is a protocol for communicating with Micro Focus servers using XML over HTTP.
 This Java API provides an interface for constructing and executing ACI requests and for consuming ACI responses. Previous
-versions were available as jar files from HPE customer support.
+versions were available as jar files from Micro Focus customer support.
 
 ## Usage
 java-aci-api-ng is available from the central Maven repository.
@@ -22,7 +22,7 @@ For more documentation, see the project homepage [here](http://hpe-idol.github.i
 
 ## Migration to FOSS Version
 Previous versions of this library included a taglib for use in JSPs and support for legacy OEM encryption. Builds with
-these features are available from HPE customer support.
+these features are available from Micro Focus customer support.
 
 ## Contributing
 We welcome pull requests. These must be licensed under the MIT license. Please submit pull requests to the develop
@@ -34,5 +34,6 @@ Yes.
 ## License
 Copyright 2006-2015 Hewlett-Packard Development Company, L.P.
 Copyright 2015-2016 Hewlett Packard Enterprise Development LP
+Copyright 2017-2018 Micro Focus International plc.
 
 Licensed under the MIT License (the "License"); you may not use this project except in compliance with the License.

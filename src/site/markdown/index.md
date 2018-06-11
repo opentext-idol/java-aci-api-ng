@@ -38,7 +38,7 @@ document which can then be inspected either directly or using XPath.
     XPath xpath = XPathFactory.newInstance().newXPath();
     Number totalResults = (Number) xpath.evaluate("/autnresponse/responsedata/autn:numhits", response, XPathConstants.NUMBER); 
 
-Preferably, the [ACI Annotations Processor Factory](http://hpe-idol.github.io/java-aci-annotations-processor) can be used to
+Preferably, the [ACI Annotations Processor Factory](http://microfocus-idol.github.io/java-aci-annotations-processor) can be used to
 easily convert the response to an instance of a Java class defined by you.
 
 ## Migration to FOSS Version

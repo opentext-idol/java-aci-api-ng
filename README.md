@@ -2,7 +2,7 @@
 
 A Java API for communicating with Micro Focus ACI servers.
 
-[![Build Status](https://travis-ci.org/hpe-idol/java-aci-api-ng.svg?branch=master)](https://travis-ci.org/hpe-idol/java-aci-api-ng)
+[![Build Status](https://travis-ci.org/microfocus-idol/java-aci-api-ng.svg?branch=master)](https://travis-ci.org/microfocus-idol/java-aci-api-ng)
 
 ## About
 The Micro Focus Content Infrastructure (ACI) is a protocol for communicating with Micro Focus servers using XML over HTTP.
@@ -19,7 +19,7 @@ java-aci-api-ng is available from the central Maven repository.
         <version>12.1.0-SNAPSHOT</version>
     </dependency>
 
-For more documentation, see the project homepage [here](http://hpe-idol.github.io/java-aci-api-ng).
+For more documentation, see the project homepage [here](http://microfocus-idol.github.io/java-aci-api-ng).
 
 ## Migration to FOSS Version
 Previous versions of this library included a taglib for use in JSPs and support for legacy OEM encryption. Builds with

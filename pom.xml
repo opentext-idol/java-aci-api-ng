@@ -23,18 +23,18 @@
 
     <name>Micro Focus ACI API NG</name>
     <description>Java client for communicating with IDOL ACI servers.</description>
-    <url>https://github.com/hpe-idol/java-aci-api-ng</url>
+    <url>https://github.com/microfocus-idol/java-aci-api-ng</url>
     <inceptionYear>2006</inceptionYear>
 
     <scm>
-        <connection>scm:git:git@github.com:hpe-idol/java-aci-api-ng.git</connection>
-        <developerConnection>scm:git:git@github.com:hpe-idol/java-aci-api-ng.git</developerConnection>
-        <url>git@github.com:hpe-idol/java-aci-api-ng.git</url>
+        <connection>scm:git:git@github.com:microfocus-idol/java-aci-api-ng.git</connection>
+        <developerConnection>scm:git:git@github.com:microfocus-idol/java-aci-api-ng.git</developerConnection>
+        <url>git@github.com:microfocus-idol/java-aci-api-ng.git</url>
     </scm>
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/hpe-idol/java-aci-api-ng/issues</url>
+        <url>https://github.com/microfocus-idol/java-aci-api-ng/issues</url>
     </issueManagement>
 
     <developers>

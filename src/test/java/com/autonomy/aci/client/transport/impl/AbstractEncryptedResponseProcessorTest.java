@@ -84,7 +84,7 @@ public class AbstractEncryptedResponseProcessorTest {
         String tmpl = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><!DOCTYPE foo [<!ELEMENT foo ANY ><!ENTITY xxe SYSTEM \"file://%s\" >]><foo>&xxe;</foo>";
         String xml = String.format(tmpl, osfile);
         String content = processor.process(new ByteArrayInputStream(xml.getBytes(Charset.forName("UTF-8"))));
-        fail("Should have throws a ProcessException. Read: " + content);
+        fail("Should have thrown a ProcessorException. Read: " + content);
     }
 
     private class AbstractEncryptedResponseProcessorImpl extends AbstractEncryptedResponseProcessor<Boolean> {

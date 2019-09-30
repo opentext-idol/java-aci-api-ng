@@ -8,17 +8,20 @@ package com.autonomy.aci.client.transport.impl;
 import com.autonomy.aci.client.ReflectionTestUtils;
 import com.autonomy.aci.client.TestEncryptionCodec;
 import com.autonomy.aci.client.services.ProcessorException;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
@@ -29,6 +32,9 @@ import static org.mockito.Mockito.*;
  * testing the error cases.
  */
 public class AbstractEncryptedResponseProcessorTest {
+
+    @Rule
+    public final TemporaryFolder tempDirs = new TemporaryFolder();
 
     @Test(expected = ProcessorException.class)
     @SuppressWarnings("unchecked")
@@ -76,14 +82,13 @@ public class AbstractEncryptedResponseProcessorTest {
     }
 
     @Test(expected = ProcessorException.class)
-    public void testXMLStreamReaderErrorsOnXXE()
-    {
+    public void testXMLStreamReaderErrorsOnXXE() throws IOException {
         final XXEResponseProcessorImpl processor = new XXEResponseProcessorImpl();
 
-        String osfile = (System.getProperty("os.name")).contains("Windows") ? "/c:/windows/win.ini" : "/etc/passwd";
-        String tmpl = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><!DOCTYPE foo [<!ELEMENT foo ANY ><!ENTITY xxe SYSTEM \"file://%s\" >]><foo>&xxe;</foo>";
-        String xml = String.format(tmpl, osfile);
-        String content = processor.process(new ByteArrayInputStream(xml.getBytes(Charset.forName("UTF-8"))));
+        String osfile = tempDirs.newFile().toURI().toString();
+        String tmpl = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><!DOCTYPE foo [<!ELEMENT foo ANY ><!ENTITY xxe SYSTEM \"%s\" >]><foo>&xxe;</foo>";
+        String xml = String.format(tmpl, StringEscapeUtils.escapeXml(osfile));
+        String content = processor.process(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
         fail("Should have thrown a ProcessorException. Read: " + content);
     }
 
@@ -105,7 +110,7 @@ public class AbstractEncryptedResponseProcessorTest {
      *  enough into the document to encounter an external entity which will result in the
      *  underlying parser throwing an exception.
      */
-    private class XXEResponseProcessorImpl extends AbstractEncryptedResponseProcessor<String> {
+    private static class XXEResponseProcessorImpl extends AbstractEncryptedResponseProcessor<String> {
 
         public XXEResponseProcessorImpl() {
             super(new TestEncryptionCodec(), "UTF-8");

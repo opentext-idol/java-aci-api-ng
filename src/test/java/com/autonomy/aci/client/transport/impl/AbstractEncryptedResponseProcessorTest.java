@@ -5,16 +5,23 @@
 
 package com.autonomy.aci.client.transport.impl;
 
-import com.autonomy.aci.client.TestEncryptionCodec;
 import com.autonomy.aci.client.ReflectionTestUtils;
+import com.autonomy.aci.client.TestEncryptionCodec;
 import com.autonomy.aci.client.services.ProcessorException;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.events.XMLEvent;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
@@ -25,6 +32,9 @@ import static org.mockito.Mockito.*;
  * testing the error cases.
  */
 public class AbstractEncryptedResponseProcessorTest {
+
+    @Rule
+    public final TemporaryFolder tempDirs = new TemporaryFolder();
 
     @Test(expected = ProcessorException.class)
     @SuppressWarnings("unchecked")
@@ -71,6 +81,17 @@ public class AbstractEncryptedResponseProcessorTest {
         }
     }
 
+    @Test(expected = ProcessorException.class)
+    public void testXMLStreamReaderErrorsOnXXE() throws IOException {
+        final XXEResponseProcessorImpl processor = new XXEResponseProcessorImpl();
+
+        String osfile = tempDirs.newFile().toURI().toString();
+        String tmpl = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><!DOCTYPE foo [<!ELEMENT foo ANY ><!ENTITY xxe SYSTEM \"%s\" >]><foo>&xxe;</foo>";
+        String xml = String.format(tmpl, StringEscapeUtils.escapeXml(osfile));
+        String content = processor.process(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
+        fail("Should have thrown a ProcessorException. Read: " + content);
+    }
+
     private class AbstractEncryptedResponseProcessorImpl extends AbstractEncryptedResponseProcessor<Boolean> {
 
         public AbstractEncryptedResponseProcessorImpl() {
@@ -84,4 +105,28 @@ public class AbstractEncryptedResponseProcessorTest {
 
     }
 
+    /**
+     * Implementation of a response processor to test secure XML parsing. It must parse far
+     *  enough into the document to encounter an external entity which will result in the
+     *  underlying parser throwing an exception.
+     */
+    private static class XXEResponseProcessorImpl extends AbstractEncryptedResponseProcessor<String> {
+
+        public XXEResponseProcessorImpl() {
+            super(new TestEncryptionCodec(), "UTF-8");
+        }
+
+        @Override
+        String process(final XMLStreamReader xmlStreamReader) throws XMLStreamException {
+            StringBuilder bldr = new StringBuilder();
+            while(xmlStreamReader.hasNext()) {
+                int eventType = xmlStreamReader.next();
+                if (eventType == XMLEvent.START_ELEMENT && xmlStreamReader.getLocalName().equals("foo")) {
+                    bldr.append(xmlStreamReader.getElementText());
+                }
+            }
+            return bldr.toString();
+        }
+
+    }
 }

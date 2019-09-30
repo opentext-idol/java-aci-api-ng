@@ -34,6 +34,8 @@ abstract class AbstractEncryptedResponseProcessor<T> {
         xmlInputFactory = XMLInputFactory.newInstance();
         xmlInputFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, false);
         xmlInputFactory.setProperty(XMLInputFactory.IS_VALIDATING, false);
+        xmlInputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+        xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
     }
 
     public T process(final InputStream aciResponse) {

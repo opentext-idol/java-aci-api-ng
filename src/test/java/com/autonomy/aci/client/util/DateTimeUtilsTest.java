@@ -8,6 +8,7 @@ package com.autonomy.aci.client.util;
 import org.junit.Test;
 
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -20,7 +21,10 @@ public class DateTimeUtilsTest {
 
     private final String dateString = "12 Mar 09 16:48:27";
 
-    private final Date dateDate = new Date(1236876507000L);
+    private final Date dateDate = new Calendar.Builder()
+            .setDate(2009, Calendar.MARCH, 12)
+            .setTimeOfDay(16, 48, 27, 0)
+            .build().getTime();
 
     @Test
     public void testParseDate() throws ParseException {

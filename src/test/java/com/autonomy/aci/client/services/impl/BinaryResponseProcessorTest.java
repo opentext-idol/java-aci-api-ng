@@ -14,6 +14,7 @@ import org.apache.http.HttpVersion;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHttpResponse;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -42,7 +43,7 @@ public class BinaryResponseProcessorTest {
         processor = new BinaryResponseProcessor();
     }
 
-    @Test(expected = AciErrorException.class)
+    @Test
     public void testErrorResponse() throws IOException, ProcessorException, AciErrorException {
         // Create the "response" and give it a content type...
         final InputStreamEntity inputStreamEntity = new InputStreamEntity(getClass().getResourceAsStream("/AciException-1.xml"), -1);
@@ -56,11 +57,17 @@ public class BinaryResponseProcessorTest {
         final AciResponseInputStream stream = new AciResponseInputStreamImpl(response);
 
         // Process...
-        processor.process(stream);
+        try {
+            processor.process(stream);
+        } catch (final AciErrorException e) {
+            Assert.assertEquals("Should have correct error ID",
+                "AutonomyIDOLServerWOBBLE1", e.getErrorId());
+            return;
+        }
         fail("Should have thrown a AciErrorException.");
     }
 
-    @Test(expected = AciErrorException.class)
+    @Test
     public void testXmlResponse() throws IOException, ProcessorException, AciErrorException {
         // Create the "response" and give it a content type...
         final InputStreamEntity inputStreamEntity = new InputStreamEntity(getClass().getResourceAsStream("/GetVersion.xml"), -1);
@@ -74,7 +81,12 @@ public class BinaryResponseProcessorTest {
         final AciResponseInputStream stream = new AciResponseInputStreamImpl(response);
 
         // Process...
-        processor.process(stream);
+        try {
+            processor.process(stream);
+        } catch (final AciErrorException e) {
+            Assert.assertNotNull("Should have an error message", e.getMessage());
+            return;
+        }
         fail("Should have thrown a AciErrorException.");
     }
 

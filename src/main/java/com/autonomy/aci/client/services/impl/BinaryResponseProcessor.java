@@ -51,7 +51,16 @@ public class BinaryResponseProcessor implements Processor<byte[]> {
 
         if ("text/xml".equalsIgnoreCase(contentType)) {
             // Process the error response...
-            throw errorProcessor.process(inputStream);
+            try {
+                throw errorProcessor.process(inputStream);
+            } catch (final AciErrorException e) {
+                if (e.getErrorId() == null) {
+                    throw new AciErrorException(
+                        "BinaryResponseProcessor should not be used for XML responses");
+                } else {
+                    throw e;
+                }
+            }
         } else {
             // Return the raw bytes...
             return byteArrayProcessor.process(inputStream);

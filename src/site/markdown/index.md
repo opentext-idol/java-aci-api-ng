@@ -1,9 +1,9 @@
 # java-aci-api-ng
 
-This is a Java API is for communicating with Micro Focus ACI servers.
+This is a Java API is for communicating with OpenText ACI servers.
 
 ## About
-The Autonomy Content Infrastructure (ACI) is a protocol for communicating with Micro Focus servers using XML over HTTP.
+The Autonomy Content Infrastructure (ACI) is a protocol for communicating with OpenText servers using XML over HTTP.
 This Java API provides an interface for constructing and executing ACI requests and for consuming ACI responses. Previous
 versions were available as jar files from customer support.
 
@@ -53,6 +53,6 @@ branch - the master branch is for stable code only.
 Yes.
 
 ## License
-Copyright 2006-2018 Micro Focus International plc.
+Copyright 2006-2018 OpenText.
 
 Licensed under the MIT License (the "License"); you may not use this project except in compliance with the License.

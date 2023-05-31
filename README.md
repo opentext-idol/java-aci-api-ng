@@ -2,8 +2,6 @@
 
 A Java API for communicating with OpenText ACI servers.
 
-[![Build Status](https://travis-ci.org/microfocus-idol/java-aci-api-ng.svg?branch=master)](https://travis-ci.org/microfocus-idol/java-aci-api-ng)
-
 ## About
 The OpenText Content Infrastructure (ACI) is a protocol for communicating with OpenText servers using XML over HTTP.
 This Java API provides an interface for constructing and executing ACI requests and for consuming ACI responses. Previous
@@ -19,7 +17,7 @@ java-aci-api-ng is available from the central Maven repository.
         <version>23.3.0-SNAPSHOT</version>
     </dependency>
 
-For more documentation, see the project homepage [here](http://microfocus-idol.github.io/java-aci-api-ng).
+For more documentation, see the project homepage [here](http://opentext-idol.github.io/java-aci-api-ng).
 
 ## Migration to FOSS Version
 Previous versions of this library included a taglib for use in JSPs and support for legacy OEM encryption. Builds with
@@ -34,6 +32,6 @@ Yes.
 
 ## License
 
-(c) Copyright 2006-2020 OpenText or one of its affiliates.
+Copyright 2006-2020 OpenText or one of its affiliates.
 
 Licensed under the MIT License (the "License"); you may not use this project except in compliance with the License.

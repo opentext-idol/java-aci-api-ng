@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  ~ Copyright 2006-2018 Micro Focus International plc.
-  ~ Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License.
+  ~ Copyright 2006-2018 Open Text.
+  ~
+  ~ Licensed under the MIT License (the "License"); you may not use this file
+  ~ except in compliance with the License.
+  ~
+  ~ The only warranties for products and services of Open Text and its affiliates
+  ~ and licensors ("Open Text") are as may be set forth in the express warranty
+  ~ statements accompanying such products and services. Nothing herein should be
+  ~ construed as constituting an additional warranty. Open Text shall not be
+  ~ liable for technical or editorial errors or omissions contained herein. The
+  ~ information contained herein is subject to change without notice.
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -23,18 +32,18 @@
 
     <name>OpenText ACI API NG</name>
     <description>Java client for communicating with IDOL ACI servers.</description>
-    <url>https://github.com/microfocus-idol/java-aci-api-ng</url>
+    <url>https://github.com/opentext-idol/java-aci-api-ng</url>
     <inceptionYear>2006</inceptionYear>
 
     <scm>
-        <connection>scm:git:git@github.com:microfocus-idol/java-aci-api-ng.git</connection>
-        <developerConnection>scm:git:git@github.com:microfocus-idol/java-aci-api-ng.git</developerConnection>
-        <url>git@github.com:microfocus-idol/java-aci-api-ng.git</url>
+        <connection>scm:git:git@github.com:opentext-idol/java-aci-api-ng.git</connection>
+        <developerConnection>scm:git:git@github.com:opentext-idol/java-aci-api-ng.git</developerConnection>
+        <url>git@github.com:opentext-idol/java-aci-api-ng.git</url>
     </scm>
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/microfocus-idol/java-aci-api-ng/issues</url>
+        <url>https://github.com/opentext-idol/java-aci-api-ng/issues</url>
     </issueManagement>
 
     <developers>

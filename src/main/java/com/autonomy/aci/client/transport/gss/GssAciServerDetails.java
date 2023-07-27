@@ -15,8 +15,8 @@
 package com.autonomy.aci.client.transport.gss;
 
 import com.autonomy.aci.client.transport.AciServerDetails;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * Holds connection details about an ACI Server that is secured using GSS-API. It is a subclass of

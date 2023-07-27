@@ -16,7 +16,7 @@ package com.autonomy.aci.client.services;
 
 import java.util.Date;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Exception that holds information about why an ACI command failed.

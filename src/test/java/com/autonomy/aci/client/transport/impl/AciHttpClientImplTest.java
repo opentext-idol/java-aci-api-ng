@@ -375,14 +375,14 @@ public class AciHttpClientImplTest {
         assertThat("Incorrect query string", request.getURI().getQuery(), startsWith("Action=Encrypted&Data="));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testExecuteActionNoHttpClient() throws IOException, AciHttpException {
         // Create our client and execute...
         final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
         aciHttpClient.executeAction(serverDetails, null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testExecuteActionNoParameters() throws IOException, AciHttpException {
         // Create our client and execute...
         final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl(new DefaultHttpClient());

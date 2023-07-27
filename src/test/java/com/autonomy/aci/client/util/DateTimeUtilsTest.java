@@ -44,13 +44,13 @@ public class DateTimeUtilsTest {
         assertThat("Date wrong", instance.parseDate(dateString), is(equalTo(dateDate)));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testParseDateNoString() throws ParseException {
         DateTimeUtils.getInstance().parseDate(null, "dd MMM yy HH:mm:ss Z");
-        fail("Should have thrown a IllegalArgumentException");
+        fail("Should have thrown a NullPointerException");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testParseDateNoFormat() throws ParseException {
         DateTimeUtils.getInstance().parseDate(dateString, null);
         fail("Should have thrown a IllegalArgumentException");

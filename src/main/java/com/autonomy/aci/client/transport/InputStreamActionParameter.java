@@ -1,6 +1,6 @@
 package com.autonomy.aci.client.transport;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 
 import java.io.InputStream;

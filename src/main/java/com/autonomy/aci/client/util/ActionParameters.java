@@ -4,7 +4,7 @@ import com.autonomy.aci.client.services.AciConstants;
 import com.autonomy.aci.client.transport.AciParameter;
 import com.autonomy.aci.client.transport.ActionParameter;
 import com.autonomy.aci.client.transport.InputStreamActionParameter;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 
 import java.io.InputStream;
 import java.util.Arrays;

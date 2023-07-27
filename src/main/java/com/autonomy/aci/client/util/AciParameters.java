@@ -16,7 +16,7 @@ package com.autonomy.aci.client.util;
 
 import com.autonomy.aci.client.services.AciConstants;
 import com.autonomy.aci.client.transport.AciParameter;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 
 import java.io.Serializable;
 import java.util.Arrays;

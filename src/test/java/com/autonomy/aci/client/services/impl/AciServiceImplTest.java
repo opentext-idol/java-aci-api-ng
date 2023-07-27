@@ -84,22 +84,22 @@ public class AciServiceImplTest {
         assertThat(service.getAciServerDetails(), is(sameInstance(details)));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testExecuteActionNullAciHttpClient() throws AciServiceException {
         new AciServiceImpl().executeAction(new ActionParameters("test"), null);
-        fail("Should have thrown an IllegalArgumentException.");
+        fail("Should have thrown an NullPointerException.");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testExecuteActionNullConnectionDetails() throws AciServiceException {
         new AciServiceImpl(mock(AciHttpClient.class)).executeAction(new ActionParameters("test"), null);
-        fail("Should have thrown an IllegalArgumentException.");
+        fail("Should have thrown an NullPointerException.");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testExecuteActionNullParameterSetNullProcessor() throws AciServiceException {
         new AciServiceImpl(mock(AciHttpClient.class), details).executeAction(null, null);
-        fail("Should have thrown an IllegalArgumentException.");
+        fail("Should have thrown an NullPointerException.");
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -108,22 +108,22 @@ public class AciServiceImplTest {
         fail("Should have thrown an IllegalArgumentException.");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testExecuteActionNullProcessor() throws AciServiceException {
         new AciServiceImpl(mock(AciHttpClient.class), details).executeAction(new ActionParameters("test"), null);
-        fail("Should have thrown an IllegalArgumentException.");
+        fail("Should have thrown an NullPointerException.");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testExecuteActionWithDetailsNullServerDetails() throws AciServiceException {
         new AciServiceImpl(mock(AciHttpClient.class)).executeAction(null, null, null);
-        fail("Should have thrown an IllegalArgumentException.");
+        fail("Should have thrown an NullPointerException.");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testExecuteActionWithDetailsNullParameterSetNullProcessor() throws AciServiceException {
         new AciServiceImpl(mock(AciHttpClient.class)).executeAction(details, null, null);
-        fail("Should have thrown an IllegalArgumentException.");
+        fail("Should have thrown an NullPointerException.");
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -132,7 +132,7 @@ public class AciServiceImplTest {
         fail("Should have thrown an IllegalArgumentException.");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testExecuteActionWithDetailsBadParameterSetNullProcessor() throws AciServiceException {
         final ActionParameters parameters = new ActionParameters();
         parameters.add(AciConstants.PARAM_FORMAT, "wibble");
@@ -140,13 +140,13 @@ public class AciServiceImplTest {
         parameters.add(AciConstants.PARAM_ACTION, AciConstants.ACTION_GET_LICENSE_INFO);
 
         new AciServiceImpl(mock(AciHttpClient.class)).executeAction(details, parameters, null);
-        fail("Should have thrown an IllegalArgumentException.");
+        fail("Should have thrown an NullPointerException.");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testExecuteActionWithDetailsNullProcessor() throws AciServiceException {
         new AciServiceImpl(mock(AciHttpClient.class)).executeAction(details, new ActionParameters("test"), null);
-        fail("Should have thrown an IllegalArgumentException.");
+        fail("Should have thrown an NullPointerException.");
     }
 
     @Test

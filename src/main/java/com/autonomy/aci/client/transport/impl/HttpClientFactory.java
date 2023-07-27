@@ -14,8 +14,8 @@
 
 package com.autonomy.aci.client.transport.impl;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.protocol.RequestAcceptEncoding;
 import org.apache.http.impl.client.DefaultHttpClient;

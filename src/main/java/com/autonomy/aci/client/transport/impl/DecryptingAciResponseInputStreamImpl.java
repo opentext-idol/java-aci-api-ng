@@ -17,7 +17,7 @@ package com.autonomy.aci.client.transport.impl;
 import com.autonomy.aci.client.services.ProcessorException;
 import com.autonomy.aci.client.transport.AciServerDetails;
 import com.autonomy.aci.client.util.IOUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -46,8 +46,8 @@ public class AciServerDetailsTest {
     public void testTwoParamConstructor() {
         try {
             new AciServerDetails(null, 10);
-            fail("Should have thrown an IllegalArgumentException as host is null.");
-        } catch (final IllegalArgumentException iae) { /* ignore */ }
+            fail("Should have thrown an NullPointerException as host is null.");
+        } catch (final NullPointerException npe) { /* ignore */ }
 
         try {
             new AciServerDetails("localhost", -10);
@@ -74,13 +74,13 @@ public class AciServerDetailsTest {
     public void testThreeParamConstructor() {
         try {
             new AciServerDetails(null, null, 10);
-            fail("Should have thrown an IllegalArgumentException as the protocol was set to null.");
-        } catch (final IllegalArgumentException iae) { /* ignore */ }
+            fail("Should have thrown an NullPointerException as the protocol was set to null.");
+        } catch (final NullPointerException npe) { /* ignore */ }
 
         try {
             new AciServerDetails(AciServerDetails.TransportProtocol.HTTPS, null, 10);
-            fail("Should have thrown an IllegalArgumentException as host is null.");
-        } catch (final IllegalArgumentException iae) { /* ignore */ }
+            fail("Should have thrown an NullPointerException as host is null.");
+        } catch (final NullPointerException npe) { /* ignore */ }
 
         try {
             new AciServerDetails(AciServerDetails.TransportProtocol.HTTPS, "localhost", -10);
@@ -125,7 +125,7 @@ public class AciServerDetailsTest {
         assertThat("encryptionCodec", newDetails.getEncryptionCodec(), is(sameInstance(details.getEncryptionCodec())));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testProtocolProperty() {
         // Create an instance...
         final AciServerDetails details = new AciServerDetails();
@@ -137,10 +137,10 @@ public class AciServerDetailsTest {
 
         // Set the protocol to null and check....
         details.setProtocol(null);
-        fail("Should have thrown an IllegalArgumentException as the protocol has been set to null.");
+        fail("Should have thrown an NullPointerException as the protocol has been set to null.");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testHostProperty() {
         // Create an instance...
         final AciServerDetails details = new AciServerDetails();
@@ -153,7 +153,7 @@ public class AciServerDetailsTest {
 
         // Set the host to null and check....
         details.setHost(null);
-        fail("Should have thrown an IllegalArgumentException as the host has been set to null.");
+        fail("Should have thrown an NullPointerException as the host has been set to null.");
     }
 
     @Test

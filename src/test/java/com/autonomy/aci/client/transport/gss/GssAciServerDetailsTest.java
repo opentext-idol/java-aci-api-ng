@@ -45,8 +45,8 @@ public class GssAciServerDetailsTest {
     public void testThreeParamConstructor() {
         try {
             new GssAciServerDetails("SERVICE/host.example.com@EXAMPLE.COM", null, 10);
-            fail("Should have thrown an IllegalArgumentException as host is null.");
-        } catch (final IllegalArgumentException iae) { /* ignore */ }
+            fail("Should have thrown an NullPointerException as host is null.");
+        } catch (final NullPointerException npe) { /* ignore */ }
 
         try {
             new GssAciServerDetails("SERVICE/host.example.com@EXAMPLE.COM", "localhost", -10);
@@ -73,13 +73,13 @@ public class GssAciServerDetailsTest {
     public void testFourParamConstructor() {
         try {
             new GssAciServerDetails("SERVICE/host.example.com@EXAMPLE.COM", null, null, 10);
-            fail("Should have thrown an IllegalArgumentException as the protocol was set to null.");
-        } catch (final IllegalArgumentException iae) { /* ignore */ }
+            fail("Should have thrown an NullPointerException as the protocol was set to null.");
+        } catch (final NullPointerException npe) { /* ignore */ }
 
         try {
             new GssAciServerDetails("SERVICE/host.example.com@EXAMPLE.COM", TransportProtocol.HTTPS, null, 10);
-            fail("Should have thrown an IllegalArgumentException as host is null.");
-        } catch (final IllegalArgumentException iae) { /* ignore */ }
+            fail("Should have thrown an NullPointerException as host is null.");
+        } catch (final NullPointerException npe) { /* ignore */ }
 
         try {
             new GssAciServerDetails("SERVICE/host.example.com@EXAMPLE.COM", TransportProtocol.HTTPS, "localhost", -10);

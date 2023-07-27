@@ -17,7 +17,7 @@ package com.autonomy.aci.client.services.impl;
 import com.autonomy.aci.client.services.AciErrorException;
 import com.autonomy.aci.client.services.ProcessorException;
 import com.hp.autonomy.test.xml.XmlTestUtils;
-import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.junit.Test;
 
 import javax.xml.stream.XMLStreamException;

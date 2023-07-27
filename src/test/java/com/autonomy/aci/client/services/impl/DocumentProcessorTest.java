@@ -18,7 +18,7 @@ import com.autonomy.aci.client.services.AciErrorException;
 import com.autonomy.aci.client.services.ProcessorException;
 import com.autonomy.aci.client.transport.AciResponseInputStream;
 import com.autonomy.aci.client.transport.impl.AciResponseInputStreamImpl;
-import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.http.HttpVersion;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.message.BasicHttpResponse;

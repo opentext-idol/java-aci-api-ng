@@ -18,7 +18,7 @@ import com.autonomy.aci.client.ReflectionTestUtils;
 import com.autonomy.aci.client.services.ProcessorException;
 import com.autonomy.aci.client.transport.AciResponseInputStream;
 import com.hp.autonomy.test.xml.XmlTestUtils;
-import org.apache.commons.lang.SerializationUtils;
+import org.apache.commons.lang3.SerializationUtils;
 import org.junit.After;
 import org.junit.Test;
 
@@ -163,7 +163,7 @@ public class AbstractStAXProcessorTest {
         assertThat(abstractStAXProcessor.isErrorResponse(XmlTestUtils.getResourceAsXMLStreamReader("/logback-test.xml")), is(false));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void testProcessErrorResponseNoProcessorSet() {
         final AbstractStAXProcessor<?> abstractStAXProcessor = spy(AbstractStAXProcessor.class);
         assertThat(abstractStAXProcessor.getErrorProcessor(), is(nullValue()));

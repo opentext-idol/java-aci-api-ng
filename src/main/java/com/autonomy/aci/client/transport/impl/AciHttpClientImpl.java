@@ -25,7 +25,7 @@ import com.autonomy.aci.client.transport.EncryptionCodec;
 import com.autonomy.aci.client.transport.EncryptionCodecException;
 import com.autonomy.aci.client.util.ActionParameters;
 import com.autonomy.aci.client.util.EncryptionCodecUtils;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;

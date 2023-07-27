@@ -17,7 +17,7 @@ package com.autonomy.aci.client.transport.impl;
 import com.autonomy.aci.client.ReflectionTestUtils;
 import com.autonomy.aci.client.TestEncryptionCodec;
 import com.autonomy.aci.client.services.ProcessorException;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;

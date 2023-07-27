@@ -16,7 +16,7 @@ package com.autonomy.aci.client.transport.impl;
 
 import com.autonomy.aci.client.transport.EncryptionCodecException;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

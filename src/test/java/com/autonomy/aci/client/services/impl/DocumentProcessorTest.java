@@ -53,53 +53,6 @@ public class DocumentProcessorTest {
         processor = new DocumentProcessor();
     }
 
-    @Test(expected = FactoryConfigurationError.class)
-    public void testConvertACIResponseToDOMInvalidDocumentBuilderFactory() throws AciErrorException, IOException, ProcessorException {
-        // Set a duff property for the DocumentBuilderFactory...
-        System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "com.autonomy.DuffDocumentBuilderFactory");
-
-        try {
-            // Setup with a proper XML response file...
-            final BasicHttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1, 200, "OK");
-            response.setEntity(new InputStreamEntity(getClass().getResourceAsStream("/GetVersion.xml"), -1));
-
-            // Set the AciResponseInputStream...
-            final AciResponseInputStream stream = new AciResponseInputStreamImpl(response);
-
-            // Process...
-            processor.process(stream);
-            fail("Should have raised an ProcessorException.");
-        } finally {
-            // Remove the duff system property...
-            System.clearProperty("javax.xml.parsers.DocumentBuilderFactory");
-        }
-    }
-
-    @Test
-    public void testConvertACIResponseToDOMParserConfigurationException() throws AciErrorException, IOException {
-        // Set the property to be our mock implementation that will throw a ParserConfigurationException...
-        System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "com.autonomy.aci.client.mock.MockDocumentBuilderFactory");
-
-        try {
-            // Setup with a proper XML response file...
-            final BasicHttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1, 200, "OK");
-            response.setEntity(new InputStreamEntity(getClass().getResourceAsStream("/GetVersion.xml"), -1));
-
-            // Set the AciResponseInputStream...
-            final AciResponseInputStream stream = new AciResponseInputStreamImpl(response);
-
-            // Process...
-            processor.process(stream);
-            fail("Should have raised an ProcessorException.");
-        } catch (final ProcessorException pe) {
-            // Check for the correct causes...
-            assertThat("Cause not correct.", pe.getCause(), is(instanceOf(ParserConfigurationException.class)));
-        } finally {
-            // Remove the duff system property...
-            System.clearProperty("javax.xml.parsers.DocumentBuilderFactory");
-        }
-    }
-
     @Test
     public void testConvertACIResponseToDOMSAXException() throws AciErrorException, IOException {
         try {

@@ -40,6 +40,14 @@ import org.xml.sax.SAXException;
  * either directly via DOM or via XPath.
  */
 public class DocumentProcessor implements Processor<Document> {
+    private static final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+    private static final XPathFactory xpathFactory = XPathFactory.newInstance();
+
+    static {
+        // Should speed things up a bit...
+        documentBuilderFactory.setNamespaceAware(false);
+        documentBuilderFactory.setValidating(false);
+    }
 
     private static final long serialVersionUID = -1757174558649421058L;
 
@@ -56,17 +64,8 @@ public class DocumentProcessor implements Processor<Document> {
         LOGGER.trace("convertACIResponseToDOM() called...");
 
         try {
-            // Create the factory...
-            final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-
-            // Should speed things up a bit...
-            factory.setNamespaceAware(false);
-            factory.setValidating(false);
-
-            LOGGER.debug("Converting ACI response to DOM Document...");
-
             // Get a document builder and convert the document...
-            return factory.newDocumentBuilder().parse(new InputSource(response));
+            return documentBuilderFactory.newDocumentBuilder().parse(new InputSource(response));
         } catch (final ParserConfigurationException | IOException | SAXException pce) {
             throw new ProcessorException("Unable to parse the ACI response into a DOM document.", pce);
         }
@@ -84,7 +83,7 @@ public class DocumentProcessor implements Processor<Document> {
         LOGGER.trace("checkACIResponseForError() called...");
 
         // Create an xpath object for getting stuff with...
-        final XPath xpath = XPathFactory.newInstance().newXPath();
+        final XPath xpath = xpathFactory.newXPath();
 
         try {
             // Get the value of the <response> tag...

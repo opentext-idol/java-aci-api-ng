@@ -14,8 +14,8 @@
 
 package com.autonomy.aci.client.transport.impl;
 
-import com.autonomy.aci.client.TestEncryptionCodec;
 import com.autonomy.aci.client.ReflectionTestUtils;
+import com.autonomy.aci.client.TestEncryptionCodec;
 import com.autonomy.aci.client.transport.AciServerDetails;
 import com.autonomy.aci.client.util.IOUtils;
 import org.apache.hc.core5.http.ClassicHttpResponse;
@@ -25,7 +25,6 @@ import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
 import org.apache.hc.core5.http.message.BasicHeader;
-import org.apache.hc.core5.http.message.BasicHttpResponse;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;

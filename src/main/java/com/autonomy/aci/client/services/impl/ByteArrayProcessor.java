@@ -19,12 +19,11 @@ import com.autonomy.aci.client.services.Processor;
 import com.autonomy.aci.client.services.ProcessorException;
 import com.autonomy.aci.client.transport.AciResponseInputStream;
 import com.autonomy.aci.client.util.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Takes an ACI response and returns it as a byte array. Unlike {@link BinaryResponseProcessor}, this processor doesn't

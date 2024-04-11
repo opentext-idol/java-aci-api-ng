@@ -7,11 +7,7 @@ import com.autonomy.aci.client.transport.InputStreamActionParameter;
 import org.apache.commons.lang3.Validate;
 
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Utility class to make it easier to specify sets of {@link ActionParameter} objects for sending with ACI actions.

@@ -19,17 +19,16 @@ import com.autonomy.aci.client.services.ProcessorException;
 import com.autonomy.aci.client.transport.EncryptionCodec;
 import com.autonomy.aci.client.transport.EncryptionCodecException;
 import com.autonomy.aci.client.util.EncryptionCodecUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.events.XMLEvent;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.events.XMLEvent;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 class EncryptedTextContentProcessor extends AbstractEncryptedResponseProcessor<ByteArrayInputStream> {
 

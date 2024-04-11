@@ -17,8 +17,8 @@ package com.autonomy.aci.client.transport.impl;
 import com.autonomy.aci.client.transport.AciResponseInputStream;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.Header;
-import org.apache.http.HttpResponse;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

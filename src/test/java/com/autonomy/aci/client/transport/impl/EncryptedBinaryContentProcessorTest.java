@@ -14,8 +14,8 @@
 
 package com.autonomy.aci.client.transport.impl;
 
-import com.autonomy.aci.client.TestEncryptionCodec;
 import com.autonomy.aci.client.ReflectionTestUtils;
+import com.autonomy.aci.client.TestEncryptionCodec;
 import com.autonomy.aci.client.services.ProcessorException;
 import com.autonomy.aci.client.transport.EncryptionCodec;
 import com.autonomy.aci.client.transport.EncryptionCodecException;

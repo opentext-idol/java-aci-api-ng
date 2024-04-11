@@ -14,25 +14,15 @@
 
 package com.autonomy.aci.client.services.impl;
 
-import com.autonomy.aci.client.services.AciConstants;
-import com.autonomy.aci.client.services.AciService;
-import com.autonomy.aci.client.services.AciServiceException;
-import com.autonomy.aci.client.services.Processor;
-import com.autonomy.aci.client.services.ProcessorException;
-import com.autonomy.aci.client.transport.AciHttpClient;
-import com.autonomy.aci.client.transport.AciHttpException;
-import com.autonomy.aci.client.transport.AciParameter;
-import com.autonomy.aci.client.transport.AciResponseInputStream;
-import com.autonomy.aci.client.transport.AciServerDetails;
-import com.autonomy.aci.client.transport.ActionParameter;
+import com.autonomy.aci.client.services.*;
+import com.autonomy.aci.client.transport.*;
 import com.autonomy.aci.client.util.IOUtils;
-
-import java.io.IOException;
-import java.util.Set;
-
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.Set;
 
 /**
  * Implementation of the <tt>AciService</tt> interface.

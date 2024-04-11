@@ -15,6 +15,8 @@
 package com.autonomy.aci.client.util;
 
 import com.autonomy.aci.client.transport.EncryptionCodecException;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 
@@ -22,9 +24,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 public class EncryptionCodecUtilsTest {
 

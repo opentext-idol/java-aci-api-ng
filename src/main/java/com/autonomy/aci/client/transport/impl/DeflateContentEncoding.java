@@ -14,13 +14,7 @@
 
 package com.autonomy.aci.client.transport.impl;
 
-import com.autonomy.aci.client.transport.AciServerDetails;
-import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.apache.http.Header;
-import org.apache.http.HeaderElement;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpException;
-import org.apache.http.HttpResponse;
+import org.apache.http.*;
 import org.apache.http.client.entity.GzipDecompressingEntity;
 import org.apache.http.client.protocol.ResponseContentEncoding;
 import org.apache.http.entity.InputStreamEntity;

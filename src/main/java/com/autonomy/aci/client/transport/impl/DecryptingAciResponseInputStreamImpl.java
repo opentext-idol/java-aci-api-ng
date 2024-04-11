@@ -27,7 +27,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.function.Supplier;
 
 /**
  * This <tt>AciResponseInputStream</tt> implementation decrypts ACI responses from actions that have been sent with the

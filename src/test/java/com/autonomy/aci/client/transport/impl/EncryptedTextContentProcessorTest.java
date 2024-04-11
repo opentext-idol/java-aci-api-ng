@@ -31,7 +31,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 public class EncryptedTextContentProcessorTest {
@@ -50,7 +49,7 @@ public class EncryptedTextContentProcessorTest {
     @Test(expected = ProcessorException.class)
     public void testProcessXMLStreamException() throws XMLStreamException, IOException {
         final XMLStreamReader mockXmlStreamReader = mock(XMLStreamReader.class);
-        doThrow(XMLStreamException.class).when(mockXmlStreamReader).getVersion();
+        doThrow(XMLStreamException.class).when(mockXmlStreamReader).hasNext();
 
         new EncryptedTextContentProcessor(new TestEncryptionCodec(), "UTF-8").process(mockXmlStreamReader);
         fail("Should have thrown a ProcessorException...");

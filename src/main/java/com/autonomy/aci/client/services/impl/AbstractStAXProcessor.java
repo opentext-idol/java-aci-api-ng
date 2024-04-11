@@ -30,6 +30,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.Locale;
 
 /**
  * Abstract <tt>Processor</tt> that should be used by all processors wanting to process the ACI response via the
@@ -136,7 +137,7 @@ public abstract class AbstractStAXProcessor<T> implements StAXProcessor<T> {
     public T process(final AciResponseInputStream aciResponseInputStream) {
         LOGGER.trace("process() called...");
 
-        if (!"text/xml".equalsIgnoreCase(aciResponseInputStream.getContentType())) {
+        if (!aciResponseInputStream.getContentType().toLowerCase(Locale.ROOT).startsWith("text/xml")) {
             throw new ProcessorException("This processor is unable to process non-text ACI responses. The content type for this response is " + aciResponseInputStream.getContentType());
         }
 

@@ -20,6 +20,8 @@ import com.autonomy.aci.client.transport.AciResponseInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Locale;
+
 /**
  * Takes an ACI response and returns it as a byte array. This processor should only be used for those actions that
  * <strong>don't return XML</strong> by default, for example, cluster actions that return an image. This processor will
@@ -58,7 +60,7 @@ public class BinaryResponseProcessor implements Processor<byte[]> {
 
         LOGGER.debug("Content-type is {}...", contentType);
 
-        if ("text/xml".equalsIgnoreCase(contentType)) {
+        if (contentType.toLowerCase(Locale.ROOT).startsWith("text/xml")) {
             // Process the error response...
             try {
                 throw errorProcessor.process(inputStream);

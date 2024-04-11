@@ -18,6 +18,7 @@ import com.autonomy.aci.client.services.ProcessorException;
 import com.autonomy.aci.client.transport.AciServerDetails;
 import com.autonomy.aci.client.util.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,8 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.function.Supplier;
 
 /**
  * This <tt>AciResponseInputStream</tt> implementation decrypts ACI responses from actions that have been sent with the
@@ -37,12 +40,12 @@ public class DecryptingAciResponseInputStreamImpl extends AciResponseInputStream
     /**
      * This is what we'll decrypt the input into...
      */
-    private final ByteArrayInputStream decryptedResponse;
+    private ByteArrayInputStream decryptedResponse;
 
     /**
      * Holds the content type of the encrypted data.
      */
-    private final String contentType;
+    private String contentType;
 
     /**
      * Creates a new instance of DecryptingAciResponseInputStreamImpl.
@@ -51,9 +54,32 @@ public class DecryptingAciResponseInputStreamImpl extends AciResponseInputStream
      * @param response      An {@code HttpResponse} that contains the ACI response as an {@code InputStream}
      * @throws IOException If an I/O error occurs
      */
-    public DecryptingAciResponseInputStreamImpl(final AciServerDetails serverDetails, final HttpResponse response) throws IOException {
+    public DecryptingAciResponseInputStreamImpl(
+            final AciServerDetails serverDetails,
+            final ClassicHttpResponse response
+    ) throws IOException {
         super(response);
+        setup(serverDetails, () -> new AciResponseInputStreamImpl(response));
+    }
 
+    /**
+     * Creates a new instance of DecryptingAciResponseInputStreamImpl.
+     * @param serverDetails The <tt>AciServerDetails</tt> that contains the <tt>EncryptionCodec</tt> that is being used
+     *                      to decrypt the ACI response and the character encoding being used on this ACI request/response
+     * @param response      An {@code HttpResponse} that contains the ACI response as an {@code InputStream}
+     * @throws IOException If an I/O error occurs
+     * @deprecated Use {@link #DecryptingAciResponseInputStreamImpl(AciServerDetails, ClassicHttpResponse)}
+     */
+    @Deprecated
+    public DecryptingAciResponseInputStreamImpl(
+            final AciServerDetails serverDetails,
+            final HttpResponse response
+    ) throws IOException {
+        super(response);
+        setup(serverDetails, () -> new AciResponseInputStreamImpl(response));
+    }
+
+    private void setup(final AciServerDetails serverDetails, GetInputStream getStream) throws IOException {
         try {
             LOGGER.debug("Checking AUTN-Content-Type header...");
 
@@ -66,7 +92,7 @@ public class DecryptingAciResponseInputStreamImpl extends AciResponseInputStream
 
                 // Copy the response to the decryptedResponse property unmolested... 
                 final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                IOUtils.getInstance().copy(new AciResponseInputStreamImpl(response), buffer);
+                IOUtils.getInstance().copy(getStream.get(), buffer);
                 decryptedResponse = new ByteArrayInputStream(buffer.toByteArray());
 
                 // Set the content type...
@@ -133,6 +159,10 @@ public class DecryptingAciResponseInputStreamImpl extends AciResponseInputStream
     @Override
     public boolean markSupported() {
         return decryptedResponse.markSupported();
+    }
+
+    private interface GetInputStream {
+        InputStream get() throws IOException;
     }
 
 }

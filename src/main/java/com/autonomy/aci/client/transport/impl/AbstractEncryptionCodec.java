@@ -158,6 +158,7 @@ public abstract class AbstractEncryptionCodec implements EncryptionCodec {
             LOGGER.debug("Base64 encoding the deflated and encrypted input...");
 
             // Base64 encode the array...
+            // org.apache.hc.client5.http.utils.Base64;
             final byte[] encoded = Base64.encodeBase64(toEncode);
 
             LOGGER.debug("Returning deflated, encrypted and encoded input...");

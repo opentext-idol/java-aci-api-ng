@@ -18,12 +18,14 @@ import com.autonomy.aci.client.TestEncryptionCodec;
 import com.autonomy.aci.client.ReflectionTestUtils;
 import com.autonomy.aci.client.transport.AciServerDetails;
 import com.autonomy.aci.client.util.IOUtils;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpVersion;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.message.BasicHttpResponse;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.io.entity.StringEntity;
+import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
+import org.apache.hc.core5.http.message.BasicHeader;
+import org.apache.hc.core5.http.message.BasicHttpResponse;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -53,7 +55,7 @@ public class DecryptingAciResponseInputStreamImplTest {
 
     private static String encryptedBinaryResponse;
 
-    private BasicHttpResponse httpResponse;
+    private ClassicHttpResponse httpResponse;
 
     private AciServerDetails serverDetails;
 
@@ -69,7 +71,7 @@ public class DecryptingAciResponseInputStreamImplTest {
 
     @Before
     public void createHttpResponse() {
-        httpResponse = new BasicHttpResponse(HttpVersion.HTTP_1_1, 200, "OK");
+        httpResponse = new BasicClassicHttpResponse(200);
     }
 
     @Before
@@ -96,8 +98,7 @@ public class DecryptingAciResponseInputStreamImplTest {
     @SuppressWarnings("unchecked")
     public void testConstructorTextContent() throws IOException {
         // Load the HttpMethod with a response...
-        final StringEntity stringEntity = new StringEntity(encryptedTextResponse);
-        stringEntity.setContentType("text/xml");
+        final StringEntity stringEntity = new StringEntity(encryptedTextResponse, ContentType.TEXT_XML);
 
         httpResponse.setEntity(stringEntity);
         httpResponse.setHeaders(new Header[]{new BasicHeader("AUTN-Content-Type", "text/xml"), new BasicHeader("Content-Type", "text/xml")});
@@ -114,8 +115,7 @@ public class DecryptingAciResponseInputStreamImplTest {
     @SuppressWarnings("unchecked")
     public void testConstructorBinaryContent() throws IOException, NoSuchAlgorithmException {
         // Load the HttpMethod with a response...
-        final StringEntity stringEntity = new StringEntity(encryptedBinaryResponse);
-        stringEntity.setContentType("text/xml");
+        final StringEntity stringEntity = new StringEntity(encryptedBinaryResponse, ContentType.TEXT_XML);
 
         httpResponse.setEntity(stringEntity);
         httpResponse.setHeaders(new Header[]{new BasicHeader("AUTN-Content-Type", "image/jpeg"), new BasicHeader("Content-Type", "text/xml")});

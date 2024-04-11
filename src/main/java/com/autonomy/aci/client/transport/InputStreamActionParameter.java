@@ -1,7 +1,7 @@
 package com.autonomy.aci.client.transport;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -57,13 +57,16 @@ public class InputStreamActionParameter implements ActionParameter<List<InputStr
         return value;
     }
 
-    /**
-     * Add
-     * @param builder The entity builder used to construct the entity
-     * @param charset The character encoding to use for the part
-     */
     @Override
     public void addToEntity(final MultipartEntityBuilder builder, final Charset charset) {
+        for(final InputStream inputStream : value) {
+            builder.addBinaryBody(name, inputStream);
+        }
+    }
+
+    @Override
+    @Deprecated
+    public void addToEntity(final org.apache.http.entity.mime.MultipartEntityBuilder builder, final Charset charset) {
         for(final InputStream inputStream : value) {
             builder.addBinaryBody(name, inputStream);
         }

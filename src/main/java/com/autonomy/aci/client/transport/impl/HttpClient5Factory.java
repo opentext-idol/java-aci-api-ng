@@ -16,13 +16,14 @@ package com.autonomy.aci.client.transport.impl;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.protocol.RequestAcceptEncoding;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.PoolingClientConnectionManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.config.ConnectionConfig;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.core5.http.io.SocketConfig;
+import org.apache.hc.core5.util.TimeValue;
+import org.apache.hc.core5.util.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,13 +66,10 @@ import org.slf4j.LoggerFactory;
  *     &lt;/constructor-arg&gt;
  *   &lt;/bean&gt;
  * </pre>
- *
- * @deprecated Use {@link HttpClient5Factory}
  */
-@Deprecated
-public class HttpClientFactory {
+public class HttpClient5Factory {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(HttpClientFactory.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(HttpClient5Factory.class);
 
     private int maxTotalConnections = 20;
 
@@ -103,30 +101,33 @@ public class HttpClientFactory {
         LOGGER.debug("Creating a new instance of DefaultHttpClient with configuration -> {}", toString());
 
         // Create the connection manager which will be default create the necessary schema registry stuff...
-        final PoolingClientConnectionManager connectionManager = new PoolingClientConnectionManager();
+        final PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
         connectionManager.setMaxTotal(maxTotalConnections);
         connectionManager.setDefaultMaxPerRoute(maxConnectionsPerRoute);
+        connectionManager.setDefaultConnectionConfig(ConnectionConfig.custom()
+                .setConnectTimeout(Timeout.ofMilliseconds(connectionTimeout))
+                .build());
 
-        // Set the HTTP connection parameters (These are in the HttpCore JavaDocs, NOT the HttpClient ones)...
-        final HttpParams params = new BasicHttpParams();
-        HttpConnectionParams.setConnectionTimeout(params, connectionTimeout);
-        HttpConnectionParams.setLinger(params, linger);
-        HttpConnectionParams.setSocketBufferSize(params, socketBufferSize);
-        HttpConnectionParams.setSoKeepalive(params, soKeepAlive);
-        HttpConnectionParams.setSoReuseaddr(params, soReuseAddr);
-        HttpConnectionParams.setSoTimeout(params, soTimeout);
-        HttpConnectionParams.setStaleCheckingEnabled(params, staleCheckingEnabled);
-        HttpConnectionParams.setTcpNoDelay(params, tcpNoDelay);
+        connectionManager.setDefaultSocketConfig(SocketConfig.custom()
+                .setSoLinger(TimeValue.ofSeconds(linger))
+                .setSndBufSize(socketBufferSize).setRcvBufSize(socketBufferSize)
+                .setSoKeepAlive(soKeepAlive)
+                .setSoReuseAddress(soReuseAddr)
+                .setSoTimeout(Timeout.ofMilliseconds(soTimeout))
+                .setTcpNoDelay(tcpNoDelay)
+                .build());
 
         // Create the HttpClient and configure the compression interceptors if required...
-        final DefaultHttpClient httpClient = new DefaultHttpClient(connectionManager, params);
-
-        if (useCompression) {
-            httpClient.addRequestInterceptor(new RequestAcceptEncoding());
-            httpClient.addResponseInterceptor(new DeflateContentEncoding());
+        final HttpClientBuilder httpClientBuilder = HttpClients.custom()
+                .setConnectionManager(connectionManager);
+        if (staleCheckingEnabled) {
+            httpClientBuilder.evictExpiredConnections();
+        }
+        if (!useCompression) {
+            httpClientBuilder.disableContentCompression();
         }
 
-        return httpClient;
+        return httpClientBuilder.build();
     }
 
     @Override

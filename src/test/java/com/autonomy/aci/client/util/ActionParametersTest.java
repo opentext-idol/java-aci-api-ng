@@ -525,7 +525,7 @@ public class ActionParametersTest {
                 new AciParameter("print", "all")
         ));
 
-        parameters.retainAll(new AciParameters(
+        parameters.retainAll(new ActionParameters(
                 new AciParameter("action", "query"),
                 new AciParameter("text", "Doesn't matter")
         ));
@@ -552,7 +552,7 @@ public class ActionParametersTest {
                 new AciParameter("print", "all")
         ));
 
-        parameters.removeAll(new AciParameters(
+        parameters.removeAll(new ActionParameters(
                 new AciParameter("action", "query"),
                 new AciParameter("text", "Doesn't matter")
         ));

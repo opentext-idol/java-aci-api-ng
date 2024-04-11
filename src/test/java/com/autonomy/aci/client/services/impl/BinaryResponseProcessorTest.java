@@ -19,10 +19,11 @@ import com.autonomy.aci.client.services.Processor;
 import com.autonomy.aci.client.services.ProcessorException;
 import com.autonomy.aci.client.transport.AciResponseInputStream;
 import com.autonomy.aci.client.transport.impl.AciResponseInputStreamImpl;
-import org.apache.http.HttpVersion;
-import org.apache.http.entity.InputStreamEntity;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.message.BasicHttpResponse;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.io.entity.InputStreamEntity;
+import org.apache.hc.core5.http.io.entity.StringEntity;
+import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -32,9 +33,8 @@ import java.io.IOException;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.*;
 
 /**
  * JUnit tests for <tt>com.autonomy.aci.client.services.impl.BinaryResponseProcessor</tt>.
@@ -55,11 +55,10 @@ public class BinaryResponseProcessorTest {
     @Test
     public void testErrorResponse() throws IOException, ProcessorException, AciErrorException {
         // Create the "response" and give it a content type...
-        final InputStreamEntity inputStreamEntity = new InputStreamEntity(getClass().getResourceAsStream("/AciException-1.xml"), -1);
-        inputStreamEntity.setContentType("text/xml");
+        final InputStreamEntity inputStreamEntity = new InputStreamEntity(getClass().getResourceAsStream("/AciException-1.xml"), ContentType.TEXT_XML);
 
         // Create a response...
-        final BasicHttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1, 200, "OK");
+        final ClassicHttpResponse response = new BasicClassicHttpResponse(200);
         response.setEntity(inputStreamEntity);
 
         // Set the AciResponseInputStream...
@@ -79,11 +78,10 @@ public class BinaryResponseProcessorTest {
     @Test
     public void testXmlResponse() throws IOException, ProcessorException, AciErrorException {
         // Create the "response" and give it a content type...
-        final InputStreamEntity inputStreamEntity = new InputStreamEntity(getClass().getResourceAsStream("/GetVersion.xml"), -1);
-        inputStreamEntity.setContentType("text/xml");
+        final InputStreamEntity inputStreamEntity = new InputStreamEntity(getClass().getResourceAsStream("/GetVersion.xml"), ContentType.TEXT_XML);
 
         // Create a response...
-        final BasicHttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1, 200, "OK");
+        final ClassicHttpResponse response = new BasicClassicHttpResponse(200);
         response.setEntity(inputStreamEntity);
 
         // Set the AciResponseInputStream...
@@ -106,11 +104,10 @@ public class BinaryResponseProcessorTest {
         final String string = "This is a test...";
 
         // Create the "response" and give it a content type...
-        final StringEntity stringEntity = new StringEntity(string);
-        stringEntity.setContentType("text/text");
+        final StringEntity stringEntity = new StringEntity(string, ContentType.TEXT_PLAIN);
 
         // Create a response...
-        final BasicHttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1, 200, "OK");
+        final ClassicHttpResponse response = new BasicClassicHttpResponse(200);
         response.setEntity(stringEntity);
 
         // Set the AciResponseInputStream...

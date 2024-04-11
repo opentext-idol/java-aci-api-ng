@@ -27,8 +27,7 @@ import java.io.UnsupportedEncodingException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.*;
 
 public class GssEncryptionCodecTest {

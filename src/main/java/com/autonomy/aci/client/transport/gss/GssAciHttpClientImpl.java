@@ -29,7 +29,8 @@ import com.autonomy.aci.client.util.IOUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
-import org.apache.http.client.HttpClient;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.ietf.jgss.GSSContext;
 import org.ietf.jgss.GSSException;
 import org.ietf.jgss.GSSManager;
@@ -61,6 +62,15 @@ public class GssAciHttpClientImpl extends AciHttpClientImpl {
     }
 
     public GssAciHttpClientImpl(final HttpClient httpClient) {
+        super(httpClient);
+    }
+
+    /**
+     * @param httpClient
+     * @deprecated Use {@link #GssAciHttpClientImpl(HttpClient)}
+     */
+    @Deprecated
+    public GssAciHttpClientImpl(final org.apache.http.client.HttpClient httpClient) {
         super(httpClient);
     }
 
@@ -98,6 +108,7 @@ public class GssAciHttpClientImpl extends AciHttpClientImpl {
                     // Build the parameter set...
                     final ActionParameters parameters = new ActionParameters();
                     parameters.add(AciConstants.PARAM_ACTION, "GSS");
+                    // org.apache.hc.client5.http.utils.Base64;
                     parameters.add("gssServiceName", new String(Base64.encodeBase64(token), "UTF-8"));
 
                     // Execute the action and process the response...

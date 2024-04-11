@@ -15,6 +15,7 @@
 package com.autonomy.aci.client.services.impl;
 
 import com.autonomy.aci.client.ReflectionTestUtils;
+import com.autonomy.aci.client.services.AciErrorException;
 import com.autonomy.aci.client.services.ProcessorException;
 import com.autonomy.aci.client.transport.AciResponseInputStream;
 import com.hp.autonomy.test.xml.XmlTestUtils;
@@ -32,8 +33,7 @@ import java.lang.reflect.Field;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.*;
 
 /**
@@ -99,10 +99,10 @@ public class AbstractStAXProcessorTest {
         fail("Should've thrown a ProcessorException...");
     }
 
-    @Test(expected = ProcessorException.class)
+    @Test(expected = AciErrorException.class)
     public void testCloseCalledAfterException() throws NoSuchFieldException, XMLStreamException, IllegalAccessException {
         final AbstractStAXProcessor<?> abstractStAXProcessor = spy(AbstractStAXProcessor.class);
-        doThrow(XMLStreamException.class).when(abstractStAXProcessor).process(any(XMLStreamReader.class));
+        doThrow(AciErrorException.class).when(abstractStAXProcessor).process(any(XMLStreamReader.class));
 
         final XMLStreamReader mockXmlStreamReader = mock(XMLStreamReader.class);
 

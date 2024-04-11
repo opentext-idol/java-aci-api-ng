@@ -20,7 +20,6 @@ import com.autonomy.aci.client.services.Processor;
 import com.autonomy.aci.client.services.ProcessorException;
 import com.autonomy.aci.client.transport.AciHttpClient;
 import com.autonomy.aci.client.transport.AciHttpException;
-import com.autonomy.aci.client.transport.AciParameter;
 import com.autonomy.aci.client.transport.AciResponseInputStream;
 import com.autonomy.aci.client.transport.AciServerDetails;
 import com.autonomy.aci.client.util.ActionParameters;
@@ -29,18 +28,12 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.LinkedHashSet;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.Matchers.sameInstance;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anySetOf;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anySet;
+import static org.mockito.Mockito.*;
 
 /**
  * JUnit test class for the <tt>com.autonomy.aci.client.services.impl.AciServiceImpl</tt> class.
@@ -153,7 +146,7 @@ public class AciServiceImplTest {
     @SuppressWarnings("unchecked")
     public void testExecuteActionAciHttpException() throws AciServiceException, IOException, AciHttpException {
         final AciHttpClient mockAciHttpClient = mock(AciHttpClient.class);
-        when(mockAciHttpClient.executeAction(any(AciServerDetails.class), anySetOf(AciParameter.class))).thenThrow(AciHttpException.class);
+        when(mockAciHttpClient.executeAction(any(AciServerDetails.class), anySet())).thenThrow(AciHttpException.class);
 
         try {
             new AciServiceImpl(mockAciHttpClient, details).executeAction(details, new ActionParameters("test"), mock(Processor.class));
@@ -167,7 +160,7 @@ public class AciServiceImplTest {
     @SuppressWarnings("unchecked")
     public void testExecuteActionIOException() throws AciServiceException, IOException, AciHttpException {
         final AciHttpClient mockAciHttpClient = mock(AciHttpClient.class);
-        when(mockAciHttpClient.executeAction(any(AciServerDetails.class), anySetOf(AciParameter.class))).thenThrow(IOException.class);
+        when(mockAciHttpClient.executeAction(any(AciServerDetails.class), anySet())).thenThrow(IOException.class);
 
         try {
             new AciServiceImpl(mockAciHttpClient, details).executeAction(details, new ActionParameters("test"), mock(Processor.class));
@@ -182,7 +175,7 @@ public class AciServiceImplTest {
     public void testExecuteActionProcessorException() throws AciServiceException, IOException, AciHttpException {
         final AciHttpClient mockAciHttpClient = mock(AciHttpClient.class);
         final AciResponseInputStream mockAciResponseInputStream = mock(AciResponseInputStream.class);
-        when(mockAciHttpClient.executeAction(any(AciServerDetails.class), anySetOf(AciParameter.class))).thenReturn(mockAciResponseInputStream);
+        when(mockAciHttpClient.executeAction(any(AciServerDetails.class), anySet())).thenReturn(mockAciResponseInputStream);
 
         final Processor<?> mockProcessor = mock(Processor.class);
         when(mockProcessor.process(any(AciResponseInputStream.class))).thenThrow(ProcessorException.class);
@@ -201,7 +194,7 @@ public class AciServiceImplTest {
     public void testExecuteAction() throws AciServiceException, IOException, AciHttpException {
         final AciHttpClient mockAciHttpClient = mock(AciHttpClient.class);
         final AciResponseInputStream mockAciResponseInputStream = mock(AciResponseInputStream.class);
-        when(mockAciHttpClient.executeAction(any(AciServerDetails.class), anySetOf(AciParameter.class))).thenReturn(mockAciResponseInputStream);
+        when(mockAciHttpClient.executeAction(any(AciServerDetails.class), anySet())).thenReturn(mockAciResponseInputStream);
 
         final Processor<String> mockProcessor = mock(Processor.class);
         when(mockProcessor.process(mockAciResponseInputStream)).thenReturn("Success!");

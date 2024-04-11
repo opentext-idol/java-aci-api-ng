@@ -14,6 +14,8 @@
 
 package com.autonomy.aci.client.transport.impl;
 
+import com.autonomy.aci.client.transport.AciServerDetails;
+import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
@@ -36,6 +38,7 @@ import java.util.zip.InflaterInputStream;
  * HttpClient class {@link org.apache.http.client.protocol.ResponseContentEncoding} doesn't work as the ACI server and
  * that class have their <tt>gzip</tt> <tt>deflate</tt> handlers transposed and thus aren't compatible.
  */
+@Deprecated
 class DeflateContentEncoding extends ResponseContentEncoding {
 
     private InputStream getTranslatedInputStream(final HttpEntity entity) throws IOException {

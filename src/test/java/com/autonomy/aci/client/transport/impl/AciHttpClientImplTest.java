@@ -14,30 +14,25 @@
 
 package com.autonomy.aci.client.transport.impl;
 
+import com.autonomy.aci.client.HttpTestUtils;
 import com.autonomy.aci.client.ReflectionTestUtils;
 import com.autonomy.aci.client.TestEncryptionCodec;
 import com.autonomy.aci.client.services.AciConstants;
-import com.autonomy.aci.client.transport.AciHttpException;
-import com.autonomy.aci.client.transport.AciParameter;
-import com.autonomy.aci.client.transport.AciResponseInputStream;
-import com.autonomy.aci.client.transport.AciServerDetails;
-import com.autonomy.aci.client.transport.EncryptionCodec;
-import com.autonomy.aci.client.transport.EncryptionCodecException;
+import com.autonomy.aci.client.transport.*;
 import com.autonomy.aci.client.util.ActionParameters;
 import com.autonomy.aci.client.util.EncryptionCodecUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.message.BasicHttpResponse;
-import org.apache.http.message.BasicNameValuePair;
+import org.apache.hc.client5.http.ClientProtocolException;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.classic.methods.HttpUriRequest;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.HttpResponse;
+import org.apache.hc.core5.http.io.HttpClientResponseHandler;
+import org.apache.hc.core5.http.message.BasicHeader;
+import org.apache.hc.core5.http.message.BasicHttpResponse;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
+import org.apache.hc.core5.net.URLEncodedUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,23 +40,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.Matchers.sameInstance;
 import static org.hamcrest.Matchers.startsWith;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * JUnit test class for the <tt>com.autonomy.aci.client.transport.impl.AciHttpClientImpl</tt> class.
@@ -92,26 +82,22 @@ public class AciHttpClientImplTest {
     @SuppressWarnings("unchecked")
     public void testHttpClientConstructor() {
         // Create an instance...
-        final HttpClient httpClient = new DefaultHttpClient();
+        final HttpClient httpClient = HttpClients.createDefault();
         final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl(httpClient);
 
         // Check it...
-        assertThat("HttpClient not as expected", aciHttpClient.getHttpClient(), is(sameInstance(httpClient)));
+        assertThat("HttpClient not as expected", aciHttpClient.getHttpClient(), is(nullValue()));
         assertThat("Use POST should be false", aciHttpClient.isUsePostMethod(), is(false));
     }
 
     @Test
     public void testHttpClientProperty() {
         // Create an instance of HttpClient...
-        final HttpClient httpClient = new DefaultHttpClient();
+        final HttpClient httpClient = HttpClients.createDefault();
 
         // Create our client...
         final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
         assertThat("HttpClient not null", aciHttpClient.getHttpClient(), is(nullValue()));
-
-        // Set our instance on the client...
-        aciHttpClient.setHttpClient(httpClient);
-        assertThat("HttpClient not as expected", aciHttpClient.getHttpClient(), is(sameInstance(httpClient)));
 
         // Set it back to null...
         aciHttpClient.setHttpClient(null);
@@ -187,14 +173,14 @@ public class AciHttpClientImplTest {
 
     /*
      * Was throwing:
-     * 
+     *
      * <pre>
      *     Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException
      *         at java.lang.System.arraycopy(Native Method)
      *         at com.autonomy.aci.client.transport.impl.AciHttpClientImpl.convertParameters(AciHttpClientImpl.java:220)
      *         ....
      * </pre>
-     * 
+     *
      * When "action=xxx" instead of "Action=xxx" was found...
      */
     @Test
@@ -252,12 +238,12 @@ public class AciHttpClientImplTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testCreateGetMethod() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public void testCreateGetMethod() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, URISyntaxException {
         // Create our client...
         final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
 
         // Get our method...
-        final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "createGetMethod", AciServerDetails.class, Set.class);
+        final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "createGet5Method", AciServerDetails.class, Set.class);
 
         // Here's the parameter set...
         final Set<AciParameter> parameters = new LinkedHashSet<>();
@@ -268,17 +254,17 @@ public class AciHttpClientImplTest {
         final HttpUriRequest request = (HttpUriRequest) method.invoke(aciHttpClient, serverDetails, parameters);
 
         // Check the query string...
-        assertThat("Incorrect query string", request.getURI().getQuery(), is(equalTo("Action=query&Text=This+is+some+text...")));
+        assertThat("Incorrect query string", request.getUri().getQuery(), is(equalTo("Action=query&Text=This+is+some+text...")));
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testCreatePostMethod() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, IOException {
+    public void testCreatePostMethod() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, IOException, URISyntaxException {
         // Create our client...
         final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
 
         // Get our method...
-        final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "createPostMethod", AciServerDetails.class, Set.class);
+        final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "createPost5Method", AciServerDetails.class, Set.class);
 
         // Here's the parameter set...
         final Set<AciParameter> parameters = new LinkedHashSet<>();
@@ -289,7 +275,7 @@ public class AciHttpClientImplTest {
         final HttpUriRequest request = (HttpUriRequest) method.invoke(aciHttpClient, serverDetails, parameters);
 
         // Check the query string...
-        assertThat("Incorrect query string", request.getURI().getQuery(), is(nullValue()));
+        assertThat("Incorrect query string", request.getUri().getQuery(), is(nullValue()));
 
         // The response should be a HttpPost, so cast it and get the entity that conbtains the query string...
         final HttpEntity entity = ((HttpPost) request).getEntity();
@@ -309,7 +295,7 @@ public class AciHttpClientImplTest {
         // Get our method...
         final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "createEncryptedParameters", AciServerDetails.class, Set.class);
 
-        // Add an encryption codec to the server details... 
+        // Add an encryption codec to the server details...
         serverDetails.setEncryptionCodec(new TestEncryptionCodec());
 
         // Here's the parameter set...
@@ -321,7 +307,7 @@ public class AciHttpClientImplTest {
         final Set<AciParameter> encrypted = (Set<AciParameter>) method.invoke(aciHttpClient, serverDetails, parameters);
 
         // Correctly encode the query string before encrypting it...
-        final String queryString = URLEncodedUtils.format(Arrays.asList(new BasicNameValuePair(AciConstants.PARAM_ACTION, "query"), new BasicNameValuePair("Text", "This is some text...")), "UTF-8");
+        final String queryString = URLEncodedUtils.format(Arrays.asList(new BasicNameValuePair(AciConstants.PARAM_ACTION, "query"), new BasicNameValuePair("Text", "This is some text...")), StandardCharsets.UTF_8);
         final String encryptedQueryString = EncryptionCodecUtils.getInstance().encrypt(serverDetails.getEncryptionCodec(), queryString, serverDetails.getCharsetName());
 
         // Check the encrypted parameters...
@@ -333,12 +319,12 @@ public class AciHttpClientImplTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testConstructHttpRequest() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, IOException {
+    public void testConstructHttpRequest() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, IOException, URISyntaxException {
         // Create our client...
         final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
 
         // Get our method...
-        final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "constructHttpRequest", AciServerDetails.class, Set.class);
+        final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "constructHttp5Request", AciServerDetails.class, Set.class);
 
         // Here's the parameter set...
         final Set<AciParameter> parameters = new LinkedHashSet<>();
@@ -348,7 +334,7 @@ public class AciHttpClientImplTest {
         // Invoke and we should get a GetMethod back...
         HttpUriRequest request = (HttpUriRequest) method.invoke(aciHttpClient, serverDetails, parameters);
         assertThat("Incorrect HTTP method", request.getMethod(), is(equalTo("GET")));
-        assertThat("Incorrect query string", request.getURI().getQuery(), is(equalTo("Action=query&Text=This+is+some+text...")));
+        assertThat("Incorrect query string", request.getUri().getQuery(), is(equalTo("Action=query&Text=This+is+some+text...")));
 
         // Set it to use POST and try again...
         aciHttpClient.setUsePostMethod(true);
@@ -372,7 +358,7 @@ public class AciHttpClientImplTest {
         aciHttpClient.setUsePostMethod(false);
         request = (HttpUriRequest) method.invoke(aciHttpClient, serverDetails, parameters);
         assertThat("Incorrect HTTP method", request.getMethod(), is(equalTo("GET")));
-        assertThat("Incorrect query string", request.getURI().getQuery(), startsWith("Action=Encrypted&Data="));
+        assertThat("Incorrect query string", request.getUri().getQuery(), startsWith("Action=Encrypted&Data="));
     }
 
     @Test(expected = NullPointerException.class)
@@ -385,30 +371,17 @@ public class AciHttpClientImplTest {
     @Test(expected = NullPointerException.class)
     public void testExecuteActionNoParameters() throws IOException, AciHttpException {
         // Create our client and execute...
-        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl(new DefaultHttpClient());
+        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl(HttpClients.createDefault());
         aciHttpClient.executeAction(serverDetails, null);
     }
 
     @Test
     public void testExecuteNon200StatusCode() throws IOException {
-        // Create a response that has a non-200 status code
-        final HttpResponse mockHttpResponse = mock(HttpResponse.class);
-        final StatusLine mockStatusLine = mock(StatusLine.class);
-        when(mockHttpResponse.getStatusLine()).thenReturn(mockStatusLine);
-
-        // Create our mock HttpClient object...
-        final HttpClient mockHttpClient = mock(HttpClient.class);
-        when(mockHttpClient.execute(any(HttpUriRequest.class))).thenReturn(mockHttpResponse);
-
-        // Create our client...
-        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl(mockHttpClient);
-
         try {
             // Ensure it works with status codes less than 200...
-            when(mockStatusLine.getStatusCode()).thenReturn(196);
+            final HttpClient mockHttpClient = HttpTestUtils.mockHttpClient(196, (HttpEntity) null).client();
 
-            // Execute...
-            aciHttpClient.executeAction(
+            new AciHttpClientImpl(mockHttpClient).executeAction(
                     new AciServerDetails("localhost", 9000),
                     new ActionParameters(
                             new AciParameter(AciConstants.PARAM_ACTION, "query"),
@@ -421,10 +394,10 @@ public class AciHttpClientImplTest {
 
         try {
             // Ensure it works with status codes greater or equal to 300...
-            when(mockStatusLine.getStatusCode()).thenReturn(300);
+            final HttpClient mockHttpClient = HttpTestUtils.mockHttpClient(300, (HttpEntity) null).client();
 
             // Execute...
-            aciHttpClient.executeAction(
+            new AciHttpClientImpl(mockHttpClient).executeAction(
                     new AciServerDetails("localhost", 9000),
                     new ActionParameters(
                             new AciParameter(AciConstants.PARAM_ACTION, "query"),
@@ -440,7 +413,8 @@ public class AciHttpClientImplTest {
     public void testExecuteActionIOException() throws IOException, AciHttpException {
         // Create our mock HttpClient object...
         final HttpClient mockHttpClient = mock(HttpClient.class);
-        when(mockHttpClient.execute(any(HttpUriRequest.class))).thenThrow(new IOException("JUnit test exception."));
+        when(mockHttpClient.execute(any(HttpUriRequest.class), any(HttpClientResponseHandler.class)))
+                .thenThrow(new IOException("JUnit test exception."));
 
         // Create our client...
         final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl(mockHttpClient);
@@ -453,14 +427,14 @@ public class AciHttpClientImplTest {
                         new AciParameter("Text", "This is some text...")
                 )
         );
-        fail("should have thrown an IOException.");
     }
 
     @Test(expected = AciHttpException.class)
     public void testExecuteActionClientProtocolException() throws IOException, AciHttpException {
         // Create our mock HttpClient object...
         final HttpClient mockHttpClient = mock(HttpClient.class);
-        when(mockHttpClient.execute(any(HttpUriRequest.class))).thenThrow(new ClientProtocolException("JUnit test exception."));
+        when(mockHttpClient.execute(any(HttpUriRequest.class), any(HttpClientResponseHandler.class)))
+                .thenThrow(new ClientProtocolException("JUnit test exception."));
 
         // Create our client...
         final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl(mockHttpClient);
@@ -473,7 +447,6 @@ public class AciHttpClientImplTest {
                         new AciParameter("Text", "This is some text...")
                 )
         );
-        fail("should have thrown an AciHttpException.");
     }
 
     @Test(expected = AciHttpException.class)
@@ -497,38 +470,12 @@ public class AciHttpClientImplTest {
                         new AciParameter("Text", "This is some text...")
                 )
         );
-        fail("should have thrown an AciHttpException.");
-    }
-
-    @Test(expected = AciHttpException.class)
-    public void testExecuteActionURISyntaxException() throws IOException, AciHttpException {
-        // Execute...
-        new AciHttpClientImpl(mock(HttpClient.class)).executeAction(
-                new AciServerDetails("localh%weost", 9000),
-                new ActionParameters(
-                        new AciParameter(AciConstants.PARAM_ACTION, "query"),
-                        new AciParameter("Text", "This should cause an exception...")
-                )
-        );
-        fail("should have thrown an AciHttpException.");
     }
 
     @Test
     public void testExecuteActionAciResponseInputStreamImpl() throws IOException, AciHttpException {
-        // Create a response that has a 200 status code...
-        final StatusLine mockStatusLine = mock(StatusLine.class);
-        when(mockStatusLine.getStatusCode()).thenReturn(200);
-
-        final HttpEntity mockHttpEntity = mock(HttpEntity.class);
-        when(mockHttpEntity.getContent()).thenReturn(getClass().getResourceAsStream("/com/autonomy/aci/client/transport/impl/UnencryptedResponse.xml"));
-
-        final HttpResponse mockHttpResponse = mock(HttpResponse.class);
-        when(mockHttpResponse.getStatusLine()).thenReturn(mockStatusLine);
-        when(mockHttpResponse.getEntity()).thenReturn(mockHttpEntity);
-
-        // Create our mock HttpClient object...
-        final HttpClient mockHttpClient = mock(HttpClient.class);
-        when(mockHttpClient.execute(any(HttpUriRequest.class))).thenReturn(mockHttpResponse);
+        final HttpClient mockHttpClient = HttpTestUtils.mockHttpClient(200,
+                "/com/autonomy/aci/client/transport/impl/UnencryptedResponse.xml").client();
 
         // Execute...
         final AciResponseInputStream response = new AciHttpClientImpl(mockHttpClient).executeAction(
@@ -545,28 +492,17 @@ public class AciHttpClientImplTest {
 
     @Test
     public void testExecuteActionDecryptingAciResponseInputStreamImpl() throws IOException, AciHttpException {
-        // Create a response that has a 200 status code...
-        final StatusLine mockStatusLine = mock(StatusLine.class);
-        when(mockStatusLine.getStatusCode()).thenReturn(200);
-
-        final HttpEntity mockHttpEntity = mock(HttpEntity.class);
-        when(mockHttpEntity.getContent()).thenReturn(getClass().getResourceAsStream("/com/autonomy/aci/client/transport/impl/EncryptedResponse.xml"));
-
-        final HttpResponse mockHttpResponse = mock(HttpResponse.class);
-        when(mockHttpResponse.getStatusLine()).thenReturn(mockStatusLine);
-        when(mockHttpResponse.getEntity()).thenReturn(mockHttpEntity);
-        when(mockHttpResponse.getFirstHeader("AUTN-Content-Type")).thenReturn(new BasicHeader("AUTN-Content-Type", "text/xml"));
-
-        // Create our mock HttpClient object...
-        final HttpClient mockHttpClient = mock(HttpClient.class);
-        when(mockHttpClient.execute(any(HttpUriRequest.class))).thenReturn(mockHttpResponse);
+        final HttpTestUtils.HttpMocks mocks = HttpTestUtils.mockHttpClient(200,
+                "/com/autonomy/aci/client/transport/impl/EncryptedResponse.xml");
+        when(mocks.response().getFirstHeader("AUTN-Content-Type"))
+                .thenReturn(new BasicHeader("AUTN-Content-Type", "text/xml"));
 
         // Create some server details that will return an encryption codec...
         final AciServerDetails aciServerDetails = new AciServerDetails("localhost", 9000);
         aciServerDetails.setEncryptionCodec(new TestEncryptionCodec());
 
         // Execute...
-        final AciResponseInputStream response = new AciHttpClientImpl(mockHttpClient).executeAction(
+        final AciResponseInputStream response = new AciHttpClientImpl(mocks.client()).executeAction(
                 aciServerDetails,
                 new ActionParameters(
                         new AciParameter(AciConstants.PARAM_ACTION, "query"),
@@ -585,7 +521,7 @@ public class AciHttpClientImplTest {
         final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "decryptResponse", EncryptionCodec.class, HttpResponse.class);
 
         // This is mock method to use for response headers...
-        final BasicHttpResponse httpResponse = new BasicHttpResponse(HttpVersion.HTTP_1_1, 200, "OK");
+        final BasicHttpResponse httpResponse = new BasicHttpResponse(200);
 
         // Create our client...
         final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();

@@ -17,9 +17,9 @@ package com.autonomy.aci.client.transport;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.entity.mime.content.StringBody;
+import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
+import org.apache.hc.client5.http.entity.mime.StringBody;
+import org.apache.hc.core5.http.ContentType;
 
 import java.io.Serializable;
 import java.nio.charset.Charset;
@@ -147,6 +147,13 @@ public class AciParameter implements Serializable, ActionParameter<String> {
     @Override
     public void addToEntity(final MultipartEntityBuilder builder, final Charset charset) {
         builder.addPart(name, new StringBody(value, ContentType.create("text/plain", charset)));
+    }
+
+    @Override
+    @Deprecated
+    public void addToEntity(final org.apache.http.entity.mime.MultipartEntityBuilder builder, final Charset charset) {
+        builder.addPart(name, new org.apache.http.entity.mime.content.StringBody(value,
+                org.apache.http.entity.ContentType.create("text/plain", charset)));
     }
 
     @Override

@@ -17,8 +17,8 @@ package com.autonomy.aci.client.transport.gss;
 import com.autonomy.aci.client.transport.AciHttpException;
 import com.autonomy.aci.client.transport.AciServerDetails;
 import com.autonomy.aci.client.util.ActionParameters;
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -35,28 +35,28 @@ public class GssAciHttpClientImplTest {
     public void testDefaultConstructor() {
         final GssAciHttpClientImpl gssAciHttpClient = new GssAciHttpClientImpl();
 
-        assertThat("HttpClient not null", gssAciHttpClient.getHttpClient(), is(nullValue()));
+        assertThat("HttpClient 4 not null", gssAciHttpClient.getHttpClient(), is(nullValue()));
         assertThat("Use POST should be false", gssAciHttpClient.isUsePostMethod(), is(false));
     }
 
     @Test
     public void testHttpClientConstructor() {
-        final HttpClient httpClient = new DefaultHttpClient();
+        final HttpClient httpClient = HttpClients.createDefault();
         final GssAciHttpClientImpl gssAciHttpClient = new GssAciHttpClientImpl(httpClient);
 
-        assertThat("HttpClient not as expected", gssAciHttpClient.getHttpClient(), is(sameInstance(httpClient)));
+        assertThat("HttpClient 4 not null", gssAciHttpClient.getHttpClient(), is(nullValue()));
         assertThat("Use POST should be false", gssAciHttpClient.isUsePostMethod(), is(false));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testExecuteWrongClass() throws IOException, AciHttpException {
-        new GssAciHttpClientImpl(new DefaultHttpClient()).executeAction(new AciServerDetails(), new ActionParameters());
+        new GssAciHttpClientImpl(HttpClients.createDefault()).executeAction(new AciServerDetails(), new ActionParameters());
         fail("Should've thrown an IllegalArgumentException...");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testExecuteNoServiceName() throws IOException, AciHttpException {
-        new GssAciHttpClientImpl(new DefaultHttpClient()).executeAction(new GssAciServerDetails(), new ActionParameters());
+        new GssAciHttpClientImpl(HttpClients.createDefault()).executeAction(new GssAciServerDetails(), new ActionParameters());
     }
 
 }

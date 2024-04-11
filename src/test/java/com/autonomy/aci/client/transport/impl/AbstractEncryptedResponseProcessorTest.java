@@ -33,7 +33,6 @@ import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 /**

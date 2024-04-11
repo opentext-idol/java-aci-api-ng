@@ -19,16 +19,15 @@ import com.autonomy.aci.client.services.ProcessorException;
 import com.autonomy.aci.client.transport.AciResponseInputStream;
 import com.autonomy.aci.client.transport.impl.AciResponseInputStreamImpl;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.http.HttpVersion;
-import org.apache.http.entity.InputStreamEntity;
-import org.apache.http.message.BasicHttpResponse;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.io.entity.InputStreamEntity;
+import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.FactoryConfigurationError;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
 import static org.hamcrest.Matchers.*;
@@ -57,8 +56,8 @@ public class DocumentProcessorTest {
     public void testConvertACIResponseToDOMSAXException() throws AciErrorException, IOException {
         try {
             // Setup with a proper XML response file...
-            final BasicHttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1, 200, "OK");
-            response.setEntity(new InputStreamEntity(getClass().getResourceAsStream("/MalformedAciException.xml"), -1));
+            final ClassicHttpResponse response = new BasicClassicHttpResponse(200);
+            response.setEntity(new InputStreamEntity(getClass().getResourceAsStream("/MalformedAciException.xml"), ContentType.APPLICATION_XML));
 
             // Set the AciResponseInputStream...
             final AciResponseInputStream stream = new AciResponseInputStreamImpl(response);
@@ -92,8 +91,8 @@ public class DocumentProcessorTest {
     public void testCheckACIResponseForErrorWithErrorResponse() throws IOException, ProcessorException {
         try {
             // Setup with a error response file...
-            final BasicHttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1, 200, "OK");
-            response.setEntity(new InputStreamEntity(getClass().getResourceAsStream("/AciException-1.xml"), -1));
+            final ClassicHttpResponse response = new BasicClassicHttpResponse(200);
+            response.setEntity(new InputStreamEntity(getClass().getResourceAsStream("/AciException-1.xml"), ContentType.APPLICATION_XML));
 
             // Set the AciResponseInputStream...
             final AciResponseInputStream stream = new AciResponseInputStreamImpl(response);
@@ -115,8 +114,8 @@ public class DocumentProcessorTest {
     public void testCheckACIResponseForErrorWithBadDateErrorResponse() throws IOException, ProcessorException {
         try {
             // Setup with a error response file...
-            final BasicHttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1, 200, "OK");
-            response.setEntity(new InputStreamEntity(getClass().getResourceAsStream("/AciException-2.xml"), -1));
+            final ClassicHttpResponse response = new BasicClassicHttpResponse(200);
+            response.setEntity(new InputStreamEntity(getClass().getResourceAsStream("/AciException-2.xml"), ContentType.APPLICATION_XML));
 
             // Set the AciResponseInputStream...
             final AciResponseInputStream stream = new AciResponseInputStreamImpl(response);
@@ -132,8 +131,8 @@ public class DocumentProcessorTest {
     @Test
     public void testProcessor() throws IOException, ProcessorException, AciErrorException {
         // Setup with a error response file...
-        final BasicHttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1, 200, "OK");
-        response.setEntity(new InputStreamEntity(getClass().getResourceAsStream("/GetVersion.xml"), -1));
+        final ClassicHttpResponse response = new BasicClassicHttpResponse(200);
+        response.setEntity(new InputStreamEntity(getClass().getResourceAsStream("/GetVersion.xml"), ContentType.APPLICATION_XML));
 
         // Set the AciResponseInputStream...
         final AciResponseInputStream stream = new AciResponseInputStreamImpl(response);

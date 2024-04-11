@@ -24,13 +24,13 @@ with the host and port for an ACI server, or the executeAction method must be ca
         new AciServerDetails(host, port)
     );
 
-The AciParameters class can be used to construct a request:
+The ActionParameters class can be used to construct a request:
 
-    AciParameters parameters = new AciParameters("QUERY");
+    ActionParameters parameters = new ActionParameters("QUERY");
     parameters.add("text", "*");
     parameters.add("totalResults", true);
 
-To execute this request, the AciService executeAction method should be called with the AciParameters and a Processor to
+To execute this request, the AciService executeAction method should be called with the ActionParameters and a Processor to
 consume the response. In the following example, the included DocumentProcessor is used to convert the XML response into a DOM
 document which can then be inspected either directly or using XPath. 
 

@@ -30,9 +30,6 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-/**
- * Junit tests for <tt>com.autonomy.aci.client.util.AciParameters</tt>.
- */
 @SuppressWarnings("deprecation")
 public class ActionParametersTest {
 
@@ -467,7 +464,7 @@ public class ActionParametersTest {
                 new AciParameter("print", "all")
         ));
 
-        // Converting an AciParameters should just return it unchanged
+        // Converting an ActionParameters should just return it unchanged
         assertThat("Not the same", ActionParameters.convert(aciParameters), sameInstance(aciParameters));
         assertThat("Wrong size", aciParameters.size(), is(3));
     }

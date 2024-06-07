@@ -32,12 +32,12 @@ import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 
 /**
- * JUnit test class for the <tt>com.autonomy.aci.client.transport.impl.AciResponseInputStreamTest</tt> class.
+ * JUnit test class for the <code>com.autonomy.aci.client.transport.impl.AciResponseInputStreamTest</code> class.
  */
 public class AciResponseInputStreamTest {
 
     /**
-     * The mock <tt>HttpMethod</tt> to use for testing.
+     * The mock <code>HttpMethod</code> to use for testing.
      */
     private ClassicHttpResponse httpResponse;
 

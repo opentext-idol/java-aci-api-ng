@@ -27,7 +27,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 /**
- * JUnit test class for <tt>com.autonomy.aci.client.util.transport.AbstractEncryptionCodec</tt> class.
+ * JUnit test class for <code>com.autonomy.aci.client.util.transport.AbstractEncryptionCodec</code> class.
  */
 public class AbstractEncryptionCodecTest extends AbstractEncryptionCodec {
 

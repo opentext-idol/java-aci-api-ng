@@ -18,8 +18,8 @@ import java.io.FilterInputStream;
 import java.io.InputStream;
 
 /**
- * Provides a wrapper around the actual ACI response <tt>InputStream</tt> and propagates the content type of the HTTP
- * response. Also allows <tt>InputStream</tt> methods to be overridden, like {@link #close} so that HTTP resources can
+ * Provides a wrapper around the actual ACI response <code>InputStream</code> and propagates the content type of the HTTP
+ * response. Also allows <code>InputStream</code> methods to be overridden, like {@link #close} so that HTTP resources can
  * be released when the stream is closed.
  */
 public abstract class AciResponseInputStream extends FilterInputStream {
@@ -47,8 +47,8 @@ public abstract class AciResponseInputStream extends FilterInputStream {
     public abstract long getContentLength();
 
     /**
-     * Return the content type of the response. Most likely to be <tt>text/xml</tt>, but could be <tt>image/jpeg</tt>,
-     * for example, if the response is from a <tt>ClusterServe2DMap</tt> action.
+     * Return the content type of the response. Most likely to be <code>text/xml</code>, but could be <code>image/jpeg</code>,
+     * for example, if the response is from a <code>ClusterServe2DMap</code> action.
      * @return The content type of the response
      */
     public abstract String getContentType();

@@ -36,12 +36,12 @@ import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.Mockito.*;
 
 /**
- * JUnit test class for the <tt>com.autonomy.aci.client.services.impl.AciServiceImpl</tt> class.
+ * JUnit test class for the <code>com.autonomy.aci.client.services.impl.AciServiceImpl</code> class.
  */
 public class AciServiceImplTest {
 
     /**
-     * <tt>AciServerDetails</tt> instance to use...
+     * <code>AciServerDetails</code> instance to use...
      */
     private final AciServerDetails details = new AciServerDetails("localhost", 9000);
 

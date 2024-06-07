@@ -37,7 +37,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 
 /**
- * JUnit test for <tt>com.autonomy.aci.client.services.impl.DocumentProcessor</tt>.
+ * JUnit test for <code>com.autonomy.aci.client.services.impl.DocumentProcessor</code>.
  */
 public class DocumentProcessorTest {
 

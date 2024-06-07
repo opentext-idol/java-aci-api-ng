@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * This <tt>AciResponseInputStream</tt> implementation decrypts ACI responses from actions that have been sent with the
+ * This <code>AciResponseInputStream</code> implementation decrypts ACI responses from actions that have been sent with the
  * {@code EncryptResponse} parameter set to {@code true}.
  */
 public class DecryptingAciResponseInputStreamImpl extends AciResponseInputStreamImpl {
@@ -48,7 +48,7 @@ public class DecryptingAciResponseInputStreamImpl extends AciResponseInputStream
 
     /**
      * Creates a new instance of DecryptingAciResponseInputStreamImpl.
-     * @param serverDetails The <tt>AciServerDetails</tt> that contains the <tt>EncryptionCodec</tt> that is being used
+     * @param serverDetails The <code>AciServerDetails</code> that contains the <code>EncryptionCodec</code> that is being used
      *                      to decrypt the ACI response and the character encoding being used on this ACI request/response
      * @param response      An {@code HttpResponse} that contains the ACI response as an {@code InputStream}
      * @throws IOException If an I/O error occurs
@@ -63,7 +63,7 @@ public class DecryptingAciResponseInputStreamImpl extends AciResponseInputStream
 
     /**
      * Creates a new instance of DecryptingAciResponseInputStreamImpl.
-     * @param serverDetails The <tt>AciServerDetails</tt> that contains the <tt>EncryptionCodec</tt> that is being used
+     * @param serverDetails The <code>AciServerDetails</code> that contains the <code>EncryptionCodec</code> that is being used
      *                      to decrypt the ACI response and the character encoding being used on this ACI request/response
      * @param response      An {@code HttpResponse} that contains the ACI response as an {@code InputStream}
      * @throws IOException If an I/O error occurs
@@ -116,9 +116,9 @@ public class DecryptingAciResponseInputStreamImpl extends AciResponseInputStream
     }
 
     /**
-     * Return the content type of the response. Most likely to be <tt>text/xml</tt>, but could be <tt>image/jpeg</tt> if
-     * the response if from a <tt>ClusterServe2DMap</tt> action, for example.
-     * @return The content type of the response, if no Content-Type header was found, then <tt>null</tt> is returned
+     * Return the content type of the response. Most likely to be <code>text/xml</code>, but could be <code>image/jpeg</code> if
+     * the response if from a <code>ClusterServe2DMap</code> action, for example.
+     * @return The content type of the response, if no Content-Type header was found, then <code>null</code> is returned
      */
     @Override
     public String getContentType() {

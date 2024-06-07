@@ -36,13 +36,13 @@ import java.io.Serializable;
  *   action=encrypted&amp;data=&lt;base64(encrypt(deflate(original query string)))&gt;
  * </pre>
  * When IDOL sends the response back, the {@code AciHttpClient} takes the contents of the
- * <tt>/autnresponse/responsedata/autn:encrypted</tt> element and applies the steps to encrypt in reverse, i.e. base64
+ * <code>/autnresponse/responsedata/autn:encrypted</code> element and applies the steps to encrypt in reverse, i.e. base64
  * decode, decrypt and inflate. This will then result in a {@code byte[]} that contains the actual ACI response to be
  * sent back via the {@code AciService}.
  * <p>
  * The reason the codec works with byte arrays and not Strings, is due to IDOL Server having a number of actions that
- * return binary data, i.e. <tt>action=ClusterServe2DMap</tt>. There is a utility class {@link
- * com.autonomy.aci.client.util.EncryptionCodecUtils} that has methods to make it easier to encrypt/decrypt <tt>String</tt>
+ * return binary data, i.e. <code>action=ClusterServe2DMap</code>. There is a utility class {@link
+ * com.autonomy.aci.client.util.EncryptionCodecUtils} that has methods to make it easier to encrypt/decrypt <code>String</code>
  * objects.
  */
 public interface EncryptionCodec extends Serializable {

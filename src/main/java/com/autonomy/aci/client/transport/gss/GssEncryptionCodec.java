@@ -25,8 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This <tt>EncryptionCodec</tt> uses the GSS-API to do the encryption/decryption via the <tt>wrap</tt> and
- * <tt>unwrap</tt> methods. While this class is <tt>Serializable</tt> the <tt>GSSContext</tt> that is used, is marked
+ * This <code>EncryptionCodec</code> uses the GSS-API to do the encryption/decryption via the <code>wrap</code> and
+ * <code>unwrap</code> methods. While this class is <code>Serializable</code> the <code>GSSContext</code> that is used, is marked
  * as transient, so upon deserialization, this codec will not be usable and a new context must be set.
  */
 class GssEncryptionCodec extends AbstractEncryptionCodec {

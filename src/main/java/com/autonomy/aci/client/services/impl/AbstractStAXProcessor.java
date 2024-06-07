@@ -33,11 +33,11 @@ import java.io.ObjectInputStream;
 import java.util.Locale;
 
 /**
- * Abstract <tt>Processor</tt> that should be used by all processors wanting to process the ACI response via the
+ * Abstract <code>Processor</code> that should be used by all processors wanting to process the ACI response via the
  * <a href="http://jcp.org/en/jsr/detail?id=173">JSR173</a> StAX API. Some of the properties that can be set on the
  * {@link XMLInputFactory} are exposed, so that the implementation can be modified to suit the required situation.
- * For example, setting {@link #namespaceAware} and {@link #validating} to <tt>false</tt> should theoretically speed
- * up parsing, especially as ACI responses shouldn't require either to be parsed, (both are <tt>false</tt> by default
+ * For example, setting {@link #namespaceAware} and {@link #validating} to <code>false</code> should theoretically speed
+ * up parsing, especially as ACI responses shouldn't require either to be parsed, (both are <code>false</code> by default
  * for this very reason). When a subclass is created, this class checks to see if any of the properties have been set
  * as system properties and if they have it sets the corresponding property to this value, these values can then be
  * overridden by using the appropriate setter method.
@@ -49,7 +49,7 @@ public abstract class AbstractStAXProcessor<T> implements StAXProcessor<T> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractStAXProcessor.class);
 
     /**
-     * Holds the factory for creating <tt>XMLStreamReader</tt>'s...
+     * Holds the factory for creating <code>XMLStreamReader</code>'s...
      */
     private transient XMLInputFactory xmlInputFactory;
 
@@ -96,12 +96,12 @@ public abstract class AbstractStAXProcessor<T> implements StAXProcessor<T> {
      * The properties are set to the following defaults if they are not specified as system properties:
      * <table summary="">
      * <tr><th>Property</th><th>Default</th></tr>
-     * <tr><td>XMLInputFactory.IS_NAMESPACE_AWARE</td><td><tt>false</tt></td></tr>
-     * <tr><td>XMLInputFactory.IS_VALIDATING<tt>false</tt></td></tr>
-     * <tr><td>XMLInputFactory.IS_COALESCING<tt>false</tt></td></tr>
-     * <tr><td>XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES<tt>true</tt></td></tr>
-     * <tr><td>XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES<tt>false</tt></td></tr>
-     * <tr><td>XMLInputFactory.SUPPORT_DTD<tt>true</tt></td></tr>
+     * <tr><td>XMLInputFactory.IS_NAMESPACE_AWARE</td><td><code>false</code></td></tr>
+     * <tr><td>XMLInputFactory.IS_VALIDATING<code>false</code></td></tr>
+     * <tr><td>XMLInputFactory.IS_COALESCING<code>false</code></td></tr>
+     * <tr><td>XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES<code>true</code></td></tr>
+     * <tr><td>XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES<code>false</code></td></tr>
+     * <tr><td>XMLInputFactory.SUPPORT_DTD<code>true</code></td></tr>
      * </table>
      */
     protected AbstractStAXProcessor() {
@@ -127,10 +127,10 @@ public abstract class AbstractStAXProcessor<T> implements StAXProcessor<T> {
 
     /**
      * This method firstly checks that the content type of the response is text based and can be parsed. If so, it
-     * converts the <tt>AciResponseInputStream</tt> into a StAX <tt>XMLStreamReader</tt> and calls the the {@link
+     * converts the <code>AciResponseInputStream</code> into a StAX <code>XMLStreamReader</code> and calls the the {@link
      * #process(javax.xml.stream.XMLStreamReader)} method that should be implemented in a subclass to do all the work.
      * @param aciResponseInputStream The ACI response to process
-     * @return An object of type <tt>T</tt>
+     * @return An object of type <code>T</code>
      * @throws AciErrorException  If the ACI response was an error response
      * @throws ProcessorException If an error occurred during the processing of the IDOL response
      */
@@ -171,9 +171,9 @@ public abstract class AbstractStAXProcessor<T> implements StAXProcessor<T> {
     }
 
     /**
-     * Process the ACI response input into an object of type <tt>T</tt>.
+     * Process the ACI response input into an object of type <code>T</code>.
      * @param xmlStreamReader The ACI response to process
-     * @return An object of type <tt>T</tt>
+     * @return An object of type <code>T</code>
      * @throws AciErrorException  If the ACI response was an error response
      * @throws ProcessorException If an error occurred during the processing of the IDOL response
      */
@@ -181,9 +181,9 @@ public abstract class AbstractStAXProcessor<T> implements StAXProcessor<T> {
 
     /**
      * Reads from the XML stream and tries to determine if the ACI response contains an error or not. The stream is left
-     * at the end of the body content of the <tt>/autnresponse/response</tt> element, if one could be found.
+     * at the end of the body content of the <code>/autnresponse/response</code> element, if one could be found.
      * @param xmlStreamReader The response to process
-     * @return <tt>true</tt> if the response contains an error, <tt>false</tt> otherwise
+     * @return <code>true</code> if the response contains an error, <code>false</code> otherwise
      * @throws javax.xml.stream.XMLStreamException If there was a problem reading the IDOL Server response.
      */
     protected boolean isErrorResponse(final XMLStreamReader xmlStreamReader) throws XMLStreamException {
@@ -239,7 +239,7 @@ public abstract class AbstractStAXProcessor<T> implements StAXProcessor<T> {
     /**
      * Move the cursor forward through the XML stream to the next start or end element, which ever comes first.
      * @param xmlStreamReader The XML stream to use
-     * @return The type of event forwarded to, i.e. <tt>XMLEvent.START_ELEMENT</tt> or <tt>XMLEvent.END_ELEMENT</tt>.
+     * @return The type of event forwarded to, i.e. <code>XMLEvent.START_ELEMENT</code> or <code>XMLEvent.END_ELEMENT</code>.
      * @throws XMLStreamException If there was an error using the stream
      */
     protected int forwardToNextStartOrEndElement(final XMLStreamReader xmlStreamReader) throws XMLStreamException {
@@ -253,10 +253,10 @@ public abstract class AbstractStAXProcessor<T> implements StAXProcessor<T> {
     }
 
     /**
-     * Forwards through the stream looking for the an element with <tt>elementName</tt>
+     * Forwards through the stream looking for the an element with <code>elementName</code>
      * @param elementName     The name of the element to find.
      * @param xmlStreamReader The stream to forward through
-     * @throws XMLStreamException If there was an error using the stream, or if no element with <tt>elementName</tt>
+     * @throws XMLStreamException If there was an error using the stream, or if no element with <code>elementName</code>
      *                            could be found
      */
     protected void forwardToNamedStartElement(final String elementName, final XMLStreamReader xmlStreamReader) throws XMLStreamException {

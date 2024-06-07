@@ -37,7 +37,7 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.*;
 
 /**
- * JUnit tests for <tt>com.autonomy.aci.client.services.impl.BinaryResponseProcessor</tt>.
+ * JUnit tests for <code>com.autonomy.aci.client.services.impl.BinaryResponseProcessor</code>.
  */
 public class BinaryResponseProcessorTest {
 

@@ -24,6 +24,8 @@ import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
 import org.apache.hc.core5.http.io.SocketConfig;
 import org.apache.hc.core5.util.TimeValue;
 import org.apache.hc.core5.util.Timeout;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,17 +37,17 @@ import org.slf4j.LoggerFactory;
  * <p>
  * Defaults for all the properties that can be configured are:
  * <table border="0" style="margin-left: 2em;" summary="">
- * <tr><td><tt>maxTotalConnections</tt></td><td>&#160;</td><td>20</td></tr>
- * <tr><td><tt>maxConnectionsPerRoute</tt></td><td>&#160;</td><td>4</tr>
- * <tr><td><tt>connectionTimeout</tt></td><td>&#160;</td><td>7000</tr>
- * <tr><td><tt>linger</tt></td><td>&#160;</td><td>-1</tr>
- * <tr><td><tt>socketBufferSize</tt></td><td>&#160;</td><td>8192</tr>
- * <tr><td><tt>soKeepAlive</tt></td><td>&#160;</td><td>true</tr>
- * <tr><td><tt>soReuseAddr</tt></td><td>&#160;</td><td>true</tr>
- * <tr><td><tt>soTimeout</tt></td><td>&#160;</td><td>10000</tr>
- * <tr><td><tt>staleCheckingEnabled</tt></td><td>&#160;</td><td>false</tr>
- * <tr><td><tt>tcpNoDelay</tt></td><td>&#160;</td><td>true</tr>
- * <tr><td><tt>useCompression</tt></td><td>&#160;</td><td>true</tr>
+ * <tr><td><code>maxTotalConnections</code></td><td>&#160;</td><td>20</td></tr>
+ * <tr><td><code>maxConnectionsPerRoute</code></td><td>&#160;</td><td>4</tr>
+ * <tr><td><code>connectionTimeout</code></td><td>&#160;</td><td>7000</tr>
+ * <tr><td><code>linger</code></td><td>&#160;</td><td>-1</tr>
+ * <tr><td><code>socketBufferSize</code></td><td>&#160;</td><td>8192</tr>
+ * <tr><td><code>soKeepAlive</code></td><td>&#160;</td><td>true</tr>
+ * <tr><td><code>soReuseAddr</code></td><td>&#160;</td><td>true</tr>
+ * <tr><td><code>soTimeout</code></td><td>&#160;</td><td>10000</tr>
+ * <tr><td><code>staleCheckingEnabled</code></td><td>&#160;</td><td>false</tr>
+ * <tr><td><code>tcpNoDelay</code></td><td>&#160;</td><td>true</tr>
+ * <tr><td><code>useCompression</code></td><td>&#160;</td><td>true</tr>
  * </table>
  * <p>
  * If you are using something like Spring's IoC container, you can use this class to configure your
@@ -94,8 +96,8 @@ public class HttpClient5Factory {
     private boolean useCompression = true;
 
     /**
-     * Creates an instance of <tt>DefaultHttpClient</tt> with a <tt>ThreadSafeClientConnManager</tt>.
-     * @return an implementation of the <tt>HttpClient</tt> interface.
+     * Creates an instance of <code>DefaultHttpClient</code> with a <code>ThreadSafeClientConnManager</code>.
+     * @return an implementation of the <code>HttpClient</code> interface.
      */
     public HttpClient createInstance() {
         LOGGER.debug("Creating a new instance of DefaultHttpClient with configuration -> {}", toString());
@@ -153,7 +155,7 @@ public class HttpClient5Factory {
 
     /**
      * Defines the maximum number of connections in total. This limit is interpreted by client connection managers and
-     * applies to individual manager instances. The default is <tt>10</tt>.
+     * applies to individual manager instances. The default is <code>10</code>.
      * @param maxTotalConnections The maximum number of connections to set
      */
     public void setMaxTotalConnections(final int maxTotalConnections) {
@@ -166,7 +168,7 @@ public class HttpClient5Factory {
 
     /**
      * Defines the maximum number of connections per route. This limit is interpreted by client connection managers and
-     * applies to individual manager instances. The default is <tt>4</tt>.
+     * applies to individual manager instances. The default is <code>4</code>.
      * @param maxConnectionsPerRoute The maximum number of connections per route to set
      */
     public void setMaxConnectionsPerRoute(final int maxConnectionsPerRoute) {
@@ -179,7 +181,7 @@ public class HttpClient5Factory {
 
     /**
      * Determines the timeout in milliseconds until a connection is established. A timeout value of zero is interpreted
-     * as an infinite timeout. The default is <tt>7000</tt>ms (7s).
+     * as an infinite timeout. The default is <code>7000</code>ms (7s).
      * @param connectionTimeout The timeout in milliseconds to set
      */
     public void setConnectionTimeout(final int connectionTimeout) {
@@ -191,9 +193,9 @@ public class HttpClient5Factory {
     }
 
     /**
-     * Sets <tt>SO_LINGER</tt> with the specified linger time in seconds. The maximum timeout value is platform
-     * specific. Value <tt>0</tt> implies that the option is disabled. Value <tt>-1</tt> implies that the JRE default
-     * is used. The setting only affects the socket close operation. The default is <tt>-1</tt>.
+     * Sets <code>SO_LINGER</code> with the specified linger time in seconds. The maximum timeout value is platform
+     * specific. Value <code>0</code> implies that the option is disabled. Value <code>-1</code> implies that the JRE default
+     * is used. The setting only affects the socket close operation. The default is <code>-1</code>.
      * @param linger The specified linger time in seconds to set
      */
     public void setLinger(final int linger) {
@@ -206,7 +208,7 @@ public class HttpClient5Factory {
 
     /**
      * Determines the size of the internal socket buffer used to buffer data while receiving / transmitting HTTP
-     * messages. The default is <tt>8192</tt> (8 * 1024).
+     * messages. The default is <code>8192</code> (8 * 1024).
      * @param socketBufferSize The size of the internal socket buffer to use
      */
     public void setSocketBufferSize(final int socketBufferSize) {
@@ -246,10 +248,10 @@ public class HttpClient5Factory {
     }
 
     /**
-     * Defines the socket timeout (<tt>SO_TIMEOUT</tt>) in milliseconds, which is the timeout for waiting for data or,
+     * Defines the socket timeout (<code>SO_TIMEOUT</code>) in milliseconds, which is the timeout for waiting for data or,
      * put differently, a maximum period inactivity between two consecutive data packets). A timeout value of zero is
-     * interpreted as an infinite timeout. The default is <tt>10000</tt> (10s).
-     * @param soTimeout The socket timeout (<tt>SO_TIMEOUT</tt>) in milliseconds to set
+     * interpreted as an infinite timeout. The default is <code>10000</code> (10s).
+     * @param soTimeout The socket timeout (<code>SO_TIMEOUT</code>) in milliseconds to set
      */
     public void setSoTimeout(final int soTimeout) {
         this.soTimeout = soTimeout;
@@ -262,8 +264,8 @@ public class HttpClient5Factory {
     /**
      * Determines whether stale connection check is to be used. The stale connection check can cause up to 30
      * millisecond overhead per request and should be used only when appropriate. For performance critical operations
-     * this check should be disabled. The default is <tt>false</tt>.
-     * @param staleCheckingEnabled <tt>true</tt> if stale connection checking is to be used, <tt>false</tt> otherwise
+     * this check should be disabled. The default is <code>false</code>.
+     * @param staleCheckingEnabled <code>true</code> if stale connection checking is to be used, <code>false</code> otherwise
      */
     public void setStaleCheckingEnabled(final boolean staleCheckingEnabled) {
         this.staleCheckingEnabled = staleCheckingEnabled;
@@ -276,9 +278,9 @@ public class HttpClient5Factory {
     /**
      * Determines whether Nagle's algorithm is to be used. The Nagle's algorithm tries to conserve bandwidth by
      * minimizing the number of segments that are sent. When applications wish to decrease network latency and increase
-     * performance, they can disable Nagle's algorithm (that is enable <tt>TCP_NODELAY</tt>). Data will be sent earlier,
-     * at the cost of an increase in bandwidth consumption. The default is <tt>true</tt>.
-     * @param tcpNoDelay <tt>false</tt> to use Nagle's algorithm, <tt>true</tt> to enable <tt>TCP_NODELAY</tt>
+     * performance, they can disable Nagle's algorithm (that is enable <code>TCP_NODELAY</code>). Data will be sent earlier,
+     * at the cost of an increase in bandwidth consumption. The default is <code>true</code>.
+     * @param tcpNoDelay <code>false</code> to use Nagle's algorithm, <code>true</code> to enable <code>TCP_NODELAY</code>
      */
     public void setTcpNoDelay(final boolean tcpNoDelay) {
         this.tcpNoDelay = tcpNoDelay;
@@ -289,9 +291,9 @@ public class HttpClient5Factory {
     }
 
     /**
-     * Configures the {@link org.apache.http.client.HttpClient} to send the <tt>Accept-Encoding: gzip,deflate</tt>
+     * Configures the {@link org.apache.http.client.HttpClient} to send the <code>Accept-Encoding: gzip,deflate</code>
      * header and thus handle compressed responses from the ACI server.
-     * @param useCompression <tt>true</tt> to set the <tt>Accept-Encoding</tt> header, <tt>false</tt> to not set it
+     * @param useCompression <code>true</code> to set the <code>Accept-Encoding</code> header, <code>false</code> to not set it
      * @since 4.1
      */
     public void setUseCompression(final boolean useCompression) {

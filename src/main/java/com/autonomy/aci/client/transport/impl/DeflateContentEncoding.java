@@ -30,7 +30,7 @@ import java.util.zip.InflaterInputStream;
 /**
  * This class has to be used when compression is enabled while communicating with an ACI server. The use of the default
  * HttpClient class {@link org.apache.http.client.protocol.ResponseContentEncoding} doesn't work as the ACI server and
- * that class have their <tt>gzip</tt> <tt>deflate</tt> handlers transposed and thus aren't compatible.
+ * that class have their <code>gzip</code> <code>deflate</code> handlers transposed and thus aren't compatible.
  */
 @Deprecated
 class DeflateContentEncoding extends ResponseContentEncoding {

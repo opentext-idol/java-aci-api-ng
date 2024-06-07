@@ -25,25 +25,25 @@ import java.util.Set;
 public interface AciService {
 
     /**
-     * Executes an ACI action and processes the response with the supplied <tt>Processor</tt>.
+     * Executes an ACI action and processes the response with the supplied <code>Processor</code>.
      * @param <T> Return type.
      * @param parameters The parameters to use with the ACI command. This <strong>should</strong> include an {@code
      *                   Action=<command>} parameter
-     * @param processor  The <tt>Processor</tt> to use for converting the response stream into an object
-     * @return The ACI response encoded as an object of type <tt>T</tt>
+     * @param processor  The <code>Processor</code> to use for converting the response stream into an object
+     * @return The ACI response encoded as an object of type <code>T</code>
      * @throws AciServiceException If an error occurred during the communication with the ACI Server, processing the
      *                             response or if the response contained an error
      */
     <T> T executeAction(Set<? extends ActionParameter<?>> parameters, Processor<T> processor);
 
     /**
-     * Executes an ACI action and processes the response with the supplied <tt>Processor</tt>.
+     * Executes an ACI action and processes the response with the supplied <code>Processor</code>.
      * @param <T> Return type.
      * @param serverDetails The connection details of the ACI Server to execute the action on
      * @param parameters    The parameters to use with the ACI command. This <strong>should</strong> include an {@code
      *                      Action=<command>} parameter
-     * @param processor     The <tt>Processor</tt> to use for converting the response stream into an object
-     * @return The ACI response encoded as an object of type <tt>T</tt>
+     * @param processor     The <code>Processor</code> to use for converting the response stream into an object
+     * @return The ACI response encoded as an object of type <code>T</code>
      * @throws AciServiceException If an error occurred during the communication with
      *                             the ACI Server, processing the response or if the response contained an error
      */

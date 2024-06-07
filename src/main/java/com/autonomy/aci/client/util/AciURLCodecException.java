@@ -15,7 +15,7 @@
 package com.autonomy.aci.client.util;
 
 /**
- * Thrown when the <tt>AciURLCodec</tt> has encountered a failure condition during an encode or decode.
+ * Thrown when the <code>AciURLCodec</code> has encountered a failure condition during an encode or decode.
  */
 public class AciURLCodecException extends RuntimeException {
 

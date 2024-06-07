@@ -116,9 +116,9 @@ public class AciResponseInputStreamImpl extends AciResponseInputStream {
     }
 
     /**
-     * Return the content type of the response. Most likely to be <tt>text/xml</tt>, but could be <tt>image/jpeg</tt> if
-     * the response if from a <tt>ClusterServe2DMap</tt>, for example.
-     * @return The content type of the response, if no Content-Type header was found, then <tt>null</tt> is returned
+     * Return the content type of the response. Most likely to be <code>text/xml</code>, but could be <code>image/jpeg</code> if
+     * the response if from a <code>ClusterServe2DMap</code>, for example.
+     * @return The content type of the response, if no Content-Type header was found, then <code>null</code> is returned
      */
     @Override
     public String getContentType() {

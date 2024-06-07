@@ -25,10 +25,10 @@ import java.io.IOException;
 import java.util.Set;
 
 /**
- * Implementation of the <tt>AciService</tt> interface.
+ * Implementation of the <code>AciService</code> interface.
  * <p>
- * This implementation of the <tt>AciService</tt> interface does no configuration of the <tt>AciHttpClient</tt> or
- * <tt>AciServerDetails</tt> objects that it uses. It expects all the configuration to have been done by the user before
+ * This implementation of the <code>AciService</code> interface does no configuration of the <code>AciHttpClient</code> or
+ * <code>AciServerDetails</code> objects that it uses. It expects all the configuration to have been done by the user before
  * passing them to this object. This configuration can be done in normal code, or via an IoC container like Spring.
  */
 public class AciServiceImpl implements AciService {
@@ -62,7 +62,7 @@ public class AciServiceImpl implements AciService {
 
     /**
      * Creates a new instance of AciServiceImpl.
-     * @param aciHttpClient The configured <tt>AciHttpClient</tt> to use for communication
+     * @param aciHttpClient The configured <code>AciHttpClient</code> to use for communication
      */
     public AciServiceImpl(final AciHttpClient aciHttpClient) {
         this.aciHttpClient = aciHttpClient;
@@ -70,7 +70,7 @@ public class AciServiceImpl implements AciService {
 
     /**
      * Creates a new instance of AciServiceImpl.
-     * @param aciHttpClient    The configured <tt>AciHttpClient</tt> to use for communication
+     * @param aciHttpClient    The configured <code>AciHttpClient</code> to use for communication
      * @param aciServerDetails The details of the ACI Server to contact
      */
     public AciServiceImpl(final AciHttpClient aciHttpClient, final AciServerDetails aciServerDetails) {
@@ -79,16 +79,16 @@ public class AciServiceImpl implements AciService {
     }
 
     /**
-     * Executes an ACI action and processes the response with the supplied <tt>Processor</tt>. This method relies on the
+     * Executes an ACI action and processes the response with the supplied <code>Processor</code>. This method relies on the
      * ACI Server connection details being set via the {@link #setAciServerDetails(AciServerDetails)} method.
      * @param parameters The parameters to use with the ACI command. This <strong>should</strong> include an {@code
      *                   Action=<command>} parameter.
-     * @param processor  The <tt>Processor</tt> to use for converting the response stream into an object
-     * @return The ACI response encoded as an object of type <tt>T</tt>
+     * @param processor  The <code>Processor</code> to use for converting the response stream into an object
+     * @return The ACI response encoded as an object of type <code>T</code>
      * @throws AciServiceException      If an error occurred during the communication with the ACI Server, processing the
      *                                  response or if the response contained an error
-     * @throws IllegalArgumentException If connection details haven't bee set, or the <tt>parameters</tt> is <tt>null</tt>,
-     *                                  empty or missing an action parameter. Will also be thrown in the <tt>processor</tt>
+     * @throws IllegalArgumentException If connection details haven't bee set, or the <code>parameters</code> is <code>null</code>,
+     *                                  empty or missing an action parameter. Will also be thrown in the <code>processor</code>
      *                                  is null.
      */
     @Override
@@ -100,17 +100,17 @@ public class AciServiceImpl implements AciService {
     }
 
     /**
-     * Executes an ACI action and processes the response with the supplied <tt>Processor</tt>.
+     * Executes an ACI action and processes the response with the supplied <code>Processor</code>.
      * @param serverDetails The connection details of the ACI Server to execute the action on
      * @param parameters    The parameters to use with the ACI command. This <strong>should</strong> include an {@code
      *                      Action=&lt;command&gt;} parameter
-     * @param processor     The <tt>Processor</tt> to use for converting the response stream into an object
-     * @return The ACI response encoded as an object of type <tt>T</tt>
+     * @param processor     The <code>Processor</code> to use for converting the response stream into an object
+     * @return The ACI response encoded as an object of type <code>T</code>
      * @throws AciServiceException      If an error occurred during the communication with the ACI Server, processing the
      *                                  response or if the response contained an error
-     * @throws IllegalArgumentException If <tt>serverDetails</tt> is <tt>null</tt>, or the <tt>parameters</tt> is
-     *                                  <tt>null</tt>, empty or missing an action parameter. Will also be thrown in the
-     *                                  <tt>processor</tt> is null.
+     * @throws IllegalArgumentException If <code>serverDetails</code> is <code>null</code>, or the <code>parameters</code> is
+     *                                  <code>null</code>, empty or missing an action parameter. Will also be thrown in the
+     *                                  <code>processor</code> is null.
      */
     @Override
     public <T> T executeAction(final AciServerDetails serverDetails, final Set<? extends ActionParameter<?>> parameters, final Processor<T> processor) {

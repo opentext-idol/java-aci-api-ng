@@ -40,7 +40,7 @@ public class AciServerDetails implements Serializable {
     }
 
     /**
-     * Holds value of property protocol. Defaults to <tt>TransportProtocol.HTTP</tt>
+     * Holds value of property protocol. Defaults to <code>TransportProtocol.HTTP</code>
      */
     private TransportProtocol protocol = TransportProtocol.HTTP;
 
@@ -55,7 +55,7 @@ public class AciServerDetails implements Serializable {
     private int port;
 
     /**
-     * Holds value of property charsetName. Defaults to <tt>UTF-8</tt>.
+     * Holds value of property charsetName. Defaults to <code>UTF-8</code>.
      */
     private String charsetName = "UTF-8";
 
@@ -72,8 +72,8 @@ public class AciServerDetails implements Serializable {
     }
 
     /**
-     * Creates connection details for an ACI server, with the specified <tt>host</tt> and <tt>port</tt> details and
-     * with the default <tt>protocol</tt> and <tt>charsetName</tt> values.
+     * Creates connection details for an ACI server, with the specified <code>host</code> and <code>port</code> details and
+     * with the default <code>protocol</code> and <code>charsetName</code> values.
      * @param host The host of the ACI server
      * @param port The port of the ACI server
      */
@@ -86,8 +86,8 @@ public class AciServerDetails implements Serializable {
     }
 
     /**
-     * Creates connection details for an ACI server, with the specified <tt>protocol</tt>, <tt>host</tt> and <tt>port
-     * </tt> details and with the default <tt>charsetName</tt> value.
+     * Creates connection details for an ACI server, with the specified <code>protocol</code>, <code>host</code> and <code>port
+     * </code> details and with the default <code>charsetName</code> value.
      * @param protocol The protocol to use when communicating with the ACI server
      * @param host     The host of the ACI server
      * @param port     The port of the ACI server
@@ -104,7 +104,7 @@ public class AciServerDetails implements Serializable {
 
     /**
      * Copy constructor.
-     * @param that The <tt>AciServerDetails</tt> to copy details from.
+     * @param that The <code>AciServerDetails</code> to copy details from.
      */
     public AciServerDetails(final AciServerDetails that) {
         this.protocol = that.protocol;
@@ -162,7 +162,7 @@ public class AciServerDetails implements Serializable {
     /**
      * Setter for property protocol.
      * @param protocol New value of property protocol
-     * @throws java.lang.IllegalArgumentException if <tt>protocol</tt> is null
+     * @throws java.lang.IllegalArgumentException if <code>protocol</code> is null
      */
     public void setProtocol(final TransportProtocol protocol) {
         Validate.notNull(protocol, "protocol must not be null, it must be set to a value");
@@ -195,10 +195,10 @@ public class AciServerDetails implements Serializable {
     }
 
     /**
-     * Setter for property port. The port number must be in the range <tt>0 &lt;= port &lt;= 65536</tt> or an
-     * <tt>IllegalArgumentException</tt> will be thrown.
+     * Setter for property port. The port number must be in the range <code>0 &lt;= port &lt;= 65536</code> or an
+     * <code>IllegalArgumentException</code> will be thrown.
      * @param port New value of property port
-     * @throws IllegalArgumentException if the <tt>port</tt> is outside the range <tt>0 &lt;= port &lt;= 65536</tt>
+     * @throws IllegalArgumentException if the <code>port</code> is outside the range <code>0 &lt;= port &lt;= 65536</code>
      */
     public void setPort(final int port) {
         Validate.isTrue((port >= 0) && (port <= 65536), "port is out of range, it should be between 0 and 65536.");
@@ -216,7 +216,7 @@ public class AciServerDetails implements Serializable {
     /**
      * Setter for property charsetName.
      * @param charsetName The name of the requested charset; may be either a canonical name or an alias
-     * @throws IllegalArgumentException                     If <tt>charsetName</tt> is null
+     * @throws IllegalArgumentException                     If <code>charsetName</code> is null
      * @throws java.nio.charset.IllegalCharsetNameException If the given charset name is illegal
      * @throws java.nio.charset.UnsupportedCharsetException If no support for the named charset is available in this
      *                                                      instance of the Java virtual machine

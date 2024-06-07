@@ -22,7 +22,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 /**
- * JUnit test class for <tt>com.autonomy.aci.client.util.transport.gss.GssAciServerDetails</tt> class.
+ * JUnit test class for <code>com.autonomy.aci.client.util.transport.gss.GssAciServerDetails</code> class.
  */
 public class GssAciServerDetailsTest {
 

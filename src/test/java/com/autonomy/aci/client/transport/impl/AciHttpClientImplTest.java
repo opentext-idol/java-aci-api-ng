@@ -54,7 +54,7 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.*;
 
 /**
- * JUnit test class for the <tt>com.autonomy.aci.client.transport.impl.AciHttpClientImpl</tt> class.
+ * JUnit test class for the <code>com.autonomy.aci.client.transport.impl.AciHttpClientImpl</code> class.
  */
 public class AciHttpClientImplTest {
 
@@ -106,7 +106,7 @@ public class AciHttpClientImplTest {
 
     /**
      * This is for complete code coverage, rather than being necessary... I.e. we're effectively testing
-     * <tt>true == true</tt> and <tt>false == false</tt>.
+     * <code>true == true</code> and <code>false == false</code>.
      */
     @Test
     @SuppressWarnings("unchecked")

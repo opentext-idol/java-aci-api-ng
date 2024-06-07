@@ -46,7 +46,7 @@ public class DateTimeUtils {
     }
 
     /**
-     * Parses a string representing a date, using the pattern <tt>dd MMM yy HH:mm:ss</tt> and the <tt>ENGLISH</tt>
+     * Parses a string representing a date, using the pattern <code>dd MMM yy HH:mm:ss</code> and the <code>ENGLISH</code>
      * locale.
      * <p>
      * A parse is only deemed successful if it parses the whole of the input string. If the parse pattern didn't match, a
@@ -61,7 +61,7 @@ public class DateTimeUtils {
     }
 
     /**
-     * Parses a string representing a date, using the supplied pattern and the <tt>ENGLISH</tt> locale.
+     * Parses a string representing a date, using the supplied pattern and the <code>ENGLISH</code> locale.
      * <p>
      * A parse is only deemed successful if it parses the whole of the input string. If the parse pattern didn't match, a
      * ParseException is thrown.
@@ -84,7 +84,7 @@ public class DateTimeUtils {
      * @param format The date format pattern to use, see {@link java.text.SimpleDateFormat}, not null
      * @param locale The locale whose date format symbols should be used
      * @return The parsed date
-     * @throws IllegalArgumentException If the date <tt>string</tt> or <tt>format</tt> are null
+     * @throws IllegalArgumentException If the date <code>string</code> or <code>format</code> are null
      * @throws ParseException           If the date pattern was unsuitable
      */
     public Date parseDate(final String string, final String format, final Locale locale) throws ParseException {
@@ -107,8 +107,8 @@ public class DateTimeUtils {
     /**
      * ACI Servers generally work in epoch seconds when it comes to durations and times. This method add in milliseconds
      * by multiplying by 1000.
-     * @param epochSeconds The epoch seconds to convert to a <tt>Date</tt>
-     * @return The <tt>epochSeconds</tt> with milliseconds added and converted
+     * @param epochSeconds The epoch seconds to convert to a <code>Date</code>
+     * @return The <code>epochSeconds</code> with milliseconds added and converted
      */
     public Date epochSecondsToDate(final long epochSeconds) {
         return new Date(epochSeconds * 1000L);

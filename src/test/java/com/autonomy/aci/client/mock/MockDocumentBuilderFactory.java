@@ -19,8 +19,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 /**
- * Mock implementation of <tt>DocumentBuilderFactory</tt> that implements all the abstract methods. <tt>newDocumentBuilder()</tt>
- * throws a <tt> ParserConfigurationException</tt> all the rest throw <tt>UnsupportedOperationException</tt>.
+ * Mock implementation of <code>DocumentBuilderFactory</code> that implements all the abstract methods. <code>newDocumentBuilder()</code>
+ * throws a <code> ParserConfigurationException</code> all the rest throw <code>UnsupportedOperationException</code>.
  */
 @SuppressWarnings("unused") // Referenced by classpath in DocumentProcessorTest
 public class MockDocumentBuilderFactory extends DocumentBuilderFactory {

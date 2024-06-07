@@ -54,9 +54,9 @@ public class AciParameter implements Serializable, ActionParameter<String> {
     /**
      * Creates a new instance of AciParameter
      * @param name  The name of the ACI parameter
-     * @param value The value of the ACI parameter. If the <tt>value</tt> is <tt>null</tt>, then the value is left
-     *              blank, i.e. <tt>&amp;parameter=</tt>; otherwise, the value of <tt>value.toString()</tt> is stored
-     * @throws IllegalArgumentException if <tt>name</tt> is <tt>null</tt>
+     * @param value The value of the ACI parameter. If the <code>value</code> is <code>null</code>, then the value is left
+     *              blank, i.e. <code>&amp;parameter=</code>; otherwise, the value of <code>value.toString()</code> is stored
+     * @throws IllegalArgumentException if <code>name</code> is <code>null</code>
      */
     public AciParameter(final String name, final Object value) {
         super();
@@ -127,7 +127,7 @@ public class AciParameter implements Serializable, ActionParameter<String> {
     /**
      * Setter for property name.
      * @param name New value of property name
-     * @throws java.lang.IllegalArgumentException if <tt>name</tt> is <tt>null</tt>
+     * @throws java.lang.IllegalArgumentException if <code>name</code> is <code>null</code>
      */
     public void setName(final String name) {
         if (StringUtils.isBlank(name)) {

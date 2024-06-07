@@ -10,7 +10,7 @@ public class ReflectionTestUtils {
 
     /**
      * Gets the method from the class and makes it accessible.
-     * @param clazz          the <tt>Class</tt> from which to get the method
+     * @param clazz          the <code>Class</code> from which to get the method
      * @param methodName     The name of the method to get
      * @param parameterTypes The types of the method parameters
      * @return An accessible {@link java.lang.reflect.Method} that can be invoked
@@ -24,7 +24,7 @@ public class ReflectionTestUtils {
 
     /**
      * Gets the field from the class and makes it accessible.
-     * @param clazz     the <tt>Class</tt> from which to get the field
+     * @param clazz     the <code>Class</code> from which to get the field
      * @param fieldName The name of the field to get
      * @return An accessible {@link java.lang.reflect.Field} that can be invoked
      * @throws NoSuchFieldException If the field doesn't exist.

@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 /**
- * JUnit test class for <tt>com.autonomy.aci.client.transport.AciHttpException</tt> class.
+ * JUnit test class for <code>com.autonomy.aci.client.transport.AciHttpException</code> class.
  */
 public class AciHttpExceptionTest {
 

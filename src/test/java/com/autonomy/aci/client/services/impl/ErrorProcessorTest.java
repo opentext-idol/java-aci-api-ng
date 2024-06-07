@@ -30,7 +30,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * JUnit tests for <tt>com.autonomy.aci.client.services.impl.ErrorProcessor</tt>.
+ * JUnit tests for <code>com.autonomy.aci.client.services.impl.ErrorProcessor</code>.
  */
 public class ErrorProcessorTest {
 

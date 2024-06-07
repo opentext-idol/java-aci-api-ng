@@ -25,9 +25,9 @@ import java.io.Serializable;
 public interface Processor<T> extends Serializable {
 
     /**
-     * Process the ACI response input into an object of type <tt>T</tt>.
+     * Process the ACI response input into an object of type <code>T</code>.
      * @param aciResponse The ACI response to process
-     * @return An object of type <tt>T</tt>
+     * @return An object of type <code>T</code>
      * @throws AciErrorException  If the ACI response was an error response
      * @throws ProcessorException If an error occurred during the processing of the ACI response
      */

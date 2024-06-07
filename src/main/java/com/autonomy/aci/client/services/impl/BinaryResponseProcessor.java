@@ -31,10 +31,10 @@ import java.util.Locale;
  * By default this processor uses {@link ErrorProcessor} and {@link ByteArrayProcessor} to do it's work. The
  * implementations to be used can be changed by using the appropriate accessor methods.
  * <p>
- * <strong>Note:</strong> If the content type is <tt>text/xml</tt> then an
+ * <strong>Note:</strong> If the content type is <code>text/xml</code> then an
  * {@link com.autonomy.aci.client.services.AciErrorException} will be thrown regardless of the contents of the actual
  * response. If the response didn't contain an error, then the resulting exception's error properties will all be
- * <tt>null</tt>. Any other content type will result in the response being returned in a <tt>byte[]</tt>.
+ * <code>null</code>. Any other content type will result in the response being returned in a <code>byte[]</code>.
  */
 public class BinaryResponseProcessor implements Processor<byte[]> {
 
@@ -43,12 +43,12 @@ public class BinaryResponseProcessor implements Processor<byte[]> {
     private static final Logger LOGGER = LoggerFactory.getLogger(ByteArrayProcessor.class);
 
     /**
-     * This holds the error processor to use if the content type of the response is <tt>text/xml</tt>.
+     * This holds the error processor to use if the content type of the response is <code>text/xml</code>.
      */
     private Processor<AciErrorException> errorProcessor = new ErrorProcessor();
 
     /**
-     * This holds the processor to use if the content type of the response isn't <tt>text/xml</tt>.
+     * This holds the processor to use if the content type of the response isn't <code>text/xml</code>.
      */
     private Processor<byte[]> byteArrayProcessor = new ByteArrayProcessor();
 

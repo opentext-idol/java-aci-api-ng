@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 /**
- * JUnit test class for <tt>com.autonomy.aci.client.services.AciServiceException</tt>.
+ * JUnit test class for <code>com.autonomy.aci.client.services.AciServiceException</code>.
  */
 public class AciServiceExceptionTest {
 

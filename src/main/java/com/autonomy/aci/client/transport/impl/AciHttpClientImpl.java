@@ -50,8 +50,8 @@ import java.util.Set;
 /**
  * Implementation of the {@link com.autonomy.aci.client.transport.AciHttpClient} interface that provides the actual HTTP
  * communication mechanism. This implementation uses the HttpClient provided by the <a href="http://hc.apache.org/">
- * Apache HttpComponents</a> project. It defaults to using the HTTP <tt>GET</tt> method, if you wish to send ACI actions
- * with the HTTP <tt>POST</tt> method, then call the {@link #setUsePostMethod(boolean)} method with {@code true}.
+ * Apache HttpComponents</a> project. It defaults to using the HTTP <code>GET</code> method, if you wish to send ACI actions
+ * with the HTTP <code>POST</code> method, then call the {@link #setUsePostMethod(boolean)} method with {@code true}.
  * <p>
  * This implementation of the {@link com.autonomy.aci.client.transport.AciHttpClient} interface does no configuration of
  * the {@code HttpClient} that it uses. It expects all the configuration to have been done by the user before passing it
@@ -188,8 +188,8 @@ public class AciHttpClientImpl implements AciHttpClient {
      * @param serverDetails The details of the ACI server the request will be sent to
      * @param parameters    The parameters to send with the ACI action.
      * @return a {@code HttpGet} that is ready to execute the ACI action.
-     * @throws URISyntaxException If there was a problem construction the request URI from the <tt>serverDetails</tt>
-     *                            and <tt>parameters</tt>
+     * @throws URISyntaxException If there was a problem construction the request URI from the <code>serverDetails</code>
+     *                            and <code>parameters</code>
      */
     private HttpUriRequest createGet5Method(final AciServerDetails serverDetails, final Set<? extends ActionParameter<?>> parameters) throws URISyntaxException {
         LOGGER.trace("createGetMethod() called...");
@@ -229,10 +229,10 @@ public class AciHttpClientImpl implements AciHttpClient {
      * @param serverDetails The details of the ACI server the request will be sent to
      * @param parameters    The parameters to send with the ACI action.
      * @return An {@code HttpPost} that is ready to execute the ACI action.
-     * @throws UnsupportedEncodingException Will be thrown if <tt>serverDetails.getCharsetName()</tt> returns a
+     * @throws UnsupportedEncodingException Will be thrown if <code>serverDetails.getCharsetName()</code> returns a
      *                                      charset that is not supported by the JVM
      * @throws URISyntaxException           If there was a problem construction the request URI from the
-     *                                      <tt>serverDetails</tt> and <tt>parameters</tt>
+     *                                      <code>serverDetails</code> and <code>parameters</code>
      */
     private HttpUriRequest createPost5Method(final AciServerDetails serverDetails, final Set<? extends ActionParameter<?>> parameters) throws URISyntaxException, UnsupportedEncodingException {
         LOGGER.trace("createPostMethod() called...");
@@ -311,7 +311,7 @@ public class AciHttpClientImpl implements AciHttpClient {
      * in both POST and GET methods.
      * @param parameters  The set of parameters to convert.
      * @param charsetName The name of the charset to use when encoding the parameters
-     * @return an <tt>String</tt> representing the query string portion of a URI
+     * @return an <code>String</code> representing the query string portion of a URI
      */
     private String convertParameters(final Set<? extends ActionParameter<?>> parameters, final String charsetName) {
         LOGGER.trace("convertParameters() called...");
@@ -351,10 +351,10 @@ public class AciHttpClientImpl implements AciHttpClient {
      * Execute an ACI action on the specific ACI server.
      * @param serverDetails Details of the ACI server to send the action to
      * @param parameters    The parameters to send with the ACI action
-     * @return An <tt>AciResponseInputStream</tt> containing the ACI response
+     * @return An <code>AciResponseInputStream</code> containing the ACI response
      * @throws IOException              If an I/O (transport) error occurs. Some transport exceptions can be recovered from
      * @throws AciHttpException         If a protocol exception occurs. Usually protocol exceptions cannot be recovered from
-     * @throws IllegalArgumentException if the <tt>httpClient</tt> property is <tt>null</tt> or <tt>parameters</tt> is <tt>null</tt>
+     * @throws IllegalArgumentException if the <code>httpClient</code> property is <code>null</code> or <code>parameters</code> is <code>null</code>
      */
     @Override
     public AciResponseInputStream executeAction(final AciServerDetails serverDetails, final Set<? extends ActionParameter<?>> parameters) throws IOException, AciHttpException {

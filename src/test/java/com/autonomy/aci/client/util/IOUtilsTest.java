@@ -27,7 +27,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 
 /**
- * JUnit tests for <tt>com.autonomy.aci.client.util.IOUtils</tt>.
+ * JUnit tests for <code>com.autonomy.aci.client.util.IOUtils</code>.
  */
 public class IOUtilsTest {
 

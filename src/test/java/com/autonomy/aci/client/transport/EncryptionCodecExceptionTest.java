@@ -22,7 +22,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 /**
- * JUnit tests for the <tt>com.autonomy.aci.client.transport.EncryptionCodecException</tt> class...
+ * JUnit tests for the <code>com.autonomy.aci.client.transport.EncryptionCodecException</code> class...
  */
 public class EncryptionCodecExceptionTest {
 

@@ -30,7 +30,7 @@ import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
 /**
- * Abstract base class that contains everything an <tt>EncryptionCodec</tt> needs to do apart from the actual encrypt
+ * Abstract base class that contains everything an <code>EncryptionCodec</code> needs to do apart from the actual encrypt
  * and decrypt routines, which are cipher specific.
  */
 public abstract class AbstractEncryptionCodec implements EncryptionCodec {
@@ -77,9 +77,9 @@ public abstract class AbstractEncryptionCodec implements EncryptionCodec {
     }
 
     /**
-     * Deflates the passed in <tt>String</tt> and prefixes the result with <tt>AUTN:</tt> before returning.
+     * Deflates the passed in <code>String</code> and prefixes the result with <code>AUTN:</code> before returning.
      * @param bytes The byte array to deflate
-     * @return The deflated string prefixed with <tt>AUTN:</tt> as a byte array
+     * @return The deflated string prefixed with <code>AUTN:</code> as a byte array
      * @throws EncryptionCodecException If an error occurred during processing
      */
     protected byte[] deflateInternal(final byte[] bytes) throws EncryptionCodecException {
@@ -127,7 +127,7 @@ public abstract class AbstractEncryptionCodec implements EncryptionCodec {
 
     /**
      * Encrypt the given byte array.
-     * @param bytes The <tt>byte[]</tt> to encrypt
+     * @param bytes The <code>byte[]</code> to encrypt
      * @return The encrypted byte array
      * @throws EncryptionCodecException If an error occurred during processing
      */
@@ -171,7 +171,7 @@ public abstract class AbstractEncryptionCodec implements EncryptionCodec {
     }
 
     /**
-     * Base64 decodes the supplied string and strips the encrypted length and separator, for example <tt>.52|</tt>, from
+     * Base64 decodes the supplied string and strips the encrypted length and separator, for example <code>.52|</code>, from
      * the front of the byte array.
      * @param bytes The Base64 encoded byte array to decode
      * @return The decoded byte array
@@ -217,7 +217,7 @@ public abstract class AbstractEncryptionCodec implements EncryptionCodec {
     protected abstract byte[] decryptInternal(byte[] bytes) throws EncryptionCodecException;
 
     /**
-     * Strip the <tt>AUTN:</tt> prefix and inflate the given <tt>byte[]</tt> to it's original form.
+     * Strip the <code>AUTN:</code> prefix and inflate the given <code>byte[]</code> to it's original form.
      * @param bytes The bytes to inflate
      * @return The inflated byte array
      * @throws EncryptionCodecException If an error occurred during processing

@@ -29,7 +29,7 @@ import java.util.*;
  *    );
  *    ...
  * </pre>
- * For those actions that don't generally take parameters, like <tt>GetStatus</tt> and <tt>GetVersion</tt>, you can do
+ * For those actions that don't generally take parameters, like <code>GetStatus</code> and <code>GetVersion</code>, you can do
  * the following:
  * <pre>
  *    ...
@@ -47,9 +47,9 @@ public class ActionParameters implements Set<ActionParameter<?>> {
     public ActionParameters() {}
 
     /**
-     * Convenience constructor for those actions that don't normally take any parameters like <tt>GetStatus</tt> or
-     * <tt>GetVersion</tt>. Essentially calls {@link #ActionParameters(ActionParameter[])}
-     * after creating a new <tt>ActionParameters</tt> - <tt>new AciParameter(AciConstants.PARAM_ACTION, action)</tt>
+     * Convenience constructor for those actions that don't normally take any parameters like <code>GetStatus</code> or
+     * <code>GetVersion</code>. Essentially calls {@link #ActionParameters(ActionParameter[])}
+     * after creating a new <code>ActionParameters</code> - <code>new AciParameter(AciConstants.PARAM_ACTION, action)</code>
      * @param action The value of the action parameter to create this instance with
      */
     public ActionParameters(final String action) {
@@ -57,8 +57,8 @@ public class ActionParameters implements Set<ActionParameter<?>> {
     }
 
     /**
-     * Creates a new instance using the supplied collection of <tt>ActionParameter</tt>s...
-     * @param parameters A <tt>Collection</tt> of <tt>ActionParameter</tt>s to create this instance with
+     * Creates a new instance using the supplied collection of <code>ActionParameter</code>s...
+     * @param parameters A <code>Collection</code> of <code>ActionParameter</code>s to create this instance with
      */
     public ActionParameters(final Collection<? extends ActionParameter<?>> parameters) {
         // Add all the parameters....
@@ -66,7 +66,7 @@ public class ActionParameters implements Set<ActionParameter<?>> {
     }
 
     /**
-     * Creates a new instance using the supplied <tt>ActionParameter</tt>s. This constructor is a shorthand way and
+     * Creates a new instance using the supplied <code>ActionParameter</code>s. This constructor is a shorthand way and
      * equivalent of doing:
      * <pre>
      *     new ActionParameters(Arrays.asList(
@@ -75,7 +75,7 @@ public class ActionParameters implements Set<ActionParameter<?>> {
      *           ...
      *     ));
      * </pre>
-     * @param parameters A <tt>Collection</tt> of <tt>AciParameter</tt>s to create this instance with
+     * @param parameters A <code>Collection</code> of <code>AciParameter</code>s to create this instance with
      */
     public ActionParameters(final ActionParameter<?>... parameters) {
         // Add all the parameters....
@@ -83,10 +83,10 @@ public class ActionParameters implements Set<ActionParameter<?>> {
     }
 
     /**
-     * This is a convenience method to convert a collection of parameters into an <tt>ActionParameters</tt> object. The
+     * This is a convenience method to convert a collection of parameters into an <code>ActionParameters</code> object. The
      * returned object may or may not be backed by the collection provided.
      * @param parameters The collection of parameters to convert
-     * @return An <tt>ActionParameters</tt> object containing all elements of <tt>parameters</tt>
+     * @return An <code>ActionParameters</code> object containing all elements of <code>parameters</code>
      */
     public static ActionParameters convert(final Collection<? extends ActionParameter<?>> parameters) {
         return (parameters instanceof ActionParameters)
@@ -95,13 +95,13 @@ public class ActionParameters implements Set<ActionParameter<?>> {
     }
 
     /**
-     * Returns the value for the parameter specified by <tt>name</tt>. Returns <tt>null</tt> if no parameter exists with
-     * <tt>name</tt> in the set. However, a return value of <tt>null</tt> doesn't <i>necessarily</i> indicate that no
-     * parameter exists as <tt>null</tt> is an allowed parameter value. The <tt>contains</tt> operation may be used to
+     * Returns the value for the parameter specified by <code>name</code>. Returns <code>null</code> if no parameter exists with
+     * <code>name</code> in the set. However, a return value of <code>null</code> doesn't <i>necessarily</i> indicate that no
+     * parameter exists as <code>null</code> is an allowed parameter value. The <code>contains</code> operation may be used to
      * distinguish these two cases.
      * @param name The name of the parameter to get the value of
-     * @return The value of the parameter. If the returned value is <tt>null</tt> it is not necessarily an indication
-     * that the parameter doesn't exist as <tt>null</tt> is an allowed parameter value.
+     * @return The value of the parameter. If the returned value is <code>null</code> it is not necessarily an indication
+     * that the parameter doesn't exist as <code>null</code> is an allowed parameter value.
      */
     public Object get(final String name) {
         Object value = null;
@@ -117,14 +117,14 @@ public class ActionParameters implements Set<ActionParameter<?>> {
     }
 
     /**
-     * Associates the specified value with the parameter specified by <tt>name</tt>. If no parameter exists, then a new
+     * Associates the specified value with the parameter specified by <code>name</code>. If no parameter exists, then a new
      * one is created. If a parameter exists, its old value is replaced by the specified value.
      * @param name  The name of the parameter
      * @param value The value of the parameter
-     * @return Previous parameter value or <tt>null</tt> if the parameter didn't exist. A <tt>null</tt> can also
-     * indicate that the previous parameter value was <tt>null</tt> as <tt>null</tt> is an allowed parameter
+     * @return Previous parameter value or <code>null</code> if the parameter didn't exist. A <code>null</code> can also
+     * indicate that the previous parameter value was <code>null</code> as <code>null</code> is an allowed parameter
      * value.
-     * @throws IllegalArgumentException if <tt>name</tt> is <tt>null</tt> or blank.
+     * @throws IllegalArgumentException if <code>name</code> is <code>null</code> or blank.
      */
     public Object put(final String name, final Object value) {
         final Object oldValue = get(name);
@@ -134,11 +134,11 @@ public class ActionParameters implements Set<ActionParameter<?>> {
     }
 
     /**
-     * Puts the specified <tt>parameter</tt> into this collection. If a parameter with the same name already exists in
-     * this collection, it is replaced by the specified <tt>parameter</tt>.
+     * Puts the specified <code>parameter</code> into this collection. If a parameter with the same name already exists in
+     * this collection, it is replaced by the specified <code>parameter</code>.
      * @param parameter The parameter to put into this collection
-     * @return Previous parameter or <tt>null</tt> if the parameter didn't exist
-     * @throws IllegalArgumentException If <tt>parameter</tt> is <tt>null</tt>
+     * @return Previous parameter or <code>null</code> if the parameter didn't exist
+     * @throws IllegalArgumentException If <code>parameter</code> is <code>null</code>
      */
     public ActionParameter<?> put(final ActionParameter<?> parameter) {
         Validate.notNull(parameter, "The parameter must not be null.");
@@ -165,10 +165,10 @@ public class ActionParameters implements Set<ActionParameter<?>> {
     }
 
     /**
-     * Puts the collection of <tt>parameters</tt> into this collection. If any of the specified parameters already
-     * exists in this collection, they are replaced. Does nothing if <tt>parameters</tt> is <tt>null</tt>.
+     * Puts the collection of <code>parameters</code> into this collection. If any of the specified parameters already
+     * exists in this collection, they are replaced. Does nothing if <code>parameters</code> is <code>null</code>.
      * @param parameters The parameters to put into this collection
-     * @throws IllegalArgumentException if any of the <tt>parameters</tt> are <tt>null</tt>
+     * @throws IllegalArgumentException if any of the <code>parameters</code> are <code>null</code>
      */
     public void putAll(final Collection<? extends ActionParameter<?>> parameters) {
         if (parameters != null) {
@@ -177,10 +177,10 @@ public class ActionParameters implements Set<ActionParameter<?>> {
     }
 
     /**
-     * Puts the array of <tt>parameters</tt> into this collection. If any of the specified parameters already exists in
-     * this collection, they are replaced. Does nothing if <tt>parameters</tt> is <tt>null</tt>.
+     * Puts the array of <code>parameters</code> into this collection. If any of the specified parameters already exists in
+     * this collection, they are replaced. Does nothing if <code>parameters</code> is <code>null</code>.
      * @param parameters The parameters to put into this collection
-     * @throws IllegalArgumentException If any of the <tt>parameters</tt> are <tt>null</tt>.
+     * @throws IllegalArgumentException If any of the <code>parameters</code> are <code>null</code>.
      */
     public void putAll(final ActionParameter<?>... parameters) {
         if (parameters != null) {
@@ -194,8 +194,8 @@ public class ActionParameters implements Set<ActionParameter<?>> {
      * Adds a new parameter to the current set if one of the same names doesn't already exist.
      * @param name  The name of the parameter
      * @param value The value of the parameter
-     * @return <tt>true</tt> if the set did not already contain the specified element.
-     * @throws java.lang.IllegalArgumentException if <tt>name</tt> is <tt>null</tt> or blank.
+     * @return <code>true</code> if the set did not already contain the specified element.
+     * @throws java.lang.IllegalArgumentException if <code>name</code> is <code>null</code> or blank.
      */
     public final boolean add(final String name, final Object value) {
         return value instanceof InputStream ? add(new InputStreamActionParameter(name, (InputStream) value)) : add(new AciParameter(name, value));
@@ -203,13 +203,13 @@ public class ActionParameters implements Set<ActionParameter<?>> {
 
     /**
      * <p>Adds the specified element to this set if it is not already present.  More formally, adds the specified
-     * element <tt>e</tt> to this set if the set contains no element <tt>e2</tt> such that
-     * <tt>(e==null&nbsp;?&nbsp;e2==null&nbsp;:&nbsp;e.equals(e2))</tt>. If this set already contains the element, the
-     * call leaves the set unchanged and returns <tt>false</tt>.  In combination with the restriction on constructors,
+     * element <code>e</code> to this set if the set contains no element <code>e2</code> such that
+     * <code>(e==null&nbsp;?&nbsp;e2==null&nbsp;:&nbsp;e.equals(e2))</code>. If this set already contains the element, the
+     * call leaves the set unchanged and returns <code>false</code>.  In combination with the restriction on constructors,
      * this ensures that sets never contain duplicate elements.
      * @param parameter Element to be added to this set
-     * @return <tt>true</tt> if this set did not already contain the specified element
-     * @throws UnsupportedOperationException If the <tt>add</tt> operation is not supported by this set
+     * @return <code>true</code> if this set did not already contain the specified element
+     * @throws UnsupportedOperationException If the <code>add</code> operation is not supported by this set
      * @throws NullPointerException          If the specified element is null and this set does not permit null elements
      * @throws IllegalArgumentException      If some property of the specified element prevents it from being added to
      *                                       this set
@@ -220,12 +220,12 @@ public class ActionParameters implements Set<ActionParameter<?>> {
     }
 
     /**
-     * Removes the specified element from this set if it is present.  More formally, removes an element <tt>e</tt> such
-     * that <tt>(o==null&nbsp;?&nbsp;e==null&nbsp;:&nbsp;o.equals(e))</tt>, if this set contains such an element.
-     * Returns <tt>true</tt> if this set contained the element (or equivalently, if this set changed as a result of the
+     * Removes the specified element from this set if it is present.  More formally, removes an element <code>e</code> such
+     * that <code>(o==null&nbsp;?&nbsp;e==null&nbsp;:&nbsp;o.equals(e))</code>, if this set contains such an element.
+     * Returns <code>true</code> if this set contained the element (or equivalently, if this set changed as a result of the
      * call). (This set will not contain the element once the call returns.)
      * @param o Object to be removed from this set, if present
-     * @return <tt>true</tt> if this set contained the specified element
+     * @return <code>true</code> if this set contained the specified element
      * @throws NullPointerException If the specified element is null and this set does not permit null elements
      */
     @Override
@@ -236,17 +236,17 @@ public class ActionParameters implements Set<ActionParameter<?>> {
     /**
      * Removes a parameter from the set.
      * @param name The name of the parameter to remove
-     * @return <tt>true</tt> if the set contained the specified element.
+     * @return <code>true</code> if the set contained the specified element.
      */
     public boolean remove(final String name) {
         return remove(new AciParameter(name, ""));
     }
 
     /**
-     * Returns <tt>true</tt> if this set contains all of the elements of the specified collection.  If the specified
-     * collection is also a set, this method returns <tt>true</tt> if it is a <i>subset</i> of this set.
+     * Returns <code>true</code> if this set contains all of the elements of the specified collection.  If the specified
+     * collection is also a set, this method returns <code>true</code> if it is a <i>subset</i> of this set.
      * @param collection collection to be checked for containment in this set
-     * @return <tt>true</tt> if this set contains all of the elements of the specified collection
+     * @return <code>true</code> if this set contains all of the elements of the specified collection
      * @throws NullPointerException if the specified collection contains one or more null elements and this set does not
      *                              permit null elements (optional), or if the specified collection is null
      * @see #contains(Object)
@@ -258,11 +258,11 @@ public class ActionParameters implements Set<ActionParameter<?>> {
 
     /**
      * Adds all of the elements in the specified collection to this set if they're not already present.  If the
-     * specified collection is also a set, the <tt>addAll</tt> operation effectively modifies this set so that its value
+     * specified collection is also a set, the <code>addAll</code> operation effectively modifies this set so that its value
      * is the <i>union</i> of the two sets.  The behavior of this operation is undefined if the specified collection is
      * modified while the operation is in progress.
      * @param collection collection containing elements to be added to this set
-     * @return <tt>true</tt> If this set changed as a result of the call
+     * @return <code>true</code> If this set changed as a result of the call
      * @throws ClassCastException       If the class of an element of the specified collection prevents it from being added to
      *                                  this set
      * @throws NullPointerException     If the specified collection contains one or more null elements and this set does not
@@ -282,7 +282,7 @@ public class ActionParameters implements Set<ActionParameter<?>> {
      * collection is also a set, this operation effectively modifies this set so that its value is the
      * <i>intersection</i> of the two sets.
      * @param collection collection containing elements to be retained in this set
-     * @return <tt>true</tt> If this set changed as a result of the call
+     * @return <code>true</code> If this set changed as a result of the call
      * @throws ClassCastException   if the class of an element of this set is incompatible with the specified collection
      * @throws NullPointerException if this set contains a null element and the specified collection does not permit
      *                              null elements (optional), or if the specified collection is null
@@ -298,7 +298,7 @@ public class ActionParameters implements Set<ActionParameter<?>> {
      * collection is also a set, this operation effectively modifies this set so that its value is the
      * <i>asymmetric set difference</i> of the two sets.
      * @param collection collection containing elements to be removed from this set
-     * @return <tt>true</tt> If this set changed as a result of the call
+     * @return <code>true</code> If this set changed as a result of the call
      * @throws ClassCastException   If the class of an element of this set is incompatible with the specified collection
      * @throws NullPointerException If this set contains a null element and the specified collection does not permit
      *                              null elements (optional), or if the specified collection is null
@@ -320,7 +320,7 @@ public class ActionParameters implements Set<ActionParameter<?>> {
 
     /**
      * Returns the number of elements in this set (its cardinality).  If this set contains more than
-     * <tt>Integer.MAX_VALUE</tt> elements, returns <tt>Integer.MAX_VALUE</tt>.
+     * <code>Integer.MAX_VALUE</code> elements, returns <code>Integer.MAX_VALUE</code>.
      * @return The number of elements in this set (its cardinality)
      */
     @Override
@@ -329,8 +329,8 @@ public class ActionParameters implements Set<ActionParameter<?>> {
     }
 
     /**
-     * Returns <tt>true</tt> if this set contains no elements.
-     * @return <tt>true</tt> if this set contains no elements
+     * Returns <code>true</code> if this set contains no elements.
+     * @return <code>true</code> if this set contains no elements
      */
     @Override
     public boolean isEmpty() {
@@ -338,9 +338,9 @@ public class ActionParameters implements Set<ActionParameter<?>> {
     }
 
     /**
-     * Returns <tt>true</tt> if this set contains the specified element.
+     * Returns <code>true</code> if this set contains the specified element.
      * @param o whose presence in this set is to be tested
-     * @return <tt>true</tt> if this set contains the specified element
+     * @return <code>true</code> if this set contains the specified element
      */
     @Override
     public boolean contains(final Object o) {
@@ -348,16 +348,16 @@ public class ActionParameters implements Set<ActionParameter<?>> {
     }
 
     /**
-     * Returns <tt>true</tt> if this set contains the specified element.
+     * Returns <code>true</code> if this set contains the specified element.
      * @param name The name of the parameter to check for
-     * @return <tt>true</tt> if this set contains the specified element
+     * @return <code>true</code> if this set contains the specified element
      */
     public boolean contains(final String name) {
         return parameters.contains(new AciParameter(name, ""));
     }
 
     /**
-     * Returns an iterator over the <tt>ActionParameter</tt>s in this set.
+     * Returns an iterator over the <code>ActionParameter</code>s in this set.
      * @return an iterator over the elements in this set
      */
     @Override
@@ -383,19 +383,19 @@ public class ActionParameters implements Set<ActionParameter<?>> {
      * returned array is that of the specified array. If the set fits in the specified array, it is returned therein.
      * Otherwise, a new array is allocated with the runtime type of the specified array and the size of this set.
      * <p>If this set fits in the specified array with room to spare (i.e., the array has more elements than this set),
-     * the element in the array immediately following the end of the set is set to <tt>null</tt>.  (This is useful in
+     * the element in the array immediately following the end of the set is set to <code>null</code>.  (This is useful in
      * determining the length of this set <i>only</i> if the caller knows that this set does not contain any null
      * elements.)
      * <p>Like the {@link #toArray()} method, this method acts as bridge between array-based and collection-based APIs.
      * Further, this method allows precise control over the runtime type of the output array, and may, under certain
      * circumstances, be used to save allocation costs.
-     * <p>Suppose <tt>x</tt> is a set known to contain only strings. The following code can be used to dump the set into
-     * a newly allocated array of <tt>String</tt>:
+     * <p>Suppose <code>x</code> is a set known to contain only strings. The following code can be used to dump the set into
+     * a newly allocated array of <code>String</code>:
      * <pre>
      *     String[] y = x.toArray(new String[0]);
      * </pre>
      *
-     * <p>Note that <tt>toArray(new Object[0])</tt> is identical in function to <tt>toArray()</tt>.
+     * <p>Note that <code>toArray(new Object[0])</code> is identical in function to <code>toArray()</code>.
      * @param array The array into which the elements of this set are to be stored, if it is big enough; otherwise, a
      *              new array of the same runtime type is allocated for this purpose.
      * @return An array containing all the elements in this set
@@ -409,12 +409,12 @@ public class ActionParameters implements Set<ActionParameter<?>> {
     }
 
     /**
-     * Compares the specified object with this set for equality. Returns <tt>true</tt> if the specified object is also
+     * Compares the specified object with this set for equality. Returns <code>true</code> if the specified object is also
      * a set, the two sets have the same size, and every member of the specified set is contained in this set (or
      * equivalently, every member of this set is contained in the specified set). This definition ensures that the
      * equals method works properly across different implementations of the set interface.
      * @param obj Object to be compared for equality with this set.
-     * @return <tt>true</tt> if the specified Object is equal to this set.
+     * @return <code>true</code> if the specified Object is equal to this set.
      */
     @Override
     public boolean equals(final Object obj) {
@@ -423,9 +423,9 @@ public class ActionParameters implements Set<ActionParameter<?>> {
 
     /**
      * Returns the hash code value for this set. The hash code of a set is defined to be the sum of the hash codes of
-     * the elements in the set, where the hashcode of a <tt>null</tt> element is defined to be zero. This ensures that
+     * the elements in the set, where the hashcode of a <code>null</code> element is defined to be zero. This ensures that
      * {@code s1.equals(s2)} implies that <code>s1.hashCode()==s2.hashCode()</code> for any two sets <code>s1
-     * </code> and {@code s2}, as required by the general contract of the <tt>Object.hashCode</tt> method.
+     * </code> and {@code s2}, as required by the general contract of the <code>Object.hashCode</code> method.
      * @return the hash code value for this set.
      * @see Object#hashCode()
      * @see Object#equals(Object)

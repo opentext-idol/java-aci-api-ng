@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.*;
 
 /**
- * JUnit test class for <tt>com.autonomy.aci.client.util.AciURLCodec</tt> class.
+ * JUnit test class for <code>com.autonomy.aci.client.util.AciURLCodec</code> class.
  */
 public class AciURLCodecTest {
 

@@ -42,8 +42,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.Set;
 
 /**
- * Implementation of the <tt>AciHttpClient</tt> interface for use with ACI servers that are secured via GSS-API. It
- * sets up a <tt>GSSContext</tt> before passing the parameters and connection details to the <tt>AciHttpClientImpl</tt>
+ * Implementation of the <code>AciHttpClient</code> interface for use with ACI servers that are secured via GSS-API. It
+ * sets up a <code>GSSContext</code> before passing the parameters and connection details to the <code>AciHttpClientImpl</code>
  * super class to execute the actual action.
  */
 public class GssAciHttpClientImpl extends AciHttpClientImpl {
@@ -61,7 +61,7 @@ public class GssAciHttpClientImpl extends AciHttpClientImpl {
     }
 
     /**
-     * @param httpClient
+     * @param httpClient Used to make HTTP requests
      * @deprecated Use {@link #GssAciHttpClientImpl(HttpClient)}
      */
     @Deprecated
@@ -137,18 +137,18 @@ public class GssAciHttpClientImpl extends AciHttpClientImpl {
     }
 
     /**
-     * Sets up a <tt>GSSContext</tt> for communicating with the GSS-API protected ACI server and then sends the
-     * action. The <tt>serverDetails</tt> are copied and a <tt>GssEncryptionCodec</tt> set on the copy that has the
-     * <tt>GSSContext</tt> in it. Any excising <tt>EncryptionCodec</tt> will be removed as only the
-     * <tt>GssEncryptionCodec</tt> can be used when communicating with Kerberos protected ACI servers.
-     * @param serverDetails A <tt>GssAciServerDetails</tt> containing the service name and connection details.
+     * Sets up a <code>GSSContext</code> for communicating with the GSS-API protected ACI server and then sends the
+     * action. The <code>serverDetails</code> are copied and a <code>GssEncryptionCodec</code> set on the copy that has the
+     * <code>GSSContext</code> in it. Any excising <code>EncryptionCodec</code> will be removed as only the
+     * <code>GssEncryptionCodec</code> can be used when communicating with Kerberos protected ACI servers.
+     * @param serverDetails A <code>GssAciServerDetails</code> containing the service name and connection details.
      * @param parameters    The parameters to send with the ACI action.
-     * @return A <tt>AciResponseInputStream</tt> containing the ACI response.
+     * @return A <code>AciResponseInputStream</code> containing the ACI response.
      * @throws java.io.IOException                                If an I/O (transport) error occurs. Some transport exceptions can be recovered from.
      * @throws com.autonomy.aci.client.transport.AciHttpException If a protocol exception occurs. Usually protocol
      *                                                            exceptions cannot be recovered from.
-     * @throws java.lang.IllegalArgumentException                 if <tt>serverDetails</tt> isn't an instance of
-     *                                                            <tt>GssAciServerDetails</tt> or there is no <tt>serviceName</tt> set in those details.
+     * @throws java.lang.IllegalArgumentException                 if <code>serverDetails</code> isn't an instance of
+     *                                                            <code>GssAciServerDetails</code> or there is no <code>serviceName</code> set in those details.
      */
     @Override
     public AciResponseInputStream executeAction(final AciServerDetails serverDetails, final Set<? extends ActionParameter<?>> parameters) throws IOException, AciHttpException {

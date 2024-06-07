@@ -22,7 +22,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 /**
- * JUnit test class for <tt>com.autonomy.aci.client.services.ProcessorException</tt>.
+ * JUnit test class for <code>com.autonomy.aci.client.services.ProcessorException</code>.
  */
 public class ProcessorExceptionTest {
 

@@ -20,7 +20,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * Holds connection details about an ACI Server that is secured using GSS-API. It is a subclass of
- * <tt>AciServerDetails</tt> that has the addition of the service name of the ACI server to be contacted.
+ * <code>AciServerDetails</code> that has the addition of the service name of the ACI server to be contacted.
  */
 public class GssAciServerDetails extends AciServerDetails {
 
@@ -64,7 +64,7 @@ public class GssAciServerDetails extends AciServerDetails {
 
     /**
      * Copy constructor.
-     * @param that The <tt>GssAciServerDetails</tt> to copy details from.
+     * @param that The <code>GssAciServerDetails</code> to copy details from.
      */
     public GssAciServerDetails(final GssAciServerDetails that) {
         super(that);

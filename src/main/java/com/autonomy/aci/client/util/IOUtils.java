@@ -41,11 +41,11 @@ public class IOUtils {
     }
 
     /**
-     * Copy bytes from an <tt>InputStream</tt> to an <tt>OutputStream</tt>.
+     * Copy bytes from an <code>InputStream</code> to an <code>OutputStream</code>.
      * <p>
-     * This method buffers the input internally, so there is no need to use a <tt>BufferedInputStream</tt>.
-     * @param input  The <tt>InputStream</tt> to read from
-     * @param output The <tt>OutputStream</tt> to write to
+     * This method buffers the input internally, so there is no need to use a <code>BufferedInputStream</code>.
+     * @param input  The <code>InputStream</code> to read from
+     * @param output The <code>OutputStream</code> to write to
      * @return The number of bytes copied
      * @throws NullPointerException If the input or output is null
      * @throws IOException          If an I/O error occurs
@@ -65,8 +65,8 @@ public class IOUtils {
     }
 
     /**
-     * Closes the stream and ignores any <tt>IOExceptions</tt> that are thrown.
-     * @param closeable The <tt>Closable</tt> to close
+     * Closes the stream and ignores any <code>IOExceptions</code> that are thrown.
+     * @param closeable The <code>Closable</code> to close
      */
     public void closeQuietly(final Closeable closeable) {
         try {

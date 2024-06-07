@@ -23,7 +23,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 /**
- * JUnit test class for <tt>com.autonomy.aci.client.transport.AciParameter</tt>.
+ * JUnit test class for <code>com.autonomy.aci.client.transport.AciParameter</code>.
  */
 public class AciParameterTest {
 

@@ -15,7 +15,7 @@
 package com.autonomy.aci.client.services;
 
 /**
- * This exception is thrown if an error occurred during processing by an ACI response <tt>Processor</tt>.
+ * This exception is thrown if an error occurred during processing by an ACI response <code>Processor</code>.
  */
 public class ProcessorException extends RuntimeException {
 

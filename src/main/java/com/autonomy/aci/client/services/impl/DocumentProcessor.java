@@ -35,7 +35,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 
 /**
- * <tt>Processor</tt> implementation that converts an ACI response into a DOM <tt>Document</tt> for further processing
+ * <code>Processor</code> implementation that converts an ACI response into a DOM <code>Document</code> for further processing
  * either directly via DOM or via XPath.
  */
 public class DocumentProcessor implements Processor<Document> {
@@ -53,11 +53,11 @@ public class DocumentProcessor implements Processor<Document> {
     private static final Logger LOGGER = LoggerFactory.getLogger(DocumentProcessor.class);
 
     /**
-     * Converts the <tt>InputStream</tt> into a DOM <tt>Document</tt>.
-     * @param response The <tt>InputStream to convert</tt>
-     * @return The resulting DOM <tt>Document</tt>
+     * Converts the <code>InputStream</code> into a DOM <code>Document</code>.
+     * @param response The <code>InputStream to convert</code>
+     * @return The resulting DOM <code>Document</code>
      * @throws ProcessorException If there was an exception while parsing the input stream or configuring the
-     *                            <tt>DocumentBuilderFactory</tt>.
+     *                            <code>DocumentBuilderFactory</code>.
      */
     private Document convertACIResponseToDOM(final InputStream response) {
         LOGGER.trace("convertACIResponseToDOM() called...");
@@ -71,10 +71,10 @@ public class DocumentProcessor implements Processor<Document> {
     }
 
     /**
-     * Checks the DOM <tt>Document</tt> to see if it is an ACI Server error response. If it is, it pulls all the
-     * information contained in the response into an <tt>AciErrorException</tt> and throws it, otherwise it does
+     * Checks the DOM <code>Document</code> to see if it is an ACI Server error response. If it is, it pulls all the
+     * information contained in the response into an <code>AciErrorException</code> and throws it, otherwise it does
      * nothing.
-     * @param response The DOM <tt>Document</tt> to check.
+     * @param response The DOM <code>Document</code> to check.
      * @throws AciErrorException  If an error response was detected.
      * @throws ProcessorException If there was any other kind of exception caught during processing.
      */
@@ -118,9 +118,9 @@ public class DocumentProcessor implements Processor<Document> {
     }
 
     /**
-     * Process the ACI response input into a DOM <tt>Document</tt>.
+     * Process the ACI response input into a DOM <code>Document</code>.
      * @param aciResponse The ACI response to process
-     * @return A DOM <tt>Document</tt>
+     * @return A DOM <code>Document</code>
      * @throws AciErrorException  If the ACI response was an error response
      * @throws ProcessorException If an error occurred during the processing of the ACI response
      */

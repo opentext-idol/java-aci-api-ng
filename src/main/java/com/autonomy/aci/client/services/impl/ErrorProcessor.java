@@ -26,7 +26,7 @@ import javax.xml.stream.events.XMLEvent;
 import java.text.ParseException;
 
 /**
- * Processes an ACI Server error response into an <tt>AciErrorException</tt>.
+ * Processes an ACI Server error response into an <code>AciErrorException</code>.
  */
 public class ErrorProcessor extends AbstractStAXProcessor<AciErrorException> {
 
@@ -35,7 +35,7 @@ public class ErrorProcessor extends AbstractStAXProcessor<AciErrorException> {
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorProcessor.class);
 
     /**
-     * Process the ACI error response into an <tt>AciErrorException</tt>.
+     * Process the ACI error response into an <code>AciErrorException</code>.
      * @param aciResponse The ACI response to process
      * @return Does not actually return anything as it throws the exception when it's finished parsing the response.
      * @throws AciErrorException  Unless there was an error

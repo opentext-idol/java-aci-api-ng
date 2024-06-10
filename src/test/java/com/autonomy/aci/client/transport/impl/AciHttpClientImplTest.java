@@ -26,15 +26,17 @@ import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequest;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpResponse;
-import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.message.BasicHeader;
 import org.apache.hc.core5.http.message.BasicHttpResponse;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
+import org.apache.hc.core5.http.protocol.HttpContext;
 import org.apache.hc.core5.net.URLEncodedUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -413,7 +415,7 @@ public class AciHttpClientImplTest {
     public void testExecuteActionIOException() throws IOException, AciHttpException {
         // Create our mock HttpClient object...
         final HttpClient mockHttpClient = mock(HttpClient.class);
-        when(mockHttpClient.execute(any(HttpUriRequest.class), any(HttpClientResponseHandler.class)))
+        when(mockHttpClient.executeOpen(eq(null), any(ClassicHttpRequest.class), Mockito.<HttpContext>eq(null)))
                 .thenThrow(new IOException("JUnit test exception."));
 
         // Create our client...
@@ -433,7 +435,7 @@ public class AciHttpClientImplTest {
     public void testExecuteActionClientProtocolException() throws IOException, AciHttpException {
         // Create our mock HttpClient object...
         final HttpClient mockHttpClient = mock(HttpClient.class);
-        when(mockHttpClient.execute(any(HttpUriRequest.class), any(HttpClientResponseHandler.class)))
+        when(mockHttpClient.executeOpen(eq(null), any(ClassicHttpRequest.class), Mockito.<HttpContext>eq(null)))
                 .thenThrow(new ClientProtocolException("JUnit test exception."));
 
         // Create our client...

@@ -1,16 +1,16 @@
 package com.autonomy.aci.client;
 
-import org.apache.hc.client5.http.ClientProtocolException;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.HttpEntity;
-import org.apache.hc.core5.http.HttpException;
-import org.apache.hc.core5.http.io.HttpClientResponseHandler;
+import org.apache.hc.core5.http.protocol.HttpContext;
+import org.mockito.Mockito;
 
 import java.io.IOException;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -22,14 +22,8 @@ public class HttpTestUtils {
         when(mockHttpResponse.getEntity()).thenReturn(responseEntity);
 
         final HttpClient mockHttpClient = mock(HttpClient.class);
-        when(mockHttpClient.execute(any(ClassicHttpRequest.class), any(HttpClientResponseHandler.class)))
-                .thenAnswer(inv -> {
-                    try {
-                        return inv.getArgument(1, HttpClientResponseHandler.class).handleResponse(mockHttpResponse);
-                    } catch (final HttpException e) {
-                        throw new ClientProtocolException(e);
-                    }
-                });
+        when(mockHttpClient.executeOpen(eq(null), any(ClassicHttpRequest.class), Mockito.<HttpContext>eq(null)))
+                .thenReturn(mockHttpResponse);
 
         return new HttpMocks(mockHttpClient, mockHttpResponse, responseEntity);
     }

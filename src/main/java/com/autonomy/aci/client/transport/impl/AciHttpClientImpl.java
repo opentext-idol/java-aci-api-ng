@@ -25,8 +25,8 @@ import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequest;
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
+import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.Header;
-import org.apache.hc.core5.http.HttpException;
 import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
@@ -367,50 +367,48 @@ public class AciHttpClientImpl implements AciHttpClient {
             if (httpClient5 != null) {
 
                 final HttpUriRequest request = constructHttp5Request(serverDetails, parameters);
-                return httpClient5.execute(request, response -> {
-                    final int statusCode = response.getCode();
-                    LOGGER.debug("Executed method and got status code - {}...", statusCode);
+                final ClassicHttpResponse response = httpClient5.executeOpen(null, request, null);
+                final int statusCode = response.getCode();
+                LOGGER.debug("Executed method and got status code - {}...", statusCode);
 
-                    // Treat anything other than a 2xx status code as an error...
-                    if ((statusCode < 200) || (statusCode >= 300)) {
-                        // close the connection so it can be reused
-                        EntityUtils.consume(response.getEntity());
+                // Treat anything other than a 2xx status code as an error...
+                if ((statusCode < 200) || (statusCode >= 300)) {
+                    // close the connection so it can be reused
+                    EntityUtils.consume(response.getEntity());
 
-                        throw new HttpException(
-                                "The server returned a status code, " + statusCode +
-                                        ", that wasn't in the 2xx Success range.");
-                    }
+                    throw new AciHttpException(
+                            "The server returned a status code, " + statusCode +
+                                    ", that wasn't in the 2xx Success range.");
+                }
 
-                    // Decorate the InputStream so we can release the HTTP connection once the stream's been read...
-                    return decryptResponse(serverDetails.getEncryptionCodec(), response)
-                            ? new DecryptingAciResponseInputStreamImpl(serverDetails, response)
-                            : new AciResponseInputStreamImpl(response);
-                });
+                // Decorate the InputStream so we can release the HTTP connection once the stream's been read...
+                return decryptResponse(serverDetails.getEncryptionCodec(), response)
+                        ? new DecryptingAciResponseInputStreamImpl(serverDetails, response)
+                        : new AciResponseInputStreamImpl(response);
 
             } else {
                 Validate.notNull(httpClient, "You must set the HttpClient instance to use before using this class.");
                 final org.apache.http.client.methods.HttpUriRequest request =
                         constructHttpRequest(serverDetails, parameters);
 
-                return httpClient.execute(request, response -> {
-                    final int statusCode = response.getStatusLine().getStatusCode();
-                    LOGGER.debug("Executed method and got status code - {}...", statusCode);
+                final org.apache.http.HttpResponse response = httpClient.execute(request);
+                final int statusCode = response.getStatusLine().getStatusCode();
+                LOGGER.debug("Executed method and got status code - {}...", statusCode);
 
-                    // Treat anything other than a 2xx status code as an error...
-                    if ((statusCode < 200) || (statusCode >= 300)) {
-                        // close the connection so it can be reused
-                        org.apache.http.util.EntityUtils.consume(response.getEntity());
+                // Treat anything other than a 2xx status code as an error...
+                if ((statusCode < 200) || (statusCode >= 300)) {
+                    // close the connection so it can be reused
+                    org.apache.http.util.EntityUtils.consume(response.getEntity());
 
-                        throw new org.apache.http.client.ClientProtocolException(
-                                "The server returned a status code, " + statusCode +
-                                        ", that wasn't in the 2xx Success range.");
-                    }
+                    throw new AciHttpException(
+                            "The server returned a status code, " + statusCode +
+                                    ", that wasn't in the 2xx Success range.");
+                }
 
-                    // Decorate the InputStream so we can release the HTTP connection once the stream's been read...
-                    return decryptResponse(serverDetails.getEncryptionCodec(), response)
-                            ? new DecryptingAciResponseInputStreamImpl(serverDetails, response)
-                            : new AciResponseInputStreamImpl(response);
-                });
+                // Decorate the InputStream so we can release the HTTP connection once the stream's been read...
+                return decryptResponse(serverDetails.getEncryptionCodec(), response)
+                        ? new DecryptingAciResponseInputStreamImpl(serverDetails, response)
+                        : new AciResponseInputStreamImpl(response);
 
             }
         } catch (final ClientProtocolException | org.apache.http.client.ClientProtocolException cpe) {

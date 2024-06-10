@@ -172,7 +172,7 @@ public class AciHttpClientImpl implements AciHttpClient {
         // Generate the query String and put it through the codec...
         final String data = EncryptionCodecUtils.getInstance().encrypt(
                 serverDetails.getEncryptionCodec(),
-                convertParameters(parameters, serverDetails.getCharsetName()),
+                encodeParameters(convertParameters(parameters), serverDetails.getCharsetName()),
                 serverDetails.getCharsetName()
         );
 
@@ -200,7 +200,7 @@ public class AciHttpClientImpl implements AciHttpClient {
                 .setHost(serverDetails.getHost())
                 .setPort(serverDetails.getPort())
                 .setPath("/")
-                .setCustomQuery(convertParameters(parameters, serverDetails.getCharsetName()))
+                .setParameters(convertParameters(parameters))
                 .build();
 
         // Return the constructed get method...
@@ -217,7 +217,7 @@ public class AciHttpClientImpl implements AciHttpClient {
                 .setHost(serverDetails.getHost())
                 .setPort(serverDetails.getPort())
                 .setPath("/")
-                .setCustomQuery(convertParameters(parameters, serverDetails.getCharsetName()))
+                .setParameters(convertParameters(parameters))
                 .build();
 
         // Return the constructed get method...
@@ -263,7 +263,8 @@ public class AciHttpClientImpl implements AciHttpClient {
             method.setEntity(multipartEntityBuilder.build());
         }
         else {
-            method.setEntity(new StringEntity(convertParameters(parameters, serverDetails.getCharsetName()), charset));
+            method.setEntity(new StringEntity(
+                    encodeParameters(convertParameters(parameters), serverDetails.getCharsetName()), charset));
         }
 
         // Return the method...
@@ -299,21 +300,15 @@ public class AciHttpClientImpl implements AciHttpClient {
             method.setEntity(multipartEntityBuilder.build());
         }
         else {
-            method.setEntity(new org.apache.http.entity.StringEntity(convertParameters(parameters, serverDetails.getCharsetName()), charset));
+            method.setEntity(new org.apache.http.entity.StringEntity(
+                    encodeParameters(convertParameters(parameters), serverDetails.getCharsetName()), charset));
         }
 
         // Return the method...
         return method;
     }
 
-    /**
-     * Converts a list of {@code AciParameter} objects into an array of {@code NameValuePair} objects suitable for use
-     * in both POST and GET methods.
-     * @param parameters  The set of parameters to convert.
-     * @param charsetName The name of the charset to use when encoding the parameters
-     * @return an <code>String</code> representing the query string portion of a URI
-     */
-    private String convertParameters(final Set<? extends ActionParameter<?>> parameters, final String charsetName) {
+    private List<NameValuePair> convertParameters(final Set<? extends ActionParameter<?>> parameters) {
         LOGGER.trace("convertParameters() called...");
 
         // Just incase, remove the allowed null entry...
@@ -343,8 +338,18 @@ public class AciHttpClientImpl implements AciHttpClient {
         Validate.isTrue(actionPair != null, "No action parameter found in parameter set, please set one before trying to execute an ACI request.");
         pairs.add(0, actionPair);
 
-        // Convert to a string and return...
-        return URLEncodedUtils.format(pairs, Charset.forName(charsetName));
+        return pairs;
+    }
+
+    /**
+     * Converts a list of {@code AciParameter} objects into an array of {@code NameValuePair} objects suitable for use
+     * in both POST and GET methods.
+     * @param parameters  The set of parameters to convert.
+     * @param charsetName The name of the charset to use when encoding the parameters
+     * @return an <code>String</code> representing the query string portion of a URI
+     */
+    private String encodeParameters(final List<NameValuePair> parameters, final String charsetName) {
+        return URLEncodedUtils.format(parameters, Charset.forName(charsetName));
     }
 
     /**

@@ -46,6 +46,7 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.Matchers.startsWith;
@@ -128,36 +129,19 @@ public class AciHttpClientImplTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testConvertParametersMethod() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        // Create our client...
-        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
-
-        // Get our method...
-        final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "convertParameters", Set.class, String.class);
-
-        // Here's the parameter set...
+    public void testConvertParametersMethod() throws Exception {
         final Set<AciParameter> parameters = new LinkedHashSet<>();
         parameters.add(new AciParameter(AciConstants.PARAM_ACTION, "query"));
         parameters.add(new AciParameter("Text", "This is some text..."));
 
-        // Invoke the method with the parameters...
-        final String converted = (String) method.invoke(aciHttpClient, parameters, "UTF-8");
-
-        // Check the converted parameters...
+        final String converted = testConvertEncodeParameters(parameters, "UTF-8");
         assertThat("Converted parameters shouldn't be null", converted, is(notNullValue()));
         assertThat("Incorrect converted parameters", converted, is(equalTo("Action=query&Text=This+is+some+text...")));
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testConvertParametersMethodActionNotFirstItem() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        // Create our client...
-        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
-
-        // Get our method...
-        final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "convertParameters", Set.class, String.class);
-
-        // Here's the parameter set...
+    public void testConvertParametersMethodActionNotFirstItem() throws Exception {
         final Set<AciParameter> parameters = new LinkedHashSet<>();
         parameters.add(new AciParameter("Text", "This is some text..."));
         parameters.add(new AciParameter("Combine", "Simple"));
@@ -165,10 +149,7 @@ public class AciHttpClientImplTest {
         parameters.add(new AciParameter(AciConstants.PARAM_ACTION, "query"));
         parameters.add(new AciParameter("MaxResults", 10));
 
-        // Invoke the method with the parameters...
-        final String converted = (String) method.invoke(aciHttpClient, parameters, "UTF-8");
-
-        // Check the converted parameters...
+        final String converted = testConvertEncodeParameters(parameters, "UTF-8");
         assertThat("Converted parameters shouldn't be null", converted, is(notNullValue()));
         assertThat("Incorrect converted parameters", converted, is(equalTo("Action=query&Text=This+is+some+text...&Combine=Simple&Predict=false&MaxResults=10")));
     }
@@ -187,14 +168,7 @@ public class AciHttpClientImplTest {
      */
     @Test
     @SuppressWarnings("unchecked")
-    public void testConvertParametersMethodLowerCaseAction() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        // Create our client...
-        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
-
-        // Get our method...
-        final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "convertParameters", Set.class, String.class);
-
-        // Here's the parameter set...
+    public void testConvertParametersMethodLowerCaseAction() throws Exception {
         final Set<AciParameter> parameters = new LinkedHashSet<>();
         parameters.add(new AciParameter("Text", "This is some text..."));
         parameters.add(new AciParameter("Combine", "Simple"));
@@ -202,10 +176,7 @@ public class AciHttpClientImplTest {
         parameters.add(new AciParameter("action", "query"));
         parameters.add(new AciParameter("MaxResults", 10));
 
-        // Invoke the method with the parameters...
-        final String converted = (String) method.invoke(aciHttpClient, parameters, "UTF-8");
-
-        // Check the converted parameters...
+        final String converted = testConvertEncodeParameters(parameters, "UTF-8");
         assertThat("Converted parameters shouldn't be null", converted, is(notNullValue()));
         assertThat("Incorrect converted parameters", converted, is(equalTo("action=query&Text=This+is+some+text...&Combine=Simple&Predict=false&MaxResults=10")));
     }
@@ -215,14 +186,7 @@ public class AciHttpClientImplTest {
      */
     @Test
     @SuppressWarnings("unchecked")
-    public void testConvertParametersMethodNoAction() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        // Create our client...
-        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
-
-        // Get our method...
-        final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "convertParameters", Set.class, String.class);
-
-        // Here's the parameter set...
+    public void testConvertParametersMethodNoAction() throws Exception {
         final ActionParameters parameters = new ActionParameters(
                 new AciParameter("Text", "This is some text..."),
                 new AciParameter("MaxResults", true),
@@ -231,7 +195,7 @@ public class AciHttpClientImplTest {
 
         try {
             // Invoke the method with the parameters...
-            method.invoke(aciHttpClient, parameters, "UTF-8");
+            testConvertEncodeParameters(parameters, "UTF-8");
             fail("Should have thrown an InvocationTargetException");
         } catch (final InvocationTargetException ite) {
             assertThat(ite.getCause(), is(instanceOf(IllegalArgumentException.class)));
@@ -255,8 +219,8 @@ public class AciHttpClientImplTest {
         // Invoke the method with the parameters...
         final HttpUriRequest request = (HttpUriRequest) method.invoke(aciHttpClient, serverDetails, parameters);
 
-        // Check the query string...
-        assertThat("Incorrect query string", request.getUri().getQuery(), is(equalTo("Action=query&Text=This+is+some+text...")));
+        assertThat("Incorrect URL", request.getUri().toString(),
+                is(equalTo("http://localhost:9000/?Action=query&Text=This%20is%20some%20text...")));
     }
 
     @Test
@@ -336,7 +300,8 @@ public class AciHttpClientImplTest {
         // Invoke and we should get a GetMethod back...
         HttpUriRequest request = (HttpUriRequest) method.invoke(aciHttpClient, serverDetails, parameters);
         assertThat("Incorrect HTTP method", request.getMethod(), is(equalTo("GET")));
-        assertThat("Incorrect query string", request.getUri().getQuery(), is(equalTo("Action=query&Text=This+is+some+text...")));
+        assertThat("Incorrect URL", request.getUri().toString(),
+                is(equalTo("http://localhost:9000/?Action=query&Text=This%20is%20some%20text...")));
 
         // Set it to use POST and try again...
         aciHttpClient.setUsePostMethod(true);
@@ -345,7 +310,7 @@ public class AciHttpClientImplTest {
         HttpEntity entity = ((HttpPost) request).getEntity();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         entity.writeTo(baos);
-        assertThat("Incorrect query string", baos.toString("UTF-8"), is(equalTo("Action=query&Text=This+is+some+text...")));
+        assertThat("Incorrect request body", baos.toString("UTF-8"), is(equalTo("Action=query&Text=This+is+some+text...")));
 
         // Set an encryption codec...
         serverDetails.setEncryptionCodec(new TestEncryptionCodec());
@@ -354,13 +319,14 @@ public class AciHttpClientImplTest {
         entity = ((HttpPost) request).getEntity();
         baos = new ByteArrayOutputStream();
         entity.writeTo(baos);
-        assertThat("Incorrect query string", baos.toString("UTF-8"), startsWith("Action=Encrypted&Data="));
+        assertThat("Incorrect request body", baos.toString("UTF-8"), startsWith("Action=Encrypted&Data="));
 
         // Get rid of the POST, but keep the encryption codec...
         aciHttpClient.setUsePostMethod(false);
         request = (HttpUriRequest) method.invoke(aciHttpClient, serverDetails, parameters);
         assertThat("Incorrect HTTP method", request.getMethod(), is(equalTo("GET")));
-        assertThat("Incorrect query string", request.getUri().getQuery(), startsWith("Action=Encrypted&Data="));
+        assertThat("Incorrect URL", request.getUri().toString(),
+                startsWith("http://localhost:9000/?Action=Encrypted&Data="));
     }
 
     @Test(expected = NullPointerException.class)
@@ -540,6 +506,17 @@ public class AciHttpClientImplTest {
         httpResponse.setHeader(new BasicHeader("AUTN-Content-Type", "text/xml"));
         result = (Boolean) method.invoke(aciHttpClient, new TestEncryptionCodec(), httpResponse);
         assertThat("Incorrect result", result, is(true));
+    }
+
+    private String testConvertEncodeParameters(final Set<? extends ActionParameter<?>> params, final String charset)
+            throws Exception
+    {
+        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
+        final Method convertMethod = ReflectionTestUtils.getAccessibleMethod(
+                AciHttpClientImpl.class, "convertParameters", Set.class);
+        final Method encodeMethod = ReflectionTestUtils.getAccessibleMethod(
+                AciHttpClientImpl.class, "encodeParameters", List.class, String.class);
+        return (String) encodeMethod.invoke(aciHttpClient, convertMethod.invoke(aciHttpClient, params), charset);
     }
 
 }

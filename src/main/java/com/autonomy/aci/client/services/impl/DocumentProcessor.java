@@ -46,6 +46,13 @@ public class DocumentProcessor implements Processor<Document> {
         // Should speed things up a bit...
         documentBuilderFactory.setNamespaceAware(false);
         documentBuilderFactory.setValidating(false);
+        documentBuilderFactory.setXIncludeAware(false);
+        // https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#jaxp-documentbuilderfactory-saxparserfactory-and-dom4j
+        try {
+            documentBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+        } catch (final ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static final long serialVersionUID = -1757174558649421058L;

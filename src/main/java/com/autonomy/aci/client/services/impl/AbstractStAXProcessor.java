@@ -94,14 +94,15 @@ public abstract class AbstractStAXProcessor<T> implements StAXProcessor<T> {
      * should be faster than creating a new instance every time this method is called.
      * <p>
      * The properties are set to the following defaults if they are not specified as system properties:
-     * <table summary="">
-     * <tr><th>Property</th><th>Default</th></tr>
-     * <tr><td>XMLInputFactory.IS_NAMESPACE_AWARE</td><td><code>false</code></td></tr>
-     * <tr><td>XMLInputFactory.IS_VALIDATING<code>false</code></td></tr>
-     * <tr><td>XMLInputFactory.IS_COALESCING<code>false</code></td></tr>
-     * <tr><td>XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES<code>true</code></td></tr>
-     * <tr><td>XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES<code>false</code></td></tr>
-     * <tr><td>XMLInputFactory.SUPPORT_DTD<code>true</code></td></tr>
+     * <table>
+     *     <caption></caption>
+     *     <tr><th>Property</th><th>Default</th></tr>
+     *     <tr><td>XMLInputFactory.IS_NAMESPACE_AWARE</td><td><code>false</code></td></tr>
+     *     <tr><td>XMLInputFactory.IS_VALIDATING<code>false</code></td></tr>
+     *     <tr><td>XMLInputFactory.IS_COALESCING<code>false</code></td></tr>
+     *     <tr><td>XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES<code>true</code></td></tr>
+     *     <tr><td>XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES<code>false</code></td></tr>
+     *     <tr><td>XMLInputFactory.SUPPORT_DTD<code>true</code></td></tr>
      * </table>
      */
     protected AbstractStAXProcessor() {

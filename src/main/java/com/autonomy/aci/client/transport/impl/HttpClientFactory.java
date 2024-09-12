@@ -33,18 +33,19 @@ import org.slf4j.LoggerFactory;
  * sets the necessary configuration parameters to the values that have been set via the setter methods.
  * <p>
  * Defaults for all the properties that can be configured are:
- * <table border="0" style="margin-left: 2em;" summary="">
- * <tr><td><code>maxTotalConnections</code></td><td>&#160;</td><td>20</td></tr>
- * <tr><td><code>maxConnectionsPerRoute</code></td><td>&#160;</td><td>4</tr>
- * <tr><td><code>connectionTimeout</code></td><td>&#160;</td><td>7000</tr>
- * <tr><td><code>linger</code></td><td>&#160;</td><td>-1</tr>
- * <tr><td><code>socketBufferSize</code></td><td>&#160;</td><td>8192</tr>
- * <tr><td><code>soKeepAlive</code></td><td>&#160;</td><td>true</tr>
- * <tr><td><code>soReuseAddr</code></td><td>&#160;</td><td>true</tr>
- * <tr><td><code>soTimeout</code></td><td>&#160;</td><td>10000</tr>
- * <tr><td><code>staleCheckingEnabled</code></td><td>&#160;</td><td>false</tr>
- * <tr><td><code>tcpNoDelay</code></td><td>&#160;</td><td>true</tr>
- * <tr><td><code>useCompression</code></td><td>&#160;</td><td>true</tr>
+ * <table style="margin-left: 2em;">
+ *     <caption></caption>
+ *     <tr><td><code>maxTotalConnections</code></td><td>&#160;</td><td>20</td></tr>
+ *     <tr><td><code>maxConnectionsPerRoute</code></td><td>&#160;</td><td>4</tr>
+ *     <tr><td><code>connectionTimeout</code></td><td>&#160;</td><td>7000</tr>
+ *     <tr><td><code>linger</code></td><td>&#160;</td><td>-1</tr>
+ *     <tr><td><code>socketBufferSize</code></td><td>&#160;</td><td>8192</tr>
+ *     <tr><td><code>soKeepAlive</code></td><td>&#160;</td><td>true</tr>
+ *     <tr><td><code>soReuseAddr</code></td><td>&#160;</td><td>true</tr>
+ *     <tr><td><code>soTimeout</code></td><td>&#160;</td><td>10000</tr>
+ *     <tr><td><code>staleCheckingEnabled</code></td><td>&#160;</td><td>false</tr>
+ *     <tr><td><code>tcpNoDelay</code></td><td>&#160;</td><td>true</tr>
+ *     <tr><td><code>useCompression</code></td><td>&#160;</td><td>true</tr>
  * </table>
  * <p>
  * If you are using something like Spring's IoC container, you can use this class to configure your

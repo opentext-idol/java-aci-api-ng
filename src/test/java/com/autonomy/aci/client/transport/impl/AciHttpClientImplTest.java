@@ -44,10 +44,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.Matchers.*;
@@ -259,7 +256,7 @@ public class AciHttpClientImplTest {
         final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
 
         // Get our method...
-        final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "createEncryptedParameters", AciServerDetails.class, Set.class);
+        final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "createEncryptedParameters", AciServerDetails.class, Collection.class);
 
         // Add an encryption codec to the server details...
         serverDetails.setEncryptionCodec(new TestEncryptionCodec());
@@ -512,11 +509,11 @@ public class AciHttpClientImplTest {
             throws Exception
     {
         final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
-        final Method convertMethod = ReflectionTestUtils.getAccessibleMethod(
-                AciHttpClientImpl.class, "convertParameters", Set.class);
+        final Method orderMethod = ReflectionTestUtils.getAccessibleMethod(
+                AciHttpClientImpl.class, "orderParams", Collection.class);
         final Method encodeMethod = ReflectionTestUtils.getAccessibleMethod(
-                AciHttpClientImpl.class, "encodeParameters", List.class, String.class);
-        return (String) encodeMethod.invoke(aciHttpClient, convertMethod.invoke(aciHttpClient, params), charset);
+                AciHttpClientImpl.class, "wwwFormEncodeParams", List.class, String.class);
+        return (String) encodeMethod.invoke(aciHttpClient, orderMethod.invoke(aciHttpClient, params), charset);
     }
 
 }

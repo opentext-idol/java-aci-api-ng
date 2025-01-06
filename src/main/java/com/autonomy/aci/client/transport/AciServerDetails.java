@@ -61,6 +61,10 @@ public class AciServerDetails implements Serializable {
 
     /**
      * If this is non-null, then it will be used to encrypt communication with the ACI Server.
+     * <p>
+     * Note that streamed parameters (see {@link com.autonomy.aci.client.transport.ActionParameter#requiresPostRequest})
+     * cannot be encrypted.  Using ACI encryption for security (rather than for OEM licensing purposes) is deprecated in
+     * favour of TLS, but if you must use it, do not use streamed parameters.
      */
     private EncryptionCodec encryptionCodec;
 

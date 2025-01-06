@@ -99,7 +99,7 @@ public class AbstractEncryptionCodecTest extends AbstractEncryptionCodec {
     public void testEncryptNullOrEmpty() throws EncryptionCodecException, UnsupportedEncodingException {
         try {
             // Encrypt and check...
-            encrypt(null);
+            encrypt((byte[]) null);
             fail("Should have thrown an IllegalArgumentException...");
         } catch (final IllegalArgumentException iae) {
             // Expected...
@@ -124,7 +124,7 @@ public class AbstractEncryptionCodecTest extends AbstractEncryptionCodec {
     public void testDecryptNullOrEmpty() throws EncryptionCodecException, UnsupportedEncodingException {
         try {
             // Decrypt and check...
-            decrypt(null);
+            decrypt((byte[]) null);
             fail("Should have thrown an IllegalArgumentException...");
         } catch (final IllegalArgumentException iae) {
             // Expected...

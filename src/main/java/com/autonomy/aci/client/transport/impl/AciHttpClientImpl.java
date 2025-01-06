@@ -25,15 +25,12 @@ import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequest;
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
-import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.apache.hc.core5.http.Header;
-import org.apache.hc.core5.http.HttpResponse;
-import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.*;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.apache.hc.core5.net.URIBuilder;
-import org.apache.hc.core5.net.URLEncodedUtils;
+import org.apache.hc.core5.net.WWWFormCodec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,10 +39,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Implementation of the {@link com.autonomy.aci.client.transport.AciHttpClient} interface that provides the actual HTTP
@@ -123,19 +119,27 @@ public class AciHttpClientImpl implements AciHttpClient {
     private HttpUriRequest constructHttp5Request(final AciServerDetails serverDetails, final Set<? extends ActionParameter<?>> parameters) throws EncryptionCodecException, URISyntaxException, UnsupportedEncodingException {
         LOGGER.trace("constructHttpMethod() called...");
 
-        // Copy the parameters...
-        final Set<? extends ActionParameter<?>> params = (serverDetails.getEncryptionCodec() == null)
-                ? parameters
-                : createEncryptedParameters(serverDetails, parameters);
-
         final boolean hasPostParameter = parameters.stream()
                 .anyMatch(ActionParameter::requiresPostRequest);
+        final boolean encrypt = serverDetails.getEncryptionCodec() != null;
 
-        // If an InputStream parameter has been provided, use a post request regardless
-        if (usePostMethod || hasPostParameter) {
-            return createPost5Method(serverDetails, params);
+        if (hasPostParameter) {
+            // OEM multipart is done by encrypting the querystring with at least 1 param (in this case the action),
+            // and not encrypting the body
+            final List<ActionParameter<?>> orderedParams = orderParams(parameters);
+            final List<ActionParameter<?>> urlParams = orderedParams.subList(0, 1);
+            final Collection<? extends ActionParameter<?>> encryptedUrlParams = encrypt ?
+                    createEncryptedParameters(serverDetails, urlParams) : urlParams;
+            final List<ActionParameter<?>> bodyParams = orderedParams.stream().skip(1).collect(Collectors.toList());
+            return createMultipart5Method(serverDetails, encryptedUrlParams, bodyParams);
         } else {
-            return createGet5Method(serverDetails, params);
+            final Set<? extends ActionParameter<?>> encryptedParams = encrypt ?
+                    createEncryptedParameters(serverDetails, parameters) : parameters;
+            if (usePostMethod) {
+                return createPost5Method(serverDetails, encryptedParams);
+            } else {
+                return createGet5Method(serverDetails, encryptedParams);
+            }
         }
     }
 
@@ -143,19 +147,25 @@ public class AciHttpClientImpl implements AciHttpClient {
     private org.apache.http.client.methods.HttpUriRequest constructHttpRequest(final AciServerDetails serverDetails, final Set<? extends ActionParameter<?>> parameters) throws EncryptionCodecException, URISyntaxException, UnsupportedEncodingException {
         LOGGER.trace("constructHttpMethod() called...");
 
-        // Copy the parameters...
-        final Set<? extends ActionParameter<?>> params = (serverDetails.getEncryptionCodec() == null)
-                ? parameters
-                : createEncryptedParameters(serverDetails, parameters);
-
         final boolean hasPostParameter = parameters.stream()
                 .anyMatch(ActionParameter::requiresPostRequest);
+        final boolean encrypt = serverDetails.getEncryptionCodec() != null;
 
-        // If an InputStream parameter has been provided, use a post request regardless
-        if (usePostMethod || hasPostParameter) {
-            return createPostMethod(serverDetails, params);
+        if (hasPostParameter) {
+            final List<ActionParameter<?>> orderedParams = orderParams(parameters);
+            final List<ActionParameter<?>> urlParams = orderedParams.subList(0, 1);
+            final Collection<? extends ActionParameter<?>> encryptedUrlParams = encrypt ?
+                    createEncryptedParameters(serverDetails, urlParams) : urlParams;
+            final List<ActionParameter<?>> bodyParams = orderedParams.stream().skip(1).collect(Collectors.toList());
+            return createMultipartMethod(serverDetails, encryptedUrlParams, bodyParams);
         } else {
-            return createGetMethod(serverDetails, params);
+            final Set<? extends ActionParameter<?>> encryptedParams = encrypt ?
+                    createEncryptedParameters(serverDetails, parameters) : parameters;
+            if (usePostMethod) {
+                return createPostMethod(serverDetails, encryptedParams);
+            } else {
+                return createGetMethod(serverDetails, encryptedParams);
+            }
         }
     }
 
@@ -166,13 +176,13 @@ public class AciHttpClientImpl implements AciHttpClient {
      * @return A set of encrypted parameters
      * @throws EncryptionCodecException if something went wrong encrypting the parameters
      */
-    private Set<? extends ActionParameter<?>> createEncryptedParameters(final AciServerDetails serverDetails, final Set<? extends ActionParameter<?>> parameters) throws EncryptionCodecException {
+    private Set<? extends ActionParameter<?>> createEncryptedParameters(final AciServerDetails serverDetails, final Collection<? extends ActionParameter<?>> parameters) throws EncryptionCodecException {
         LOGGER.trace("createEncryptedParameters() called...");
 
         // Generate the query String and put it through the codec...
         final String data = EncryptionCodecUtils.getInstance().encrypt(
                 serverDetails.getEncryptionCodec(),
-                encodeParameters(convertParameters(parameters), serverDetails.getCharsetName()),
+                wwwFormEncodeParams(orderParams(parameters), serverDetails.getCharsetName()),
                 serverDetails.getCharsetName()
         );
 
@@ -200,7 +210,7 @@ public class AciHttpClientImpl implements AciHttpClient {
                 .setHost(serverDetails.getHost())
                 .setPort(serverDetails.getPort())
                 .setPath("/")
-                .setParameters(convertParameters(parameters))
+                .setParameters(paramsToNVP(orderParams(parameters)))
                 .build();
 
         // Return the constructed get method...
@@ -217,7 +227,7 @@ public class AciHttpClientImpl implements AciHttpClient {
                 .setHost(serverDetails.getHost())
                 .setPort(serverDetails.getPort())
                 .setPath("/")
-                .setParameters(convertParameters(parameters))
+                .setParameters(paramsToNVP(orderParams(parameters)))
                 .build();
 
         // Return the constructed get method...
@@ -225,19 +235,79 @@ public class AciHttpClientImpl implements AciHttpClient {
     }
 
     /**
-     * Create a {@code PostMethod} and adds the ACI parameters to the request body.
-     * @param serverDetails The details of the ACI server the request will be sent to
-     * @param parameters    The parameters to send with the ACI action.
-     * @return An {@code HttpPost} that is ready to execute the ACI action.
-     * @throws UnsupportedEncodingException Will be thrown if <code>serverDetails.getCharsetName()</code> returns a
-     *                                      charset that is not supported by the JVM
-     * @throws URISyntaxException           If there was a problem construction the request URI from the
-     *                                      <code>serverDetails</code> and <code>parameters</code>
+     * Create multipart POST request.
+     *
+     * @param serverDetails
+     * @param urlParams Parameters to send in the URL querystring
+     * @param bodyParams Parameters to send in multipart body
+     * @return Built request
+     * @throws UnsupportedEncodingException
+     * @throws URISyntaxException
+     */
+    private HttpUriRequest createMultipart5Method(
+            final AciServerDetails serverDetails,
+            final Collection<? extends ActionParameter<?>> urlParams,
+            final Collection<? extends ActionParameter<?>> bodyParams
+    ) throws URISyntaxException, UnsupportedEncodingException {
+        LOGGER.trace("createMultipartMethod() called...");
+
+        final URI uri = new URIBuilder()
+                .setScheme(serverDetails.getProtocol().toString().toLowerCase(Locale.ENGLISH))
+                .setHost(serverDetails.getHost())
+                .setPort(serverDetails.getPort())
+                .setPath("/")
+                .setParameters(paramsToNVP(urlParams))
+                .build();
+
+        final HttpPost method = new HttpPost(uri);
+
+        final Charset charset = Charset.forName(serverDetails.getCharsetName());
+        final MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
+        multipartEntityBuilder.setCharset(charset);
+        bodyParams.forEach(parameter -> parameter.addToEntity(multipartEntityBuilder, charset));
+        method.setEntity(multipartEntityBuilder.build());
+
+        return method;
+    }
+
+    private org.apache.http.client.methods.HttpUriRequest createMultipartMethod(
+            final AciServerDetails serverDetails,
+            final Collection<? extends ActionParameter<?>> urlParams,
+            final Collection<? extends ActionParameter<?>> bodyParams
+    ) throws URISyntaxException, UnsupportedEncodingException {
+        LOGGER.trace("createMultipartMethod() called...");
+
+        final URI uri = new URIBuilder()
+                .setScheme(serverDetails.getProtocol().toString().toLowerCase(Locale.ENGLISH))
+                .setHost(serverDetails.getHost())
+                .setPort(serverDetails.getPort())
+                .setPath("/")
+                .setParameters(paramsToNVP(urlParams))
+                .build();
+
+        final org.apache.http.client.methods.HttpPost method = new org.apache.http.client.methods.HttpPost(uri);
+
+        final Charset charset = Charset.forName(serverDetails.getCharsetName());
+        final org.apache.http.entity.mime.MultipartEntityBuilder multipartEntityBuilder = org.apache.http.entity.mime.MultipartEntityBuilder.create();
+        multipartEntityBuilder.setCharset(charset);
+        bodyParams.forEach(parameter -> parameter.addToEntity(multipartEntityBuilder, charset));
+        method.setEntity(multipartEntityBuilder.build());
+
+        return method;
+    }
+
+    /**
+     * Create form-urlencoded POST request.
+     *
+     * @param serverDetails
+     * @param parameters Parameters to send in form-urlencoded body
+     * @return Built request
+     * @throws UnsupportedEncodingException
+     * @throws URISyntaxException
      */
     private HttpUriRequest createPost5Method(final AciServerDetails serverDetails, final Set<? extends ActionParameter<?>> parameters) throws URISyntaxException, UnsupportedEncodingException {
         LOGGER.trace("createPostMethod() called...");
 
-        // Create the URI to use...
         final URI uri = new URIBuilder()
                 .setScheme(serverDetails.getProtocol().toString().toLowerCase(Locale.ENGLISH))
                 .setHost(serverDetails.getHost())
@@ -245,36 +315,18 @@ public class AciHttpClientImpl implements AciHttpClient {
                 .setPath("/")
                 .build();
 
-        // Create the method...
         final HttpPost method = new HttpPost(uri);
 
-        final Charset charset = Charset.forName(serverDetails.getCharsetName());
+        method.setEntity(new StringEntity(
+                    wwwFormEncodeParams(orderParams(parameters), serverDetails.getCharsetName()),
+                    ContentType.TEXT_PLAIN));
 
-        final boolean requiresMultipart = parameters.stream()
-                .anyMatch(ActionParameter::requiresPostRequest);
-
-        if (requiresMultipart) {
-            final MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
-            multipartEntityBuilder.setCharset(charset);
-
-            parameters.forEach(parameter -> parameter.addToEntity(multipartEntityBuilder, charset));
-
-            // Convert the parameters into an entity...
-            method.setEntity(multipartEntityBuilder.build());
-        }
-        else {
-            method.setEntity(new StringEntity(
-                    encodeParameters(convertParameters(parameters), serverDetails.getCharsetName()), charset));
-        }
-
-        // Return the method...
         return method;
     }
 
     private org.apache.http.client.methods.HttpUriRequest createPostMethod(final AciServerDetails serverDetails, final Set<? extends ActionParameter<?>> parameters) throws URISyntaxException, UnsupportedEncodingException {
         LOGGER.trace("createPostMethod() called...");
 
-        // Create the URI to use...
         final URI uri = new URIBuilder()
                 .setScheme(serverDetails.getProtocol().toString().toLowerCase(Locale.ENGLISH))
                 .setHost(serverDetails.getHost())
@@ -282,74 +334,73 @@ public class AciHttpClientImpl implements AciHttpClient {
                 .setPath("/")
                 .build();
 
-        // Create the method...
         final org.apache.http.client.methods.HttpPost method = new org.apache.http.client.methods.HttpPost(uri);
 
-        final Charset charset = Charset.forName(serverDetails.getCharsetName());
+        method.setEntity(new org.apache.http.entity.StringEntity(
+                wwwFormEncodeParams(orderParams(parameters), serverDetails.getCharsetName()),
+                org.apache.http.entity.ContentType.TEXT_PLAIN));
 
-        final boolean requiresMultipart = parameters.stream()
-                .anyMatch(ActionParameter::requiresPostRequest);
-
-        if (requiresMultipart) {
-            final org.apache.http.entity.mime.MultipartEntityBuilder multipartEntityBuilder = org.apache.http.entity.mime.MultipartEntityBuilder.create();
-            multipartEntityBuilder.setCharset(charset);
-
-            parameters.forEach(parameter -> parameter.addToEntity(multipartEntityBuilder, charset));
-
-            // Convert the parameters into an entity...
-            method.setEntity(multipartEntityBuilder.build());
-        }
-        else {
-            method.setEntity(new org.apache.http.entity.StringEntity(
-                    encodeParameters(convertParameters(parameters), serverDetails.getCharsetName()), charset));
-        }
-
-        // Return the method...
         return method;
     }
 
-    private List<NameValuePair> convertParameters(final Set<? extends ActionParameter<?>> parameters) {
-        LOGGER.trace("convertParameters() called...");
+    /**
+     * @param parameters ACI request parameters
+     * @return Parameters ordered so that the action comes first
+     * @throws IllegalArgumentException When there is no action
+     */
+    private List<ActionParameter<?>> orderParams(final Collection<? extends ActionParameter<?>> parameters) {
+        LOGGER.trace("orderParams() called...");
 
         // Just incase, remove the allowed null entry...
         parameters.remove(null);
 
-        final List<NameValuePair> pairs = new ArrayList<>(parameters.size());
+        final List<ActionParameter<?>> ordered = new ArrayList<>(parameters.size());
 
-        LOGGER.debug("Converting {} parameters...", parameters.size());
-
-        NameValuePair actionPair = null;
+        ActionParameter<?> actionParam = null;
 
         for (final ActionParameter<?> parameter : parameters) {
-            final Object value = parameter.getValue();
-
-            if (value instanceof String) {
-                final String stringValue = (String) value;
-
-                if (AciConstants.PARAM_ACTION.equalsIgnoreCase(parameter.getName())) {
-                    actionPair = new BasicNameValuePair(parameter.getName(), stringValue);
-                } else {
-                    pairs.add(new BasicNameValuePair(parameter.getName(), stringValue));
-                }
+            if (AciConstants.PARAM_ACTION.equalsIgnoreCase(parameter.getName())) {
+                actionParam = parameter;
+            } else {
+                ordered.add(parameter);
             }
         }
 
         // Ensure that the action=XXX parameter is the first thing in the list...
-        Validate.isTrue(actionPair != null, "No action parameter found in parameter set, please set one before trying to execute an ACI request.");
-        pairs.add(0, actionPair);
+        Validate.isTrue(actionParam != null, "No 'action' parameter found in parameter set, please set one before trying to execute an ACI request.");
+        ordered.add(0, actionParam);
 
-        return pairs;
+        return ordered;
     }
 
     /**
-     * Converts a list of {@code AciParameter} objects into an array of {@code NameValuePair} objects suitable for use
-     * in both POST and GET methods.
-     * @param parameters  The set of parameters to convert.
-     * @param charsetName The name of the charset to use when encoding the parameters
-     * @return an <code>String</code> representing the query string portion of a URI
+     * Converts a sequence of string parameters into a a sequence of {@code NameValuePair} objects suitable for use
+     * in both POST and GET requests.  Order is preserved.
+     *
+     * @param parameters
+     * @return Pairs
      */
-    private String encodeParameters(final List<NameValuePair> parameters, final String charsetName) {
-        return URLEncodedUtils.format(parameters, Charset.forName(charsetName));
+    private List<NameValuePair> paramsToNVP(final Collection<? extends ActionParameter<?>> parameters) {
+        LOGGER.trace("paramsToNameValuePair() called...");
+        return parameters.stream().flatMap(parameter -> {
+            final Object value = parameter.getValue();
+            if (value instanceof String) {
+                return Stream.of(new BasicNameValuePair(parameter.getName(), (String) value));
+            } else {
+                return Stream.of();
+            }
+        }).collect(Collectors.toList());
+    }
+
+    /**
+     * Encodes a sequence of parameters to form-urlencoded request body, preserving order.
+     *
+     * @param parameters
+     * @param charsetName
+     * @return Request body
+     */
+    private String wwwFormEncodeParams(final List<? extends ActionParameter<?>> parameters, final String charsetName) {
+        return WWWFormCodec.format(paramsToNVP(parameters), Charset.forName(charsetName));
     }
 
     /**

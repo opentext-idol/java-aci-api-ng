@@ -46,12 +46,12 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
 
 /**
  * JUnit test class for the <code>com.autonomy.aci.client.transport.impl.AciHttpClientImpl</code> class.
@@ -62,9 +62,7 @@ public class AciHttpClientImplTest {
 
     @Before
     public void createConnectionDetails() {
-        serverDetails = new AciServerDetails();
-        serverDetails.setHost("localhost");
-        serverDetails.setPort(9000);
+        serverDetails = new AciServerDetails(AciServerDetails.TransportProtocol.HTTP, "localhost", 9000, "/content");
     }
 
     @Test
@@ -217,7 +215,7 @@ public class AciHttpClientImplTest {
         final HttpUriRequest request = (HttpUriRequest) method.invoke(aciHttpClient, serverDetails, parameters);
 
         assertThat("Incorrect URL", request.getUri().toString(),
-                is(equalTo("http://localhost:9000/?Action=query&Text=This%20is%20some%20text...")));
+                is(equalTo("http://localhost:9000/content?Action=query&Text=This%20is%20some%20text...")));
     }
 
     @Test
@@ -237,8 +235,7 @@ public class AciHttpClientImplTest {
         // Invoke the method with the parameters...
         final HttpUriRequest request = (HttpUriRequest) method.invoke(aciHttpClient, serverDetails, parameters);
 
-        // Check the query string...
-        assertThat("Incorrect query string", request.getUri().getQuery(), is(nullValue()));
+        assertThat("Incorrect URL", request.getUri().toString(), is(equalTo("http://localhost:9000/content")));
 
         // The response should be a HttpPost, so cast it and get the entity that conbtains the query string...
         final HttpEntity entity = ((HttpPost) request).getEntity();
@@ -298,7 +295,7 @@ public class AciHttpClientImplTest {
         HttpUriRequest request = (HttpUriRequest) method.invoke(aciHttpClient, serverDetails, parameters);
         assertThat("Incorrect HTTP method", request.getMethod(), is(equalTo("GET")));
         assertThat("Incorrect URL", request.getUri().toString(),
-                is(equalTo("http://localhost:9000/?Action=query&Text=This%20is%20some%20text...")));
+                is(equalTo("http://localhost:9000/content?Action=query&Text=This%20is%20some%20text...")));
 
         // Set it to use POST and try again...
         aciHttpClient.setUsePostMethod(true);
@@ -323,7 +320,7 @@ public class AciHttpClientImplTest {
         request = (HttpUriRequest) method.invoke(aciHttpClient, serverDetails, parameters);
         assertThat("Incorrect HTTP method", request.getMethod(), is(equalTo("GET")));
         assertThat("Incorrect URL", request.getUri().toString(),
-                startsWith("http://localhost:9000/?Action=Encrypted&Data="));
+                startsWith("http://localhost:9000/content?Action=Encrypted&Data="));
     }
 
     @Test(expected = NullPointerException.class)

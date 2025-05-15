@@ -209,7 +209,7 @@ public class AciHttpClientImpl implements AciHttpClient {
                 .setScheme(serverDetails.getProtocol().toString().toLowerCase(Locale.ENGLISH))
                 .setHost(serverDetails.getHost())
                 .setPort(serverDetails.getPort())
-                .setPath("/")
+                .setPath(serverDetails.getPath())
                 .setParameters(paramsToNVP(orderParams(parameters)))
                 .build();
 
@@ -226,7 +226,7 @@ public class AciHttpClientImpl implements AciHttpClient {
                 .setScheme(serverDetails.getProtocol().toString().toLowerCase(Locale.ENGLISH))
                 .setHost(serverDetails.getHost())
                 .setPort(serverDetails.getPort())
-                .setPath("/")
+                .setPath(serverDetails.getPath())
                 .setParameters(paramsToNVP(orderParams(parameters)))
                 .build();
 
@@ -255,7 +255,7 @@ public class AciHttpClientImpl implements AciHttpClient {
                 .setScheme(serverDetails.getProtocol().toString().toLowerCase(Locale.ENGLISH))
                 .setHost(serverDetails.getHost())
                 .setPort(serverDetails.getPort())
-                .setPath("/")
+                .setPath(serverDetails.getPath())
                 .setParameters(paramsToNVP(urlParams))
                 .build();
 
@@ -281,7 +281,7 @@ public class AciHttpClientImpl implements AciHttpClient {
                 .setScheme(serverDetails.getProtocol().toString().toLowerCase(Locale.ENGLISH))
                 .setHost(serverDetails.getHost())
                 .setPort(serverDetails.getPort())
-                .setPath("/")
+                .setPath(serverDetails.getPath())
                 .setParameters(paramsToNVP(urlParams))
                 .build();
 
@@ -312,7 +312,7 @@ public class AciHttpClientImpl implements AciHttpClient {
                 .setScheme(serverDetails.getProtocol().toString().toLowerCase(Locale.ENGLISH))
                 .setHost(serverDetails.getHost())
                 .setPort(serverDetails.getPort())
-                .setPath("/")
+                .setPath(serverDetails.getPath())
                 .build();
 
         final HttpPost method = new HttpPost(uri);
@@ -331,7 +331,7 @@ public class AciHttpClientImpl implements AciHttpClient {
                 .setScheme(serverDetails.getProtocol().toString().toLowerCase(Locale.ENGLISH))
                 .setHost(serverDetails.getHost())
                 .setPort(serverDetails.getPort())
-                .setPath("/")
+                .setPath(serverDetails.getPath())
                 .build();
 
         final org.apache.http.client.methods.HttpPost method = new org.apache.http.client.methods.HttpPost(uri);
@@ -418,7 +418,7 @@ public class AciHttpClientImpl implements AciHttpClient {
 
         Validate.notEmpty(parameters, "The parameter set must not be null or empty.");
 
-        LOGGER.debug("Executing action on {}:{}...", serverDetails.getHost(), serverDetails.getPort());
+        LOGGER.debug("Executing action on {}:{}/{}...", serverDetails.getHost(), serverDetails.getPort(), serverDetails.getPath());
         try {
             if (httpClient5 != null) {
 

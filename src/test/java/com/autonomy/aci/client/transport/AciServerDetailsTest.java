@@ -15,6 +15,7 @@
 package com.autonomy.aci.client.transport;
 
 import com.autonomy.aci.client.TestEncryptionCodec;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.nio.charset.IllegalCharsetNameException;
@@ -66,6 +67,7 @@ public class AciServerDetailsTest {
         assertThat(details.getProtocol(), is(equalTo(AciServerDetails.TransportProtocol.HTTP)));
         assertThat(details.getHost(), is(equalTo("localhost")));
         assertThat(details.getPort(), is(10));
+        assertThat(details.getPath(), is("/"));
         assertThat(details.getCharsetName(), is("UTF-8"));
         assertThat(details.getEncryptionCodec(), is(nullValue()));
     }
@@ -99,6 +101,29 @@ public class AciServerDetailsTest {
         assertThat(details.getProtocol(), is(equalTo(AciServerDetails.TransportProtocol.HTTPS)));
         assertThat(details.getHost(), is(equalTo("localhost")));
         assertThat(details.getPort(), is(10));
+        assertThat(details.getPath(), is("/"));
+        assertThat(details.getCharsetName(), is("UTF-8"));
+        assertThat(details.getEncryptionCodec(), is(nullValue()));
+    }
+
+    @Test
+    public void testFourParamConstructor() {
+        Assert.assertThrows(NullPointerException.class,
+                () -> new AciServerDetails(null, "localhost", 10, "/req/path"));
+        Assert.assertThrows(NullPointerException.class,
+                () -> new AciServerDetails(AciServerDetails.TransportProtocol.HTTPS, null, 10, "/req/path"));
+        Assert.assertThrows(IllegalArgumentException.class,
+                () -> new AciServerDetails(AciServerDetails.TransportProtocol.HTTPS, "localhost", -10, "/req/path"));
+        Assert.assertThrows(NullPointerException.class,
+                () -> new AciServerDetails(AciServerDetails.TransportProtocol.HTTPS, "localhost", 10, null));
+
+        final AciServerDetails details = new AciServerDetails(
+                AciServerDetails.TransportProtocol.HTTPS, "localhost", 10, "/req/path");
+
+        assertThat(details.getProtocol(), is(equalTo(AciServerDetails.TransportProtocol.HTTPS)));
+        assertThat(details.getHost(), is(equalTo("localhost")));
+        assertThat(details.getPort(), is(10));
+        assertThat(details.getPath(), is("/req/path"));
         assertThat(details.getCharsetName(), is("UTF-8"));
         assertThat(details.getEncryptionCodec(), is(nullValue()));
     }
@@ -121,6 +146,7 @@ public class AciServerDetailsTest {
         assertThat("protocol", newDetails.getProtocol(), is(equalTo(details.getProtocol())));
         assertThat("host", newDetails.getHost(), is(equalTo(details.getHost())));
         assertThat("port", newDetails.getPort(), is(equalTo(details.getPort())));
+        assertThat("path", newDetails.getPath(), is(equalTo(details.getPath())));
         assertThat("charsetName", newDetails.getCharsetName(), is(equalTo(details.getCharsetName())));
         assertThat("encryptionCodec", newDetails.getEncryptionCodec(), is(sameInstance(details.getEncryptionCodec())));
     }

@@ -55,6 +55,11 @@ public class AciServerDetails implements Serializable {
     private int port;
 
     /**
+     * Path to make requests to.
+     */
+    private String path = "/";
+
+    /**
      * Holds value of property charsetName. Defaults to <code>UTF-8</code>.
      */
     private String charsetName = "UTF-8";
@@ -107,6 +112,18 @@ public class AciServerDetails implements Serializable {
     }
 
     /**
+     * @param protocol The protocol to use when communicating with the ACI server
+     * @param host     The host of the ACI server
+     * @param port     The port of the ACI server
+     * @param path     Path to make requests to
+     */
+    public AciServerDetails(final TransportProtocol protocol, final String host, final int port, final String path) {
+        this(protocol, host, port);
+        Validate.notNull(path, "path must not be null, it must be set to a value");
+        this.path = path;
+    }
+
+    /**
      * Copy constructor.
      * @param that The <code>AciServerDetails</code> to copy details from.
      */
@@ -114,6 +131,7 @@ public class AciServerDetails implements Serializable {
         this.protocol = that.protocol;
         this.host = that.host;
         this.port = that.port;
+        this.path = that.path;
         this.charsetName = that.charsetName;
         this.encryptionCodec = that.encryptionCodec;
     }
@@ -136,6 +154,7 @@ public class AciServerDetails implements Serializable {
                     .append(this.protocol, that.protocol)
                     .append(this.host, that.host)
                     .append(this.port, that.port)
+                    .append(this.path, that.path)
                     .append(this.charsetName, that.charsetName)
                     .append(this.encryptionCodec, that.encryptionCodec)
                     .isEquals();
@@ -150,6 +169,7 @@ public class AciServerDetails implements Serializable {
                 .append(protocol)
                 .append(host)
                 .append(port)
+                .append(path)
                 .append(charsetName)
                 .append(encryptionCodec)
                 .toHashCode();
@@ -207,6 +227,13 @@ public class AciServerDetails implements Serializable {
     public void setPort(final int port) {
         Validate.isTrue((port >= 0) && (port <= 65536), "port is out of range, it should be between 0 and 65536.");
         this.port = port;
+    }
+
+    /**
+     * @return Path to make requests to
+     */
+    public String getPath() {
+        return path;
     }
 
     /**

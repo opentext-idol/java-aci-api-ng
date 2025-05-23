@@ -24,26 +24,16 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 public class GssAciHttpClientImplTest {
 
     @Test
-    public void testDefaultConstructor() {
-        final GssAciHttpClientImpl gssAciHttpClient = new GssAciHttpClientImpl();
-
-        assertThat("HttpClient 4 not null", gssAciHttpClient.getHttpClient(), is(nullValue()));
-        assertThat("Use POST should be false", gssAciHttpClient.isUsePostMethod(), is(false));
-    }
-
-    @Test
     public void testHttpClientConstructor() {
         final HttpClient httpClient = HttpClients.createDefault();
         final GssAciHttpClientImpl gssAciHttpClient = new GssAciHttpClientImpl(httpClient);
 
-        assertThat("HttpClient 4 not null", gssAciHttpClient.getHttpClient(), is(nullValue()));
         assertThat("Use POST should be false", gssAciHttpClient.isUsePostMethod(), is(false));
     }
 

@@ -52,20 +52,7 @@ public class GssAciHttpClientImpl extends AciHttpClientImpl {
 
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
-    public GssAciHttpClientImpl() {
-        super();
-    }
-
     public GssAciHttpClientImpl(final HttpClient httpClient) {
-        super(httpClient);
-    }
-
-    /**
-     * @param httpClient Used to make HTTP requests
-     * @deprecated Use {@link #GssAciHttpClientImpl(HttpClient)}
-     */
-    @Deprecated
-    public GssAciHttpClientImpl(final org.apache.http.client.HttpClient httpClient) {
         super(httpClient);
     }
 

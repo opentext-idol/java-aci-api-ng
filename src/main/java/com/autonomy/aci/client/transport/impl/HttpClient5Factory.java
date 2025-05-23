@@ -24,15 +24,13 @@ import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
 import org.apache.hc.core5.http.io.SocketConfig;
 import org.apache.hc.core5.util.TimeValue;
 import org.apache.hc.core5.util.Timeout;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * This is a utility class to help create and configure an instance of Apache {@link HttpClient} as it appears almost
  * impossible to do so via an IoC container like Spring. This factory assumes that you'll be running in a multi-threaded
- * environment so creates a {@link DefaultHttpClient} with an instance of {@link PoolingClientConnectionManager} and
+ * environment so creates an {@link HttpClient} with an instance of {@link PoolingHttpClientConnectionManager} and
  * sets the necessary configuration parameters to the values that have been set via the setter methods.
  * <p>
  * Defaults for all the properties that can be configured are:
@@ -292,7 +290,7 @@ public class HttpClient5Factory {
     }
 
     /**
-     * Configures the {@link org.apache.http.client.HttpClient} to send the <code>Accept-Encoding: gzip,deflate</code>
+     * Configures the {@link HttpClient} to send the <code>Accept-Encoding: gzip,deflate</code>
      * header and thus handle compressed responses from the ACI server.
      * @param useCompression <code>true</code> to set the <code>Accept-Encoding</code> header, <code>false</code> to not set it
      * @since 4.1

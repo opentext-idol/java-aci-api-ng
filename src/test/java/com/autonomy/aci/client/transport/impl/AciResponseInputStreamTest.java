@@ -25,8 +25,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
@@ -51,10 +51,7 @@ public class AciResponseInputStreamTest {
     public void testConstructor() throws IOException {
         // Mock an entity and create the ACIResponseInputStream object...
         httpResponse.setEntity(mock(HttpEntity.class));
-        final AciResponseInputStreamImpl stream = new AciResponseInputStreamImpl(httpResponse);
-
-        // Should have stored the response for future use...
-        assertThat(stream.getMethod(), is(nullValue()));
+        new AciResponseInputStreamImpl(httpResponse);
     }
 
     @Test(expected = IOException.class)
@@ -103,18 +100,6 @@ public class AciResponseInputStreamTest {
         // Create the AciResponseInputStreamImpl object...
         final AciResponseInputStreamImpl stream = new AciResponseInputStreamImpl(httpResponse);
         assertThat("Content-Type header wrong", stream.getContentType(), is(startsWith("text/xml")));
-    }
-
-    @Test
-    public void testMethodProperty() throws IOException {
-        // Create the AciResponseInputStreamImpl object...
-        httpResponse.setEntity(new StringEntity("This is a test..."));
-        final AciResponseInputStreamImpl stream = new AciResponseInputStreamImpl(httpResponse);
-        assertThat("HttpResponse objects are different", stream.getMethod(), is(nullValue()));
-
-        // Set it to null and check...
-        stream.setMethod(null);
-        assertThat("method property not as expected", stream.getMethod(), is(nullValue()));
     }
 
     @Test

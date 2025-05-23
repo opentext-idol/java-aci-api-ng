@@ -64,14 +64,6 @@ public class InputStreamActionParameter implements ActionParameter<List<InputStr
         }
     }
 
-    @Override
-    @Deprecated
-    public void addToEntity(final org.apache.http.entity.mime.MultipartEntityBuilder builder, final Charset charset) {
-        for(final InputStream inputStream : value) {
-            builder.addBinaryBody(name, inputStream);
-        }
-    }
-
     /**
      * Always returns true as {@code InputStreamActionParameter}s are always assumed to require post requests
      *

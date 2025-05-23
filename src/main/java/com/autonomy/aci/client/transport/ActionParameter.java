@@ -30,15 +30,6 @@ public interface ActionParameter<T> {
     default void addToEntity(MultipartEntityBuilder builder, final Charset charset) {}
 
     /**
-     * Adds the parameter to a multipart entity, using the given character encoding if appropriate
-     * @param builder The entity builder used to construct the entity
-     * @param charset The character encoding to use for the part
-     * @deprecated Use {@link #addToEntity(MultipartEntityBuilder, Charset)}
-     */
-    @Deprecated
-    default void addToEntity(org.apache.http.entity.mime.MultipartEntityBuilder builder, final Charset charset) {}
-
-    /**
      * @return True if the parameter requires a post request (e.g. it is of type InputStream)
      */
     boolean requiresPostRequest();

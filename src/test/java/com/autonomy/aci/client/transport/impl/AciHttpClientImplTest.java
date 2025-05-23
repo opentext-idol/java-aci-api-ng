@@ -67,39 +67,12 @@ public class AciHttpClientImplTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testDefaultConstructor() {
-        // Create an instance...
-        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
-
-        // Check it...
-        assertThat("HttpClient not null", aciHttpClient.getHttpClient(), is(nullValue()));
-        assertThat("Use POST should be false", aciHttpClient.isUsePostMethod(), is(false));
-    }
-
-    @Test
-    @SuppressWarnings("unchecked")
     public void testHttpClientConstructor() {
         // Create an instance...
-        final HttpClient httpClient = HttpClients.createDefault();
-        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl(httpClient);
+        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl(HttpClients.createDefault());
 
         // Check it...
-        assertThat("HttpClient not as expected", aciHttpClient.getHttpClient(), is(nullValue()));
         assertThat("Use POST should be false", aciHttpClient.isUsePostMethod(), is(false));
-    }
-
-    @Test
-    public void testHttpClientProperty() {
-        // Create an instance of HttpClient...
-        final HttpClient httpClient = HttpClients.createDefault();
-
-        // Create our client...
-        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
-        assertThat("HttpClient not null", aciHttpClient.getHttpClient(), is(nullValue()));
-
-        // Set it back to null...
-        aciHttpClient.setHttpClient(null);
-        assertThat("HttpClient not null", aciHttpClient.getHttpClient(), is(nullValue()));
     }
 
     /**
@@ -110,8 +83,7 @@ public class AciHttpClientImplTest {
     @SuppressWarnings("unchecked")
     public void testUsePostMethodProperty() {
         // Create our client...
-        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
-        assertThat("usePostMethod not as expected", aciHttpClient.isUsePostMethod(), is(false));
+        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl(HttpClients.createDefault());
 
         // Set it to true...
         aciHttpClient.setUsePostMethod(true);
@@ -201,10 +173,10 @@ public class AciHttpClientImplTest {
     @SuppressWarnings("unchecked")
     public void testCreateGetMethod() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, URISyntaxException {
         // Create our client...
-        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
+        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl(HttpClients.createDefault());
 
         // Get our method...
-        final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "createGet5Method", AciServerDetails.class, Set.class);
+        final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "createGetMethod", AciServerDetails.class, Set.class);
 
         // Here's the parameter set...
         final Set<AciParameter> parameters = new LinkedHashSet<>();
@@ -222,10 +194,10 @@ public class AciHttpClientImplTest {
     @SuppressWarnings("unchecked")
     public void testCreatePostMethod() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, IOException, URISyntaxException {
         // Create our client...
-        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
+        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl(HttpClients.createDefault());
 
         // Get our method...
-        final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "createPost5Method", AciServerDetails.class, Set.class);
+        final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "createPostMethod", AciServerDetails.class, Set.class);
 
         // Here's the parameter set...
         final Set<AciParameter> parameters = new LinkedHashSet<>();
@@ -250,7 +222,7 @@ public class AciHttpClientImplTest {
     @SuppressWarnings("unchecked")
     public void testCreateEncryptedParameters() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, EncryptionCodecException {
         // Create our client...
-        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
+        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl(HttpClients.createDefault());
 
         // Get our method...
         final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "createEncryptedParameters", AciServerDetails.class, Collection.class);
@@ -281,10 +253,10 @@ public class AciHttpClientImplTest {
     @SuppressWarnings("unchecked")
     public void testConstructHttpRequest() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, IOException, URISyntaxException {
         // Create our client...
-        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
+        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl(HttpClients.createDefault());
 
         // Get our method...
-        final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "constructHttp5Request", AciServerDetails.class, Set.class);
+        final Method method = ReflectionTestUtils.getAccessibleMethod(AciHttpClientImpl.class, "constructHttpRequest", AciServerDetails.class, Set.class);
 
         // Here's the parameter set...
         final Set<AciParameter> parameters = new LinkedHashSet<>();
@@ -326,7 +298,7 @@ public class AciHttpClientImplTest {
     @Test(expected = NullPointerException.class)
     public void testExecuteActionNoHttpClient() throws IOException, AciHttpException {
         // Create our client and execute...
-        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
+        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl(HttpClients.createDefault());
         aciHttpClient.executeAction(serverDetails, null);
     }
 
@@ -486,7 +458,7 @@ public class AciHttpClientImplTest {
         final BasicHttpResponse httpResponse = new BasicHttpResponse(200);
 
         // Create our client...
-        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
+        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl(HttpClients.createDefault());
 
         // This should return false...
         boolean result = (Boolean) method.invoke(aciHttpClient, null, httpResponse);
@@ -505,7 +477,7 @@ public class AciHttpClientImplTest {
     private String testConvertEncodeParameters(final Set<? extends ActionParameter<?>> params, final String charset)
             throws Exception
     {
-        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl();
+        final AciHttpClientImpl aciHttpClient = new AciHttpClientImpl(HttpClients.createDefault());
         final Method orderMethod = ReflectionTestUtils.getAccessibleMethod(
                 AciHttpClientImpl.class, "orderParams", Collection.class);
         final Method encodeMethod = ReflectionTestUtils.getAccessibleMethod(

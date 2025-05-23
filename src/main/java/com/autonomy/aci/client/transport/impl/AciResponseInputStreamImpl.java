@@ -18,7 +18,6 @@ import com.autonomy.aci.client.transport.AciResponseInputStream;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.Header;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
-import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,12 +39,7 @@ public class AciResponseInputStreamImpl extends AciResponseInputStream {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(AciResponseInputStreamImpl.class);
 
-    private ClassicHttpResponse response5;
-
-    /**
-     * Holds value of property method.
-     */
-    private HttpResponse response;
+    private final ClassicHttpResponse response;
 
     /**
      * Creates a new instance of AciResponseInputStreamImpl.
@@ -56,24 +50,7 @@ public class AciResponseInputStreamImpl extends AciResponseInputStream {
         // Give the filter the InputStream to use...
         super(response.getEntity().getContent());
 
-        // Store the method...
-        response5 = response;
-    }
-
-    /**
-     * Creates a new instance of AciResponseInputStreamImpl.
-     * @param response An {@code HttpResponse} that contains the ACI response as an {@code InputStream}
-     * @throws IOException If an I/O error occurs
-     * @deprecated Use {@link #AciResponseInputStreamImpl(ClassicHttpResponse)}
-     */
-    @Deprecated
-    public AciResponseInputStreamImpl(final HttpResponse response) throws IOException {
-        // Give the filter the InputStream to use...
-        super(response.getEntity().getContent());
-
-        // Store the method...
         this.response = response;
-        response5 = null;
     }
 
     /**
@@ -83,36 +60,26 @@ public class AciResponseInputStreamImpl extends AciResponseInputStream {
      */
     @Override
     public int getStatusCode() {
-        return response5 != null ? response5.getCode() : response.getStatusLine().getStatusCode();
+        return response.getCode();
     }
 
     private String getHeaderValue(final Header header) {
         return header == null ? null : header.getValue();
     }
 
-    private String getHeaderValue(final org.apache.http.Header header) {
-        return header == null ? null : header.getValue();
-    }
-
     @Override
     public String getHeader(final String name) {
-        return response5 != null ?
-                getHeaderValue(response5.getFirstHeader(name)) :
-                getHeaderValue(response.getFirstHeader(name));
+        return getHeaderValue(response.getFirstHeader(name));
     }
 
     @Override
     public String getContentEncoding() {
-        return response5 != null ?
-                response5.getEntity().getContentEncoding() :
-                getHeaderValue(response.getEntity().getContentEncoding());
+        return response.getEntity().getContentEncoding();
     }
 
     @Override
     public long getContentLength() {
-        return response5 != null ?
-                response5.getEntity().getContentLength() :
-                response.getEntity().getContentLength();
+        return response.getEntity().getContentLength();
     }
 
     /**
@@ -122,9 +89,7 @@ public class AciResponseInputStreamImpl extends AciResponseInputStream {
      */
     @Override
     public String getContentType() {
-        return response5 != null ?
-                response5.getEntity().getContentType() :
-                getHeaderValue(response.getEntity().getContentType());
+        return response.getEntity().getContentType();
     }
 
     @Override
@@ -136,31 +101,8 @@ public class AciResponseInputStreamImpl extends AciResponseInputStream {
             super.close();
         } finally {
             LOGGER.debug("Releasing the HTTP Connection...");
-            if (response5 != null) {
-                EntityUtils.consume(response5.getEntity());
-            } else {
-                org.apache.http.util.EntityUtils.consume(response.getEntity());
-            }
+            EntityUtils.consume(response.getEntity());
         }
-    }
-
-    /**
-     * Getter for property method.
-     * @return Value of property method
-     */
-    @Deprecated
-    public HttpResponse getMethod() {
-        return response;
-    }
-
-    /**
-     * Setter for property method.
-     * @param response New value of property response
-     */
-    @Deprecated
-    public void setMethod(final HttpResponse response) {
-        response5 = null;
-        this.response = response;
     }
 
 }

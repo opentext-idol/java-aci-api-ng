@@ -150,13 +150,6 @@ public class AciParameter implements Serializable, ActionParameter<String> {
     }
 
     @Override
-    @Deprecated
-    public void addToEntity(final org.apache.http.entity.mime.MultipartEntityBuilder builder, final Charset charset) {
-        builder.addPart(name, new org.apache.http.entity.mime.content.StringBody(value,
-                org.apache.http.entity.ContentType.create("text/plain", charset)));
-    }
-
-    @Override
     public boolean requiresPostRequest() {
         return false;
     }

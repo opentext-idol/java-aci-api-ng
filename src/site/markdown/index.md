@@ -13,7 +13,7 @@ java-aci-api-ng is available from the central Maven repository.
     <dependency>
         <groupId>com.hp.autonomy.aci.client</groupId>
         <artifactId>aci-api</artifactId>
-        <version>5.0.0</version>
+        <version>26.2.0</version>
     </dependency>
 
 The AciService's executeAction methods are responsible for executing ACI actions. An AciServiceImpl can either be created

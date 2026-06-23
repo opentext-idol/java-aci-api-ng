@@ -18,8 +18,7 @@ Previous versions of this library included a taglib for use in JSPs and support 
 these features are available from OpenText customer support.
 
 ## Contributing
-We welcome pull requests. These must be licensed under the MIT license. Please submit pull requests to the develop
-branch - the master branch is for stable code only.
+We welcome pull requests. These must be licensed under the MIT license.
 
 ## Is it any good?
 Yes.
